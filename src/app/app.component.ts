@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewChild } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
+import { GridComponent } from './grid/grid.component';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,8 @@ import { AfterViewInit } from "@angular/core";
 export class AppComponent implements AfterViewInit {
   showGrid: boolean = false;
   context: CanvasRenderingContext2D;
+
+  grid = new GridComponent;
 
   @ViewChild("myCanvas") myCanvas;
 
@@ -27,50 +30,20 @@ export class AppComponent implements AfterViewInit {
       this.showGrid = true;
     }
   }
+  canvasResizing() {
+    let canvas = this.myCanvas.nativeElement;
+    canvas.width = document.getElementById("map").offsetWidth;
+    canvas.height = canvas.width;
+  }
   tick() {
     requestAnimationFrame(() => {
-      let canvas = this.myCanvas.nativeElement;
-      canvas.width = document.getElementById("map").offsetWidth;
-      canvas.height = canvas.width;
+      this.canvasResizing();
       this.tick();
       if (this.showGrid) {
-        this.drawMap(4);
+        this.grid.drawMap(4, this.context);
       }
     });
   }
 
-  drawMap(line: number) {
-    let ctx = this.context;
-    let offset = 0.1;
-    let cavasWidth = document.getElementById("map").offsetWidth;
-    let gridOffset = cavasWidth*offset;
-    let gridFullWidth = cavasWidth*(1-offset*2);
-    let gridWidth = gridFullWidth / line;
-
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";;
-
-    ctx.beginPath();
-    ctx.moveTo(gridOffset, gridOffset);
-    ctx.lineTo(gridOffset, cavasWidth-gridOffset);
-    ctx.lineTo(cavasWidth-gridOffset, cavasWidth-gridOffset);
-    ctx.lineTo(cavasWidth-gridOffset, gridOffset);
-    ctx.closePath();
-    ctx.stroke();
-
-    for (let i: number = 1; i < line; ++i) {
-      ctx.beginPath();
-      ctx.moveTo(gridOffset, gridWidth * i + gridOffset);
-      ctx.lineTo(cavasWidth-gridOffset, gridWidth * i + gridOffset);
-      ctx.closePath();
-      ctx.stroke();
-    }
-    for (let i: number = 1; i < line; ++i) {
-      ctx.beginPath();
-      ctx.moveTo(gridWidth * i + gridOffset, gridOffset);
-      ctx.lineTo(gridWidth * i + gridOffset, cavasWidth-gridOffset);
-      ctx.closePath();
-      ctx.stroke();
-    }
-  }
 
 }
