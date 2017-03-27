@@ -8,7 +8,7 @@ import { AfterViewInit } from "@angular/core";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-    ;
+  showGrid: boolean = false;
   context: CanvasRenderingContext2D;
 
   @ViewChild("myCanvas") myCanvas;
@@ -19,22 +19,33 @@ export class AppComponent implements AfterViewInit {
 
     this.tick();
   }
-
+  clicked() {
+    if (this.showGrid) {
+      this.showGrid = false;
+    }
+    else {
+      this.showGrid = true;
+    }
+  }
   tick() {
     requestAnimationFrame(() => {
       let canvas = this.myCanvas.nativeElement;
       canvas.width = document.getElementById("map").offsetWidth;
       canvas.height = canvas.width;
       this.tick();
-      this.drawMap();
+      if (this.showGrid) {
+        this.drawMap(4);
+      }
     });
-
   }
 
-  drawMap() {
+  drawMap(line: number) {
     let ctx = this.context;
     let cavasWidth = document.getElementById("map").offsetWidth;
-    let gridWidth = cavasWidth / 4;
+    let gridWidth = cavasWidth / line;
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";;
+
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, cavasWidth);
@@ -43,41 +54,20 @@ export class AppComponent implements AfterViewInit {
     ctx.closePath();
     ctx.stroke();
 
-    ctx.beginPath();
-    ctx.moveTo(0, gridWidth);
-    ctx.lineTo(cavasWidth, gridWidth);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, gridWidth * 2);
-    ctx.lineTo(cavasWidth, gridWidth * 2);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(0, gridWidth * 3);
-    ctx.lineTo(cavasWidth, gridWidth * 3);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(gridWidth, 0);
-    ctx.lineTo(gridWidth, cavasWidth);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(gridWidth * 2, 0);
-    ctx.lineTo(gridWidth * 2, cavasWidth);
-    ctx.closePath();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(gridWidth * 3, 0);
-    ctx.lineTo(gridWidth * 3, cavasWidth);
-    ctx.closePath();
-    ctx.stroke();
+    for (let i: number = 1; i < line; ++i) {
+      ctx.beginPath();
+      ctx.moveTo(0, gridWidth * i);
+      ctx.lineTo(cavasWidth, gridWidth * i);
+      ctx.closePath();
+      ctx.stroke();
+    }
+    for (let i: number = 1; i < line; ++i) {
+      ctx.beginPath();
+      ctx.moveTo(gridWidth * i, 0);
+      ctx.lineTo(gridWidth * i, cavasWidth);
+      ctx.closePath();
+      ctx.stroke();
+    }
   }
 
 }
