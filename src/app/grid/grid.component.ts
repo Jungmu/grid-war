@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CharacterComponent } from '../character/character.component';
 
 @Component({
   selector: 'app-grid',
@@ -6,6 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent {
+
+  drawCharacter(character:CharacterComponent,context){
+    let img = <HTMLImageElement>document.getElementById(character.weapon);
+    let ctx = context;
+    ctx.drawImage(img, 0, 0, 100, 100);
+  }
   
   drawMap(line: number,context) {
     let ctx = context;
