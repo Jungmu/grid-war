@@ -1,0 +1,6 @@
+canvas { 
+    background:url(../images/grass.jpg);
+}
+.container{
+    max-width:720px;
+}
