@@ -16,7 +16,7 @@ export class CharacterComponent implements OnInit {
 
   ngOnInit() {
     this.hp = 10;
-    this.weapon = "";
+    this.weapon = "none";
   }
 
 }

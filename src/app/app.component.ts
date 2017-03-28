@@ -43,7 +43,7 @@ export class AppComponent implements AfterViewInit {
   tick() {
     requestAnimationFrame(() => {
       this.player.weapon="sword";
-      
+      this.enemy.weapon="none";
       
       this.canvasResizing();
       this.tick();
@@ -51,7 +51,7 @@ export class AppComponent implements AfterViewInit {
         this.grid.drawMap(4, this.context);
       }
       this.grid.drawCharacter(this.player,this.context);
-      //this.grid.drawCharacter(this.enemy,this.context);
+      this.grid.drawCharacter(this.enemy,this.context);
     });
   }
 
