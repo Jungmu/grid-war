@@ -31,29 +31,22 @@ export class AppComponent implements AfterViewInit {
     this.context = canvas.getContext("2d");
     this.tick();
   }
-  clicked() {
-    if (this.showGrid) {
-      this.showGrid = false;
-    }
-    else {
-      this.showGrid = true;
-    }
+  tick() {
+    requestAnimationFrame(() => {
+      this.setWeapon();
+      this.canvasResizing();
+      this.rander();
+      this.tick();
+    });
   }
+
   canvasResizing() {
     let canvas = this.myCanvas.nativeElement;
     canvas.width = document.getElementById("map").offsetWidth;
     canvas.height = canvas.width;
   }
-  tick() {
-    requestAnimationFrame(() => {      
-      this.setWeapon();
-      this.canvasResizing();
-      this.rander();
-      this.tick();
 
-    });
-  }
-  setWeapon(){
+  setWeapon() {
     this.player.weapon = "sword";
     this.enemy.weapon = "none";
   }
@@ -64,5 +57,12 @@ export class AppComponent implements AfterViewInit {
     this.characterComponent.drawCharacter(this.gridLineCount, this.player, this.context);
     this.characterComponent.drawCharacter(this.gridLineCount, this.enemy, this.context);
   }
-
+  clicked() {
+    if (this.showGrid) {
+      this.showGrid = false;
+    }
+    else {
+      this.showGrid = true;
+    }
+  }
 }
