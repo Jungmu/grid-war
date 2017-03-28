@@ -15,5 +15,6 @@ export class WeaponComponent implements OnInit {
 
   weaponChange(weapon: string) {
     AppComponent.player.setWeapon(weapon);
+    AppComponent.showGrid = true;
   }
 }

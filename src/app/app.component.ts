@@ -7,6 +7,7 @@ import { Character } from './character/character';
 
 import { WeaponComponent } from './weapon/weapon.component';
 import { MoveComponent } from './move/move.component';
+import { AttackrangeComponent } from './attackrange/attackrange.component';
 
 @Component({
   selector: 'app-root',
@@ -20,17 +21,21 @@ export class AppComponent implements AfterViewInit {
   static player = new Character(AppComponent.playerPosition);  
   static enemy = new Character(AppComponent.enemyPosition);
 
-  context: CanvasRenderingContext2D;
-  gridLineCount: number = 4;
+  static context: CanvasRenderingContext2D;
+  
+  static gridLineCount: number = 4;
+  static gridComponent = new GridComponent;
 
-  gridComponent = new GridComponent;
+  static atcrag = new AttackrangeComponent;
+
+
   characterComponent = new CharacterComponent;
 
   @ViewChild("myCanvas") myCanvas;
 
   ngAfterViewInit() {
     let canvas = this.myCanvas.nativeElement;
-    this.context = canvas.getContext("2d");
+    AppComponent.context = canvas.getContext("2d");
     
     AppComponent.player.setWeapon("sword");
 
@@ -53,10 +58,12 @@ export class AppComponent implements AfterViewInit {
 
   rander() {
     if (AppComponent.showGrid) {
-      this.gridComponent.drawMap(this.gridLineCount, this.context);
+      AppComponent.gridComponent.drawMap(AppComponent.gridLineCount, AppComponent.context);
+      AppComponent.atcrag.drawRange(AppComponent.context, AppComponent.player.weapon);
+
     }
-    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.player, this.context);
-    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.enemy, this.context);
+    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, AppComponent.context);
+    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, AppComponent.context);
   }
   clicked() {
     AppComponent.showGrid = true;

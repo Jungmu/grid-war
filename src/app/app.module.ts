@@ -10,6 +10,7 @@ import { CharacterComponent } from './character/character.component';
 import { RoutingModule }     from './routing/routing.module';
 import { WeaponComponent } from './weapon/weapon.component';
 import { MoveComponent } from './move/move.component';
+import { AttackrangeComponent } from './attackrange/attackrange.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MoveComponent } from './move/move.component';
     GridComponent,
     CharacterComponent,
     WeaponComponent,
-    MoveComponent
+    MoveComponent,
+    AttackrangeComponent
   ],
   imports: [
     BrowserModule,

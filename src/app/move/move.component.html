@@ -1,3 +1,9 @@
 <p>
-  move works!
+  <span (click)="setPosition([-1, 0])">up</span> 
+   <span (click)="setPosition([1, 0])">down</span>
 </p>
+<p>
+  <span (click)="setPosition([0, -1])">left</span> 
+   <span (click)="setPosition([0, 1])">right</span>
+</p>
+<p><span (click)="setPosition([0, 0])">none</span></p>
