@@ -3,4 +3,4 @@
 =======
 # GridWar
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+웹을 통한 간단한 게임 만들기 프로젝트.
