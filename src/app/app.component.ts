@@ -12,7 +12,7 @@ import { Character } from './character/character';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  showGrid: boolean = false;
+  static showGrid: boolean = false;
   context: CanvasRenderingContext2D;
   playerPosition: [number, number] = [4, 3];
   enemyPosition: [number, number] = [1, 2];
@@ -50,18 +50,17 @@ export class AppComponent implements AfterViewInit {
     this.enemy.weapon = "none";
   }
   rander() {
-    if (this.showGrid) {
+    if (AppComponent.showGrid) {
       this.gridComponent.drawMap(this.gridLineCount, this.context);
     }
     this.characterComponent.drawCharacter(this.gridLineCount, this.player, this.context);
     this.characterComponent.drawCharacter(this.gridLineCount, this.enemy, this.context);
   }
   clicked() {
-    if (this.showGrid) {
-      this.showGrid = false;
-    }
-    else {
-      this.showGrid = true;
-    }
+    AppComponent.showGrid = true;
+    setTimeout(function () {
+      AppComponent.showGrid = false;
+      console.log("hi");
+    }, 1000);
   }
 }
