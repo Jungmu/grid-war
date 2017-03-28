@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-github-webhook",
+  "version": "1.0.0",
+  "description": "Github Webhook server built with Node.js",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/%3Avelopert/nodejs-github-webhook.git"
+  },
+  "author": "velopert <public.velopert@gmail.com> (https://velopert.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/%3Avelopert/nodejs-github-webhook/issues"
+  },
+  "homepage": "https://github.com/%3Avelopert/nodejs-github-webhook#readme"
+}
