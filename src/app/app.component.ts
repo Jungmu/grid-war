@@ -7,13 +7,15 @@ import { CharacterComponent } from './character/character.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [CharacterComponent]
 })
 export class AppComponent implements AfterViewInit {
   showGrid: boolean = false;
   context: CanvasRenderingContext2D;
   playerPosition:[number,number] = [4,3];
   enemyPosition:[number,number] = [1,2];
+  gridLineCount:number = 4;
 
   grid = new GridComponent;
   player = new CharacterComponent(this.playerPosition);
@@ -48,12 +50,11 @@ export class AppComponent implements AfterViewInit {
       this.canvasResizing();
       this.tick();
       if (this.showGrid) {
-        this.grid.drawMap(4, this.context);
+        this.grid.drawMap(this.gridLineCount, this.context);
       }
-      this.grid.drawCharacter(this.player,this.context);
-      this.grid.drawCharacter(this.enemy,this.context);
+      this.player.drawCharacter(this.gridLineCount,this.context);
+      this.enemy.drawCharacter(this.gridLineCount,this.context);
     });
   }
-
 
 }

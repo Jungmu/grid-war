@@ -10,8 +10,8 @@ import { CharacterComponent } from './character/character.component';
 @NgModule({
   declarations: [
     AppComponent,
-    CharacterComponent,
-    GridComponent
+    GridComponent,
+    CharacterComponent
   ],
   imports: [
     BrowserModule,

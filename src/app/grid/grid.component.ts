@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CharacterComponent } from '../character/character.component';
 
 @Component({
   selector: 'app-grid',
@@ -7,12 +6,6 @@ import { CharacterComponent } from '../character/character.component';
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent {
-
-  drawCharacter(character:CharacterComponent,context){
-    let img = <HTMLImageElement>document.getElementById(character.weapon);
-    let ctx = context;
-    ctx.drawImage(img, 0, 0, 100, 100);
-  }
   
   drawMap(line: number,context) {
     let ctx = context;
@@ -22,7 +15,7 @@ export class GridComponent {
     let gridFullWidth = cavasWidth*(1-offset*2);
     let gridWidth = gridFullWidth / line;
 
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
 
     ctx.beginPath();
     ctx.moveTo(gridOffset, gridOffset);
