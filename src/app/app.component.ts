@@ -3,8 +3,10 @@ import { ViewChild } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
 import { GridComponent } from './grid/grid.component';
 import { CharacterComponent } from './character/character.component';
-
 import { Character } from './character/character';
+
+import { WeaponComponent } from './weapon/weapon.component';
+import { MoveComponent } from './move/move.component';
 
 @Component({
   selector: 'app-root',
@@ -13,26 +15,30 @@ import { Character } from './character/character';
 })
 export class AppComponent implements AfterViewInit {
   static showGrid: boolean = false;
+  static playerPosition: [number, number] = [4, 3];
+  static enemyPosition: [number, number] = [1, 2];
+  static player = new Character(AppComponent.playerPosition);  
+  static enemy = new Character(AppComponent.enemyPosition);
+
   context: CanvasRenderingContext2D;
-  playerPosition: [number, number] = [4, 3];
-  enemyPosition: [number, number] = [1, 2];
   gridLineCount: number = 4;
 
   gridComponent = new GridComponent;
   characterComponent = new CharacterComponent;
-  player = new Character(this.playerPosition);
-  enemy = new Character(this.enemyPosition);
 
   @ViewChild("myCanvas") myCanvas;
 
   ngAfterViewInit() {
     let canvas = this.myCanvas.nativeElement;
     this.context = canvas.getContext("2d");
+    
+    AppComponent.player.setWeapon("sword");
+
     this.tick();
   }
   tick() {
     requestAnimationFrame(() => {
-      this.setWeapon();
+      // this.setWeapon();
       this.canvasResizing();
       this.rander();
       this.tick();
@@ -45,22 +51,17 @@ export class AppComponent implements AfterViewInit {
     canvas.height = canvas.width;
   }
 
-  setWeapon() {
-    this.player.weapon = "sword";
-    this.enemy.weapon = "none";
-  }
   rander() {
     if (AppComponent.showGrid) {
       this.gridComponent.drawMap(this.gridLineCount, this.context);
     }
-    this.characterComponent.drawCharacter(this.gridLineCount, this.player, this.context);
-    this.characterComponent.drawCharacter(this.gridLineCount, this.enemy, this.context);
+    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.player, this.context);
+    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.enemy, this.context);
   }
   clicked() {
     AppComponent.showGrid = true;
-    setTimeout(function () {
+    setTimeout(() => {
       AppComponent.showGrid = false;
-      console.log("hi");
-    }, 1000);
+    }, 2500); 
   }
 }

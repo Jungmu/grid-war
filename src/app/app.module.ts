@@ -8,12 +8,16 @@ import { GridComponent } from './grid/grid.component';
 import { CharacterComponent } from './character/character.component';
 
 import { RoutingModule }     from './routing/routing.module';
+import { WeaponComponent } from './weapon/weapon.component';
+import { MoveComponent } from './move/move.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GridComponent,
-    CharacterComponent
+    CharacterComponent,
+    WeaponComponent,
+    MoveComponent
   ],
   imports: [
     BrowserModule,

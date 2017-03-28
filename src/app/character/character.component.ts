@@ -11,9 +11,9 @@ export class CharacterComponent {
     let img = <HTMLImageElement>document.getElementById(character.weapon);
     let ctx = context;
     let offset = 0.1;
-    let cavasWidth = document.getElementById("map").offsetWidth;
-    let gridOffset = cavasWidth*offset;
-    let gridFullWidth = cavasWidth*(1-offset*2);
+    let canvasWidth = document.getElementById("map").offsetWidth;
+    let gridOffset = canvasWidth*offset;
+    let gridFullWidth = canvasWidth*(1-offset*2);
     let gridWidth = gridFullWidth / line;
     let x = (character.position[1]-1)*gridWidth;
     let y = (character.position[0]-1)*gridWidth;

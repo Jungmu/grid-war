@@ -8,4 +8,8 @@ export class Character {
       this.weapon = "none";
       this.position = position;
   }
+  
+    setWeapon(weapon: string) {
+      this.weapon = weapon;
+    }
 }
