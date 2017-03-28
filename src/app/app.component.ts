@@ -9,8 +9,7 @@ import { Character } from './character/character';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers: [CharacterComponent]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
   showGrid: boolean = false;
