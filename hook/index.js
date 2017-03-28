@@ -9,7 +9,7 @@ var port    = 8081; // port
 http.createServer(function(req, res){
 
     console.log("request received");
-    res.writeHead(400, {"Content-Type": "application/json"});
+    res.writeHead(0, {"Content-Type": "application/json"});
 
     var path = url.parse(req.url).pathname;
 
