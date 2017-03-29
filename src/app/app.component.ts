@@ -18,16 +18,15 @@ export class AppComponent implements AfterViewInit {
   static showGrid: boolean = false;
   static playerPosition: [number, number] = [4, 3];
   static enemyPosition: [number, number] = [1, 2];
-  static player = new Character(AppComponent.playerPosition);  
-  static enemy = new Character(AppComponent.enemyPosition);
+  static player: Character = new Character(AppComponent.playerPosition);  
+  static enemy: Character = new Character(AppComponent.enemyPosition);
+  static gridLineCount: number = 4;
 
   context: CanvasRenderingContext2D;
-  
-  gridLineCount: number = 4;
-  gridComponent = new GridComponent;
+  gridComponent:GridComponent = new GridComponent;
 
-  attackrangeComponent = new AttackrangeComponent;
-  characterComponent = new CharacterComponent;
+  attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
+  characterComponent: CharacterComponent = new CharacterComponent;
 
   @ViewChild("myCanvas") myCanvas;
 
@@ -56,12 +55,12 @@ export class AppComponent implements AfterViewInit {
 
   rander() {
     if (AppComponent.showGrid) {
-      this.gridComponent.drawMap(this.gridLineCount, this.context);
-      this.attackrangeComponent.drawRange(this.context, AppComponent.player.weapon);
+      this.gridComponent.drawMap(AppComponent.gridLineCount, this.context);
+      this.attackrangeComponent.drawRange(this.context, AppComponent.gridLineCount,AppComponent.player.weapon);
 
     }
-    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.player, this.context);
-    this.characterComponent.drawCharacter(this.gridLineCount, AppComponent.enemy, this.context);
+    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, this.context);
+    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, this.context);
   }
   clicked() {
     AppComponent.showGrid = true;

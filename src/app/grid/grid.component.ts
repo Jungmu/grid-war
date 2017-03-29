@@ -11,9 +11,9 @@ export class GridComponent {
     let ctx = context;
     let offset = 0.1;
     let canvasWidth = document.getElementById("map").offsetWidth;
-    let gridOffset = canvasWidth*offset;
-    let gridFullWidth = canvasWidth*(1-offset*2);
-    let gridWidth = gridFullWidth / line;
+    let gridOffset:number = canvasWidth*offset;
+    let gridFullWidth:number = canvasWidth*(1-offset*2);
+    let gridWidth:number = gridFullWidth / line;
 
     ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
 
