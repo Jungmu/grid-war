@@ -14,18 +14,12 @@ export class MoveComponent implements OnInit {
   }
 
   moveByClick(position:[number, number]) {
-    this.positionChange(AppComponent.player, position);
-  }
-
-  positionChange(myCharacter, position:[number, number]) {
-    let beforePosition = myCharacter.position;
+    let beforePosition = AppComponent.player.position;
     if (beforePosition[0] + position[0] <= 0 || beforePosition[1] + position[1] <= 0 || beforePosition[0] + position[0] > AppComponent.gridLineCount || beforePosition[1] + position[1] > AppComponent.gridLineCount) {
-      console.log("can't move there");
-      // console.log(beforePosition[0] + position[0]);
-      // console.log(beforePosition[1] + position[1]);
+      // do nothing
     }
     else {
-      myCharacter.setPosition([beforePosition[0] + position[0], beforePosition[1] + position[1]]);
+      AppComponent.player.setPosition([beforePosition[0] + position[0], beforePosition[1] + position[1]]);
     }
   }
 
