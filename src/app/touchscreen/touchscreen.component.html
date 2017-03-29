@@ -3,8 +3,6 @@
                   (mousemove)="coordinates($event)"
                   on-click="onEvent($event)"
                   on-dblclick="onEvent($event)"
-                  on-contextmenu="onEvent($event)">
-    <p class="type">Type: {{event?.type}}</p>    
-    <p>x: {{clientX}}, y: {{clientY}}</p>
-    <p>ctrl: {{event?.ctrlKey}}, shift: {{event?.shiftKey}}, meta: {{event?.metaKey}}</p>
+                  on-contextmenu="onEvent($event)"
+                  (click)="getPosition()">
 </div>
