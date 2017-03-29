@@ -13,8 +13,12 @@ export class WeaponComponent implements OnInit {
   ngOnInit() {
   }
 
-  weaponChange(weapon: string) {
-    AppComponent.player.setWeapon(weapon);
+  weaponByClick(weapon: string) {
+    this.weaponChange(AppComponent.player, weapon);
+  }
+
+  weaponChange(myCharacter, weapon: string) {
+    myCharacter.setWeapon(weapon);
     AppComponent.showGrid = true;
   }
 }
