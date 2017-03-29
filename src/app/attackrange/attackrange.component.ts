@@ -45,10 +45,7 @@ export class AttackrangeComponent implements OnInit {
     let fillStartPoint: [number, number];
     for (let i = -2; i <= 2; i++) {
       for (let j = -2; j <= 2; j++) {
-        if (j == -2 || j == 2) {
-          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
-          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-        } else if (i == -2 || i == 2) {
+        if (j == -2 || j == 2 || i == -2 || i == 2) {
           fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
           this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
         }
@@ -59,14 +56,14 @@ export class AttackrangeComponent implements OnInit {
   drawSwordRage(context) {
     let fillStartPoint: [number, number];
 
-    fillStartPoint = [(this.nowPosition[1]) * this.gridWidth + this.gridOffset, (this.nowPosition[0] - 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] - 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0]) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1]) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] + 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0]) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
+    for(let i = -1 ; i <= 1 ; ++i){
+      for(let j = -1 ; j <= 1 ;++j){
+        if( -i != j && i != j ){
+          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
+          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);    
+        }           
+      }
+    }
   }
 
   drawSpearRage(context) {
