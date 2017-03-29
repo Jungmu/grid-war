@@ -14,6 +14,8 @@ export class WeaponComponent implements OnInit {
   }
   weaponByClick(weapon: string) {
     AppComponent.player.setWeapon(weapon);
+    AppComponent.showMoveRange = true;
+    AppComponent.showAttackRange = false;
     AppComponent.showGrid = true;
   }
 }

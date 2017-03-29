@@ -6,8 +6,8 @@ import { CharacterComponent } from './character/character.component';
 import { Character } from './character/character';
 
 import { WeaponComponent } from './weapon/weapon.component';
-import { MoveComponent } from './move/move.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
+import { MoverangeComponent } from './moverange/moverange.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,8 @@ import { AttackrangeComponent } from './attackrange/attackrange.component';
 })
 export class AppComponent implements AfterViewInit {
   static showGrid: boolean = false;
+  static showMoveRange: boolean = false;
+  static showAttackRange: boolean = false;
   static playerPosition: [number, number] = [4, 3];
   static enemyPosition: [number, number] = [1, 2];
   static player: Character = new Character(AppComponent.playerPosition);  
@@ -26,6 +28,7 @@ export class AppComponent implements AfterViewInit {
   gridComponent:GridComponent = new GridComponent;
 
   attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
+  moverangeComponent: MoverangeComponent = new MoverangeComponent;
   characterComponent: CharacterComponent = new CharacterComponent;
 
   @ViewChild("myCanvas") myCanvas;
@@ -56,8 +59,12 @@ export class AppComponent implements AfterViewInit {
   rander() {
     if (AppComponent.showGrid) {
       this.gridComponent.drawMap(AppComponent.gridLineCount, this.context);
-      this.attackrangeComponent.drawRange(this.context, AppComponent.gridLineCount,AppComponent.player.weapon);
-
+    }
+    if (AppComponent.showMoveRange) {
+      this.moverangeComponent.drawMoveRage(this.context);
+    }
+    if (AppComponent.showAttackRange) {
+      this.attackrangeComponent.drawRange(this.context, AppComponent.gridLineCount,AppComponent.player.getWeapon());
     }
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, this.context);
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, this.context);

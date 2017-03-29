@@ -9,9 +9,9 @@ import { CharacterComponent } from './character/character.component';
 
 import { RoutingModule }     from './routing/routing.module';
 import { WeaponComponent } from './weapon/weapon.component';
-import { MoveComponent } from './move/move.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
 import { TouchscreenComponent } from './touchscreen/touchscreen.component';
+import { MoverangeComponent } from './moverange/moverange.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +19,9 @@ import { TouchscreenComponent } from './touchscreen/touchscreen.component';
     GridComponent,
     CharacterComponent,
     WeaponComponent,
-    MoveComponent,
     AttackrangeComponent,
-    TouchscreenComponent
+    TouchscreenComponent,
+    MoverangeComponent
   ],
   imports: [
     BrowserModule,

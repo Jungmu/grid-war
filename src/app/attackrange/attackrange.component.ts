@@ -8,7 +8,7 @@ import { AppComponent } from '../app.component';
 })
 export class AttackrangeComponent implements OnInit {
 
-  fillColor = "rgba(255, 255, 255, 0.5)";
+  fillColor = "rgba(255, 100, 100, 0.5)";
   nowPosition: [number, number];
   offset: number = 0.1;
   line: number;
@@ -26,7 +26,7 @@ export class AttackrangeComponent implements OnInit {
     this.gridOffset = this.canvasWidth * this.offset;
     this.gridFullWidth = this.canvasWidth * (1 - this.offset * 2);
     this.gridWidth = this.gridFullWidth / this.line;
-    this.nowPosition = [AppComponent.player.position[0] - 1, AppComponent.player.position[1] - 1];
+    this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
 
     switch (weapon) {
       case "sword":
