@@ -71,23 +71,14 @@ export class AttackrangeComponent implements OnInit {
 
   drawSpearRage(context) {
     let fillStartPoint: [number, number];
-
-    fillStartPoint = [(this.nowPosition[1] + 2) * this.gridWidth + this.gridOffset, (this.nowPosition[0]) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] + 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1]) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + 2) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] - 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] - 2) * this.gridWidth + this.gridOffset, (this.nowPosition[0]) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] - 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0] - 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1]) * this.gridWidth + this.gridOffset, (this.nowPosition[0] - 2) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
-    fillStartPoint = [(this.nowPosition[1] + 1) * this.gridWidth + this.gridOffset, (this.nowPosition[0] - 1) * this.gridWidth + this.gridOffset];
-    this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
+    for (let i = -2; i <= 2; ++i) {
+      for (let j = -2; j <= 2; ++j) {
+        if (Math.abs(i - j) == 2 || (Math.abs(i) == 1 && Math.abs(j) == 1)) {
+          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
+          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
+        }
+      }
+    }    
   }
 
   fillRectIfInGrid(context, fillStartPoint: [number, number], gridWidth: number) {
@@ -95,7 +86,7 @@ export class AttackrangeComponent implements OnInit {
     ctx.fillStyle = this.fillColor;
     if (fillStartPoint[0] < this.gridOffset || fillStartPoint[1] < this.gridOffset || fillStartPoint[0] > this.gridFullWidth || fillStartPoint[1] > this.gridFullWidth) {
       // do nothing
-    }else{
+    } else {
       ctx.fillRect(fillStartPoint[0], fillStartPoint[1], this.gridWidth, this.gridWidth);
     }
   }
