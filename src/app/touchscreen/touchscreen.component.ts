@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
+import { AttackrangeComponent } from '../attackrange/attackrange.component';
 
 @Component({
   selector: 'app-touchscreen',
@@ -10,9 +11,10 @@ export class TouchscreenComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-  
+  ngOnInit() {  }
+
+  attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
+
   private event: MouseEvent;
   private clientX = 0;
   private clientY = 0;
@@ -59,6 +61,9 @@ export class TouchscreenComponent implements OnInit {
     let nowPosition = this.getPosition();
     let enemyPosition = AppComponent.enemy.getPosition();
 
-    
+    let attackarr = new  Array<[number,number]>();
+    attackarr = this.attackrangeComponent.getWeaponRange(AppComponent.player.getWeapon());
+    console.log("여기"+attackarr);
+
   }
 }

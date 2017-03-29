@@ -19,72 +19,90 @@ export class AttackrangeComponent implements OnInit {
 
   constructor() { }
   ngOnInit() { }
-
-  drawRange(context, line: number, weapon: string) {
-    this.line = line;
+  
+  init() {
+    this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
     this.canvasWidth = document.getElementById("map").offsetWidth;
     this.gridOffset = this.canvasWidth * this.offset;
     this.gridFullWidth = this.canvasWidth * (1 - this.offset * 2);
-    this.gridWidth = this.gridFullWidth / this.line;
-    this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
+    this.gridWidth = this.gridFullWidth / AppComponent.gridLineCount;
+  }
+
+  drawRange(context, line: number, weapon: string) {
+    this.init();
 
     switch (weapon) {
       case "sword":
-        this.drawSwordRage(context);
+        this.fillRectIfInGrid(context, this.getSwordRage(), this.gridWidth);
         break;
       case "spear":
-        this.drawSpearRage(context);
+        this.fillRectIfInGrid(context, this.getSpearRage(), this.gridWidth);
         break;
       case "arrow":
-        this.drawArrowRage(context);
+        this.fillRectIfInGrid(context, this.getArrowRage(), this.gridWidth);
         break;
     }
   }
 
-  drawArrowRage(context) {
-    let fillStartPoint: [number, number];
+  getWeaponRange(weapon:string) : Array<[number,number]>{
+    this.init();
+    switch (weapon) {
+      case "sword":
+      console.log(this.getSwordRage());
+        return this.getSwordRage();
+      case "spear":
+        return this.getSpearRage();
+      case "arrow":
+        return this.getArrowRage();
+    }
+  }
+  
+  getArrowRage() {    
+    let rangeArr = new Array<[number,number]>();
     for (let i = -2; i <= 2; i++) {
       for (let j = -2; j <= 2; j++) {
         if (j == -2 || j == 2 || i == -2 || i == 2) {
-          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
-          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
+          rangeArr.push([(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset]);
         }
       }
     }
+    return rangeArr;
   }
 
-  drawSwordRage(context) {
-    let fillStartPoint: [number, number];
-
+  getSwordRage() {
+    let rangeArr = new Array<[number,number]>();
     for(let i = -1 ; i <= 1 ; ++i){
       for(let j = -1 ; j <= 1 ;++j){
         if( -i != j && i != j ){
-          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
-          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);    
+          rangeArr.push([(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset]);    
         }           
       }
     }
+    return rangeArr;
   }
 
-  drawSpearRage(context) {
-    let fillStartPoint: [number, number];
+  getSpearRage() {
+    let rangeArr = new Array<[number,number]>();
     for (let i = -2; i <= 2; ++i) {
       for (let j = -2; j <= 2; ++j) {
         if (Math.abs(i - j) == 2 || (Math.abs(i) == 1 && Math.abs(j) == 1)) {
-          fillStartPoint = [(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset];
-          this.fillRectIfInGrid(context, fillStartPoint, this.gridWidth);
+          rangeArr.push([(this.nowPosition[1] + i) * this.gridWidth + this.gridOffset, (this.nowPosition[0] + j) * this.gridWidth + this.gridOffset]);
         }
       }
-    }    
+    }
+    return rangeArr;
   }
 
-  fillRectIfInGrid(context, fillStartPoint: [number, number], gridWidth: number) {
+  fillRectIfInGrid(context, rangeArr, gridWidth: number) {
     let ctx = context;
     ctx.fillStyle = this.fillColor;
-    if (fillStartPoint[0] < this.gridOffset || fillStartPoint[1] < this.gridOffset || fillStartPoint[0] > this.gridFullWidth || fillStartPoint[1] > this.gridFullWidth) {
-      // do nothing
-    } else {
-      ctx.fillRect(fillStartPoint[0], fillStartPoint[1], this.gridWidth, this.gridWidth);
+    for(let i=0; i<rangeArr.length; i++) {
+      let fillStartPoint = rangeArr[i];
+      if (fillStartPoint[0] < this.gridOffset || fillStartPoint[1] < this.gridOffset || fillStartPoint[0] > this.gridFullWidth || fillStartPoint[1] > this.gridFullWidth) {
+        // do nothing
+      } else {
+        ctx.fillRect(fillStartPoint[0], fillStartPoint[1], this.gridWidth, this.gridWidth);
+      }
     }
   }
 
