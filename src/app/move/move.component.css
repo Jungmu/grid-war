@@ -1,0 +1,19 @@
+#up-btn{
+    transform: rotate(270deg);
+}
+#down-btn{
+    transform: rotate(90deg);
+}
+#left-btn{
+    transform: rotate(180deg);
+}
+#right-btn{
+    transform: rotate(0deg);
+}
+.move-btn{
+    width: 30%;
+    height: auto;
+}
+.hidden-block{
+    visibility : hidden;
+}
