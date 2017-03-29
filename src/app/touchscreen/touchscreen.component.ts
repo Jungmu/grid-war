@@ -33,6 +33,7 @@ export class TouchscreenComponent implements OnInit {
     let gridFullWidth:number = canvasWidth*(1-offset*2);
     
     AppComponent.showGrid = false;
-    console.log("X: "+this.clientX+"  Y: "+this.clientY);
+    
+    console.log("layoutX: "+this.event.offsetX+"  layoutY: "+this.event.offsetY);
   }
 }
