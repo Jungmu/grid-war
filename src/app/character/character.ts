@@ -1,3 +1,5 @@
+import { AppComponent } from '../app.component';
+
 export class Character {
   position: [number, number];
   hp: number;
@@ -11,5 +13,8 @@ export class Character {
   
     setWeapon(weapon: string) {
       this.weapon = weapon;
+    }
+    setPosition(position: [number, number]) {
+      this.position = position;
     }
 }

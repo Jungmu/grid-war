@@ -13,17 +13,20 @@ export class MoveComponent implements OnInit {
   ngOnInit() {
   }
 
-  setPosition(position: [number, number]) {
-    let beforePosition = AppComponent.player.position;
+  moveByClick(position:[number, number]) {
+    this.positionChange(AppComponent.player, position);
+  }
+
+  positionChange(myCharacter, position:[number, number]) {
+    let beforePosition = myCharacter.position;
     if (beforePosition[0] + position[0] <= 0 || beforePosition[1] + position[1] <= 0 || beforePosition[0] + position[0] > AppComponent.gridLineCount || beforePosition[1] + position[1] > AppComponent.gridLineCount) {
       console.log("can't move there");
       console.log(beforePosition[0] + position[0]);
       console.log(beforePosition[1] + position[1]);
     }
     else {
-      AppComponent.player.position = [beforePosition[0] + position[0], beforePosition[1] + position[1]];
+      myCharacter.setPosition([beforePosition[0] + position[0], beforePosition[1] + position[1]]);
     }
-
   }
 
 }
