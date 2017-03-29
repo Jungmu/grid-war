@@ -9,7 +9,7 @@ export class GridComponent {
   
   drawMap(line: number,context) {
     let ctx = context;
-    let offset = 0.1;
+    let offset:number = 0.1;
     let canvasWidth = document.getElementById("map").offsetWidth;
     let gridOffset:number = canvasWidth*offset;
     let gridFullWidth:number = canvasWidth*(1-offset*2);
