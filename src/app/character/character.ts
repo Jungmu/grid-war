@@ -27,13 +27,20 @@ export class Character {
       return this.position;
     }
 
-    setHp(damage: number) {
-      this.hp = damage;
+    setHp(hp: number) {
+      this.hp = hp;
     }
 
     getHp() {
       return this.hp;
     }
 
+    decrimentHP(damage: number) {
+      this.hp -= damage;
+    }
+
+    incrementHP(damage: number) {
+      this.hp += damage;
+    }
 
 }

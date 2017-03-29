@@ -19,6 +19,12 @@ export class TouchscreenComponent implements OnInit {
   private clientX = 0;
   private clientY = 0;
 
+  offset:number = 0.1;
+  canvasWidth = document.getElementById("map").offsetWidth;
+  gridOffset:number = this.canvasWidth*this.offset;
+  gridFullWidth:number = this.canvasWidth*(1-this.offset*2);
+  gridWidth:number = this.gridFullWidth / AppComponent.gridLineCount;
+
   private onEvent(event: MouseEvent): void {
       this.event = event;
   }
@@ -29,15 +35,10 @@ export class TouchscreenComponent implements OnInit {
   }
 
   getPosition() {
-    let offset:number = 0.1;
-    let canvasWidth = document.getElementById("map").offsetWidth;
-    let gridOffset:number = canvasWidth*offset;
-    let gridFullWidth:number = canvasWidth*(1-offset*2);
-    let gridWidth:number = gridFullWidth / AppComponent.gridLineCount;
 
     // AppComponent.showGrid = false;
     
-    let afterPosition:[number,number] = [parseInt(((this.event.offsetY-gridOffset)/gridWidth+1).toString()), parseInt(((this.event.offsetX-gridOffset)/gridWidth+1).toString())];    
+    let afterPosition:[number,number] = [parseInt(((this.event.offsetY-this.gridOffset)/this.gridWidth+1).toString()), parseInt(((this.event.offsetX-this.gridOffset)/this.gridWidth+1).toString())];    
     return afterPosition;
   }
 
@@ -61,9 +62,21 @@ export class TouchscreenComponent implements OnInit {
     let nowPosition = this.getPosition();
     let enemyPosition = AppComponent.enemy.getPosition();
 
-    let attackarr = new  Array<[number,number]>();
-    attackarr = this.attackrangeComponent.getWeaponRange(AppComponent.player.getWeapon());
-    console.log("여기"+attackarr);
+    let attackarr = new Array<[number, number]>();
 
+    attackarr = this.attackrangeComponent.getWeaponRange(AppComponent.player.getWeapon());
+    
+    attackarr.forEach(element => {
+      if( ( nowPosition[0] == parseInt((element[1]/this.gridWidth+1).toString()) ) && ( nowPosition[1] == parseInt((element[0]/this.gridWidth+1).toString()) ) ) {
+        if(enemyPosition[0]==nowPosition[0] && enemyPosition[1]==nowPosition[1]) {
+          AppComponent.enemy.decrimentHP(1);
+          AppComponent.showAttackRange = false;
+          //턴넘김 설정
+        } else {
+          AppComponent.showMoveRange = false;
+          AppComponent.showAttackRange = false;
+        }
+      }
+    });
   }
 }

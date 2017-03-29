@@ -44,11 +44,10 @@ export class AttackrangeComponent implements OnInit {
     }
   }
 
-  getWeaponRange(weapon:string) : Array<[number,number]>{
+  getWeaponRange(weapon:string) : Array<[number,number]> {
     this.init();
     switch (weapon) {
       case "sword":
-      console.log(this.getSwordRage());
         return this.getSwordRage();
       case "spear":
         return this.getSpearRage();
@@ -69,7 +68,7 @@ export class AttackrangeComponent implements OnInit {
     return rangeArr;
   }
 
-  getSwordRage() {
+  getSwordRage() : Array<[number,number]> {
     let rangeArr = new Array<[number,number]>();
     for(let i = -1 ; i <= 1 ; ++i){
       for(let j = -1 ; j <= 1 ;++j){
