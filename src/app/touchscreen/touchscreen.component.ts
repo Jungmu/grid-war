@@ -59,5 +59,6 @@ export class TouchscreenComponent implements OnInit {
     let nowPosition = this.getPosition();
     let enemyPosition = AppComponent.enemy.getPosition();
 
+    
   }
 }

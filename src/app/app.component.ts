@@ -24,6 +24,9 @@ export class AppComponent implements AfterViewInit {
   static enemy: Character = new Character(AppComponent.enemyPosition);
   static gridLineCount: number = 4;
 
+  playerHp;
+  enemyHp;
+
   context: CanvasRenderingContext2D;
   gridComponent:GridComponent = new GridComponent;
 
@@ -47,6 +50,8 @@ export class AppComponent implements AfterViewInit {
       this.canvasResizing();
       this.rander();
       this.tick();
+      this.playerHp = AppComponent.player.getHp();
+      this.enemyHp = AppComponent.enemy.getHp();
     });
   }
 
@@ -68,6 +73,7 @@ export class AppComponent implements AfterViewInit {
     }
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, this.context);
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, this.context);
+
   }
   clicked() {
     AppComponent.showGrid = true;
@@ -75,4 +81,5 @@ export class AppComponent implements AfterViewInit {
       AppComponent.showGrid = false;
     }, 2500); 
   }
+
 }
