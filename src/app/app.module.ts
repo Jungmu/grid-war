@@ -11,6 +11,7 @@ import { RoutingModule }     from './routing/routing.module';
 import { WeaponComponent } from './weapon/weapon.component';
 import { MoveComponent } from './move/move.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
+import { TouchscreenComponent } from './touchscreen/touchscreen.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AttackrangeComponent } from './attackrange/attackrange.component';
     CharacterComponent,
     WeaponComponent,
     MoveComponent,
-    AttackrangeComponent
+    AttackrangeComponent,
+    TouchscreenComponent
   ],
   imports: [
     BrowserModule,
