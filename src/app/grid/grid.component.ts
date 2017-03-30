@@ -29,7 +29,7 @@ export class GridComponent {
       return true;
     }
   }
-  isInGridByGridPosition(gridPosition){
+  isInGridByGridPosition(gridPosition): boolean{
       this.gridInfo = this.calcGridSize();
      if (gridPosition[0] < 1 || gridPosition[1] < 1 
      || gridPosition[0] > this.gridInfo.gridLineCount      
