@@ -60,13 +60,15 @@ export class AppComponent implements AfterViewInit {
 
   rander(): void {
     if (AppComponent.playerState == playerState.wait) {
-      this.gridComponent.drawMap(this.context);
+      
     }
     if (AppComponent.playerState == playerState.move) {
       this.moverangeComponent.drawMoveRage(this.context);
+      this.gridComponent.drawMap(this.context);
     }
     if (AppComponent.playerState == playerState.attack) {
       this.attackrangeComponent.drawRange(this.context, AppComponent.player.getWeapon());
+      this.gridComponent.drawMap(this.context);
     }
     this.characterComponent.drawCharacter(AppComponent.player, this.context);
     this.characterComponent.drawCharacter(AppComponent.enemy, this.context);
