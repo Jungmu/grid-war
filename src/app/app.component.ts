@@ -18,7 +18,7 @@ import { MoverangeComponent } from './moverange/moverange.component';
 })
 export class AppComponent implements AfterViewInit {
   static playerState: number = playerState.wait;
-  static gameState: number = gameState.begine;
+  static gameState: number = gameState.playerTurn;
   static playerPosition: [number, number] = [3, 4];
   static enemyPosition: [number, number] = [2, 1];
   static player: Character = new Character(AppComponent.playerPosition);
@@ -59,6 +59,22 @@ export class AppComponent implements AfterViewInit {
   }
 
   rander(): void {
+    if (AppComponent.gameState == gameState.playerTurn) {
+      this.randerRange();
+    } else if (AppComponent.gameState == gameState.enemyTurn) {
+      // do somthing
+    }
+    if (AppComponent.gameState == gameState.begine) {
+      // 시작 버튼을 만들던지 해야할듯.      
+    } else {
+      console.log("error!! - " + "AppComponent.gameState : " + AppComponent.gameState);
+    }
+
+    this.characterComponent.drawCharacter(AppComponent.player, this.context);
+    this.characterComponent.drawCharacter(AppComponent.enemy, this.context);
+  }
+
+  private randerRange() {
     if (AppComponent.playerState == playerState.wait) {
       
     }
@@ -70,8 +86,9 @@ export class AppComponent implements AfterViewInit {
       this.attackrangeComponent.drawRange(this.context, AppComponent.player.getWeapon());
       this.gridComponent.drawMap(this.context);
     }
-    this.characterComponent.drawCharacter(AppComponent.player, this.context);
-    this.characterComponent.drawCharacter(AppComponent.enemy, this.context);
+  }
 
+  getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 }
