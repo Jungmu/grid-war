@@ -13,7 +13,7 @@ http.createServer(function (req, res) {
 
     var path = url.parse(req.url).pathname;
 
-    if (path == 'restart') {
+    if (path == '/restart') {
         var deploySh = spawn('sh', ['restart.sh']);
 
       deploySh.stdout.on('data', function(data){
