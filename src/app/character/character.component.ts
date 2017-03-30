@@ -8,16 +8,16 @@ import { GridComponent } from '../grid/grid.component';
   templateUrl: './character.component.html'
 })
 export class CharacterComponent {
-  gridComponent:GridComponent = new GridComponent;
+  gridComponent: GridComponent = new GridComponent;
 
-  drawCharacter(character:Character,context) {
-    let img = <HTMLImageElement>document.getElementById(character.getWeapon());
+  drawCharacter(character: Character, context): void {
+    let img: HTMLImageElement = <HTMLImageElement>document.getElementById(character.getWeapon());
     let ctx = context;
-    let gridInfo = this.gridComponent.calcGridSize();
+    let gridInfo: GridInfo = this.gridComponent.calcGridSize();
 
-    let x = (character.getPosition()[1]-1)*gridInfo.gridWidth;
-    let y = (character.getPosition()[0]-1)*gridInfo.gridWidth;
-    ctx.drawImage(img, x+gridInfo.gridOffset, y+gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
+    let x: number = (character.getPosition()[0] - 1) * gridInfo.gridWidth;
+    let y: number = (character.getPosition()[1] - 1) * gridInfo.gridWidth;
+    ctx.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
   }
 
 }

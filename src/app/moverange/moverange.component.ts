@@ -10,25 +10,25 @@ import { GridComponent } from '../grid/grid.component';
 })
 export class MoverangeComponent implements OnInit {
 
-  gridComponent:GridComponent = new GridComponent;
+  gridComponent: GridComponent = new GridComponent;
   constructor() { }
 
-  ngOnInit() {  }
+  ngOnInit() { }
 
-  drawMoveRage(context) {
+  drawMoveRage(context): void {
     let nowPosition: [number, number] = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
     let gridInfo = this.gridComponent.calcGridSize();
     let fillStartPoint: [number, number];
 
-    for(let i = -1 ; i <= 1 ; ++i){
-      for(let j = -1 ; j <= 1 ;++j){
-        if( (-i!=j && i!=j) || (i==0 && j==0) ){
-          fillStartPoint = [(nowPosition[1] + i) * gridInfo.gridWidth + gridInfo.gridOffset, (nowPosition[0] + j) * gridInfo.gridWidth + gridInfo.gridOffset];
+    for (let i = -1; i <= 1; ++i) {
+      for (let j = -1; j <= 1; ++j) {
+        if ((-i != j && i != j) || (i == 0 && j == 0)) {
+          fillStartPoint = [(nowPosition[0] + i) * gridInfo.gridWidth + gridInfo.gridOffset, (nowPosition[1] + j) * gridInfo.gridWidth + gridInfo.gridOffset];
           context.fillStyle = "rgba(255, 255, 255, 0.5)";
           if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
           }
-        }           
+        }
       }
     }
 

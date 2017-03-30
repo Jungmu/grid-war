@@ -5,7 +5,7 @@ import { AfterViewInit } from "@angular/core";
 import { GridComponent } from './grid/grid.component';
 import { CharacterComponent } from './character/character.component';
 import { Character } from './character/character';
-import { playerState,gameState } from './const';
+import { playerState, gameState } from './const';
 import { GridInfo } from './grid/grid.info';
 import { WeaponComponent } from './weapon/weapon.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
@@ -17,18 +17,18 @@ import { MoverangeComponent } from './moverange/moverange.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  static playerState:number = playerState.wait;
+  static playerState: number = playerState.wait;
   static gameState: number = gameState.begine;
-  static playerPosition: [number, number] = [4, 3];
-  static enemyPosition: [number, number] = [1, 2];
-  static player: Character = new Character(AppComponent.playerPosition);  
+  static playerPosition: [number, number] = [3, 4];
+  static enemyPosition: [number, number] = [2, 1];
+  static player: Character = new Character(AppComponent.playerPosition);
   static enemy: Character = new Character(AppComponent.enemyPosition);
-  
-  playerHp;
-  enemyHp;
+
+  playerHp: number;
+  enemyHp: number;
 
   context: CanvasRenderingContext2D;
-  gridComponent:GridComponent = new GridComponent;
+  gridComponent: GridComponent = new GridComponent;
 
   attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
   moverangeComponent: MoverangeComponent = new MoverangeComponent;
@@ -36,13 +36,13 @@ export class AppComponent implements AfterViewInit {
 
   @ViewChild("myCanvas") myCanvas;
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     let canvas = this.myCanvas.nativeElement;
-    this.context = canvas.getContext("2d");    
+    this.context = canvas.getContext("2d");
     AppComponent.player.setWeapon("none");
     this.tick();
   }
-  tick() {
+  tick(): void {
     requestAnimationFrame(() => {
       this.canvasResizing();
       this.rander();
@@ -52,13 +52,13 @@ export class AppComponent implements AfterViewInit {
     });
   }
 
-  canvasResizing() {
+  canvasResizing(): void {
     let canvas = this.myCanvas.nativeElement;
     canvas.width = document.getElementById("map").offsetWidth;
     canvas.height = canvas.width;
   }
 
-  rander() {
+  rander(): void {
     if (AppComponent.playerState == playerState.wait) {
       this.gridComponent.drawMap(this.context);
     }
@@ -66,7 +66,7 @@ export class AppComponent implements AfterViewInit {
       this.moverangeComponent.drawMoveRage(this.context);
     }
     if (AppComponent.playerState == playerState.attack) {
-      this.attackrangeComponent.drawRange(this.context,AppComponent.player.getWeapon());
+      this.attackrangeComponent.drawRange(this.context, AppComponent.player.getWeapon());
     }
     this.characterComponent.drawCharacter(AppComponent.player, this.context);
     this.characterComponent.drawCharacter(AppComponent.enemy, this.context);

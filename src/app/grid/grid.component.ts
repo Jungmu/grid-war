@@ -7,18 +7,17 @@ import { GridInfo } from './grid.info';
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent {
-  gridInfo;
+  gridInfo: GridInfo = new GridInfo;
 
   calcGridSize(): GridInfo {
-    let gridInfo: GridInfo = new GridInfo
-    gridInfo.canvasWidth = document.getElementById("map").offsetWidth;
-    gridInfo.gridOffset = gridInfo.canvasWidth * gridInfo.offset;
-    gridInfo.gridFullWidth = gridInfo.canvasWidth * (1 - gridInfo.offset * 2);
-    gridInfo.gridWidth = gridInfo.gridFullWidth / gridInfo.gridLineCount;
-    return gridInfo;
+    this.gridInfo.canvasWidth = document.getElementById("map").offsetWidth;
+    this.gridInfo.gridOffset = this.gridInfo.canvasWidth * this.gridInfo.offset;
+    this.gridInfo.gridFullWidth = this.gridInfo.canvasWidth * (1 - this.gridInfo.offset * 2);
+    this.gridInfo.gridWidth = this.gridInfo.gridFullWidth / this.gridInfo.gridLineCount;
+    return this.gridInfo;
   }
 
-  isInGrid(fillStartPoint) {
+  isInGrid(fillStartPoint): boolean {
     this.gridInfo = this.calcGridSize();
     if (fillStartPoint[0] < this.gridInfo.gridOffset
       || fillStartPoint[1] < this.gridInfo.gridOffset
@@ -31,7 +30,7 @@ export class GridComponent {
     }
   }
 
-  drawMap(context) {
+  drawMap(context): void {
     let ctx = context;
     this.gridInfo = this.calcGridSize();
 

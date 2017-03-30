@@ -18,10 +18,10 @@ export class TouchscreenComponent implements OnInit {
 
   attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
   gridComponent: GridComponent = new GridComponent;
-  gridInfo;
+  gridInfo: GridInfo = new GridInfo;
   private event: MouseEvent;
-  private clientX = 0;
-  private clientY = 0;
+  private clientX: number = 0;
+  private clientY: number = 0;
 
   private onEvent(event: MouseEvent): void {
     this.event = event;
@@ -32,42 +32,38 @@ export class TouchscreenComponent implements OnInit {
     this.clientY = event.clientY;
   }
 
-  private touchScreen() {
+  private touchScreen(): void {
     this.attackEnemy();
     this.movePosition();
   }
 
-  getPosition() {
+  getPosition(): [number, number] {
     this.gridInfo = this.gridComponent.calcGridSize();
-    let position: [number, number] = this.clickPositionToGridPosition();
+    let position: [number, number] = [this.event.offsetX, this.event.offsetY];
     return position;
   }
-
-  movePosition() {
+  movePosition(): void {
     if (AppComponent.playerState != playerState.move) return;
-    let clickPosition = this.getPosition();
-    let beforePosition = AppComponent.player.getPosition();
-    if (clickPosition[0] < 1 || clickPosition[0] > this.gridInfo.gridLineCount || clickPosition[1] < 1 || clickPosition[1] > this.gridInfo.gridLineCount) {
-      console.log("화면밖");
-    } else if (Math.abs(clickPosition[0] - beforePosition[0]) + Math.abs(clickPosition[1] - beforePosition[1]) > 1) {
-      console.log("플레이어주변아님");
-    } else {
-      AppComponent.player.setPosition(clickPosition);
+    let clickPosition: [number, number] = this.getPosition();
+    let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(clickPosition);
+    let beforePosition: [number, number] = AppComponent.player.getPosition();
+    if (this.gridComponent.isInGrid(clickPosition) && this.isPlayerCanMove(clickPositionOnGrid, beforePosition)) {
+      AppComponent.player.setPosition(clickPositionOnGrid);
       AppComponent.playerState = playerState.attack;
     }
   }
 
-  attackEnemy() {
+  attackEnemy(): void {
     if (AppComponent.playerState != playerState.attack) return;
-    let clickPosition = this.getPosition();
-    let enemyPosition = AppComponent.enemy.getPosition();
-    let attackarr = new Array<[number, number]>();
+    let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(this.getPosition());
+    let enemyPosition: [number, number] = AppComponent.enemy.getPosition();
+    let attackarr: Array<[number, number]> = new Array<[number, number]>();
 
     attackarr = this.attackrangeComponent.getWeaponRange(AppComponent.player.getWeapon());
 
     attackarr.forEach(element => {
-      if (this.isClickOnAttacRange(clickPosition, element)) {
-        if (enemyPosition[0] == clickPosition[0] && enemyPosition[1] == clickPosition[1]) {
+      if (this.isClickOnAttacRange(clickPositionOnGrid, element)) {
+        if (enemyPosition[0] == clickPositionOnGrid[0] && enemyPosition[1] == clickPositionOnGrid[1]) {
           AppComponent.enemy.decrimentHP(1);
         }
         AppComponent.playerState = playerState.wait;
@@ -75,22 +71,28 @@ export class TouchscreenComponent implements OnInit {
     });
   }
 
-  private clickPositionToGridPosition(): [number, number] {
+  private isPlayerCanMove(clickPositionOnGrid, nowPosition): boolean {
+    if (Math.abs(clickPositionOnGrid[0] - nowPosition[0]) + Math.abs(clickPositionOnGrid[1] - nowPosition[1]) > 1) {
+      return false
+    } else {
+      return true;
+    }
+  }
+
+  private clickPositionToGridPosition(position: [number, number]): [number, number] {
     this.gridInfo = this.gridComponent.calcGridSize();
     let gridPosition: [number, number];
-    gridPosition = [Math.floor((this.event.offsetY - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)
-                  , Math.floor((this.event.offsetX - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)];
-    
+    gridPosition = [Math.floor((position[0] - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)
+      , Math.floor((position[1] - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)];
     return gridPosition;
   }
 
-  private isClickOnAttacRange(clickPosition: [number, number], attackrange: [number, number]) {
-    if ((clickPosition[0] == Math.floor(attackrange[1] / this.gridInfo.gridWidth + 1))
-      && (clickPosition[1] == Math.floor(attackrange[0] / this.gridInfo.gridWidth + 1))) {
-        return true;
-    }else{
+  private isClickOnAttacRange(clickPosition: [number, number], attackrange: [number, number]): boolean {
+    if ((clickPosition[0] == Math.floor(attackrange[0] / this.gridInfo.gridWidth + 1))
+      && (clickPosition[1] == Math.floor(attackrange[1] / this.gridInfo.gridWidth + 1))) {
+      return true;
+    } else {
       return false;
     }
-
   }
 }

@@ -4,6 +4,6 @@ export class GridInfo {
     canvasWidth: number;
     gridOffset: number;
     gridFullWidth: number;
-    gridWidth: number;    
+    gridWidth: number;
 }
 

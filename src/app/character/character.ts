@@ -3,42 +3,42 @@ export class Character {
   private hp: number;
   private weapon: string;
 
-  constructor(position:[number,number]){
-      this.hp = 10;
-      this.weapon = "none";
-      this.position = position;
+  constructor(position: [number, number]) {
+    this.hp = 10;
+    this.weapon = "none";
+    this.position = position;
   }
-  
-    setWeapon(weapon: string) {
-      this.weapon = weapon;
-    }
-    
-    getWeapon() {
-      return this.weapon;
-    }
 
-    setPosition(position: [number, number]) {
-      this.position = position;
-    }
+  setWeapon(weapon: string): void {
+    this.weapon = weapon;
+  }
 
-    getPosition() {
-      return this.position;
-    }
+  getWeapon(): string {
+    return this.weapon;
+  }
 
-    setHp(hp: number) {
-      this.hp = hp;
-    }
+  setPosition(position: [number, number]): void {
+    this.position = position;
+  }
 
-    getHp() {
-      return this.hp;
-    }
+  getPosition(): [number, number] {
+    return this.position;
+  }
 
-    decrimentHP(damage: number) {
-      this.hp -= damage;
-    }
+  setHp(hp: number): void {
+    this.hp = hp;
+  }
 
-    incrementHP(damage: number) {
-      this.hp += damage;
-    }
+  getHp(): number {
+    return this.hp;
+  }
+
+  decrimentHP(damage: number): void {
+    this.hp -= damage;
+  }
+
+  incrementHP(damage: number): void {
+    this.hp += damage;
+  }
 
 }
