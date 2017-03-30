@@ -44,10 +44,9 @@ export class TouchscreenComponent implements OnInit {
   }
   movePosition(): void {
     if (AppComponent.playerState != playerState.move) return;
-    let clickPosition: [number, number] = this.getPosition();
-    let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(clickPosition);
+    let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(this.getPosition());
     let beforePosition: [number, number] = AppComponent.player.getPosition();
-    if (this.gridComponent.isInGrid(clickPosition) && this.isPlayerCanMove(clickPositionOnGrid, beforePosition)) {
+    if (this.gridComponent.isInGridByGridPosition(clickPositionOnGrid) && this.isPlayerCanMove(clickPositionOnGrid, beforePosition)) {
       AppComponent.player.setPosition(clickPositionOnGrid);
       AppComponent.playerState = playerState.attack;
     }

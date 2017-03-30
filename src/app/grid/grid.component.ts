@@ -29,6 +29,17 @@ export class GridComponent {
       return true;
     }
   }
+  isInGridByGridPosition(gridPosition){
+      this.gridInfo = this.calcGridSize();
+     if (gridPosition[0] < 1 || gridPosition[1] < 1 
+     || gridPosition[0] > this.gridInfo.gridLineCount      
+     || gridPosition[1] > this.gridInfo.gridLineCount) {
+     return false;
+    }
+    else {
+      return true;
+    }
+  }
 
   drawMap(context): void {
     let ctx = context;
