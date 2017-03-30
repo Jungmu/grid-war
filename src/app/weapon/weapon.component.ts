@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
+import { playerState,gameState } from '../const';
 
 @Component({
   selector: 'app-weapon',
@@ -14,8 +15,6 @@ export class WeaponComponent implements OnInit {
   }
   weaponByClick(weapon: string) {
     AppComponent.player.setWeapon(weapon);
-    AppComponent.showMoveRange = true;
-    AppComponent.showAttackRange = false;
-    AppComponent.showGrid = true;
+    AppComponent.playerState = playerState.move;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { AttackrangeComponent } from '../attackrange/attackrange.component';
+import { playerState,gameState } from '../const';
 
 @Component({
   selector: 'app-touchscreen',
@@ -43,22 +44,23 @@ export class TouchscreenComponent implements OnInit {
   }
 
   movePosition() {
-    if(!AppComponent.showMoveRange) return;
+    if(AppComponent.playerState != playerState.move) return;
     let clickPosition = this.getPosition();
     let beforePosition = AppComponent.player.getPosition();
     if (clickPosition[0] < 1 || clickPosition[0] > AppComponent.gridLineCount || clickPosition[1] < 1 || clickPosition[1] > AppComponent.gridLineCount) {
       console.log("화면밖");
     } else if(Math.abs(clickPosition[0]-beforePosition[0]) + Math.abs(clickPosition[1]-beforePosition[1]) > 1) {
       console.log("플레이어주변아님");
+      console.log("clickPosition[0]:"+clickPosition[0]+"beforePosition[0]:"+beforePosition[0]);
+      console.log("clickPosition[0]:"+clickPosition[1]+"beforePosition[0]:"+beforePosition[1]);
     } else {
       AppComponent.player.setPosition(clickPosition);
-      AppComponent.showMoveRange = false;
-      AppComponent.showAttackRange = true;
+      AppComponent.playerState = playerState.attack;
     }
   }
 
   attackEnemy() {
-    if(!AppComponent.showAttackRange) return;
+    if(AppComponent.playerState != playerState.attack) return;
     let clickPosition = this.getPosition();
     let enemyPosition = AppComponent.enemy.getPosition();
 
@@ -69,13 +71,9 @@ export class TouchscreenComponent implements OnInit {
     attackarr.forEach(element => {
       if( ( clickPosition[0] == parseInt((element[1]/this.gridWidth+1).toString()) ) && ( clickPosition[1] == parseInt((element[0]/this.gridWidth+1).toString()) ) ) {
         if(enemyPosition[0]==clickPosition[0] && enemyPosition[1]==clickPosition[1]) {
-          AppComponent.enemy.decrimentHP(1);
-          AppComponent.showAttackRange = false;
-          //턴넘김 설정
-        } else {
-          AppComponent.showMoveRange = false;
-          AppComponent.showAttackRange = false;
-        }
+          AppComponent.enemy.decrimentHP(1);          
+        }           
+        AppComponent.playerState = playerState.wait;        
       }
     });
   }

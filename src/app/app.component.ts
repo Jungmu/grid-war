@@ -4,6 +4,7 @@ import { AfterViewInit } from "@angular/core";
 import { GridComponent } from './grid/grid.component';
 import { CharacterComponent } from './character/character.component';
 import { Character } from './character/character';
+import { playerState,gameState } from './const';
 
 import { WeaponComponent } from './weapon/weapon.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
@@ -15,9 +16,8 @@ import { MoverangeComponent } from './moverange/moverange.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  static showGrid: boolean = false;
-  static showMoveRange: boolean = false;
-  static showAttackRange: boolean = false;
+  static playerState:number = playerState.wait;
+  static gameState: number = gameState.begine;
   static playerPosition: [number, number] = [4, 3];
   static enemyPosition: [number, number] = [1, 2];
   static player: Character = new Character(AppComponent.playerPosition);  
@@ -46,7 +46,6 @@ export class AppComponent implements AfterViewInit {
   }
   tick() {
     requestAnimationFrame(() => {
-      // this.setWeapon();
       this.canvasResizing();
       this.rander();
       this.tick();
@@ -62,24 +61,17 @@ export class AppComponent implements AfterViewInit {
   }
 
   rander() {
-    if (AppComponent.showGrid) {
+    if (AppComponent.playerState == playerState.wait) {
       this.gridComponent.drawMap(AppComponent.gridLineCount, this.context);
     }
-    if (AppComponent.showMoveRange) {
+    if (AppComponent.playerState == playerState.move) {
       this.moverangeComponent.drawMoveRage(this.context);
     }
-    if (AppComponent.showAttackRange) {
+    if (AppComponent.playerState == playerState.attack) {
       this.attackrangeComponent.drawRange(this.context, AppComponent.gridLineCount,AppComponent.player.getWeapon());
     }
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, this.context);
     this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, this.context);
 
   }
-  clicked() {
-    AppComponent.showGrid = true;
-    setTimeout(() => {
-      AppComponent.showGrid = false;
-    }, 2500); 
-  }
-
 }
