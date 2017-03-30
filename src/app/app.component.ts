@@ -5,6 +5,7 @@ import { GridComponent } from './grid/grid.component';
 import { CharacterComponent } from './character/character.component';
 import { Character } from './character/character';
 import { playerState,gameState } from './const';
+import { GridInfo } from './grid/grid.info';
 
 import { WeaponComponent } from './weapon/weapon.component';
 import { AttackrangeComponent } from './attackrange/attackrange.component';
@@ -22,12 +23,13 @@ export class AppComponent implements AfterViewInit {
   static enemyPosition: [number, number] = [1, 2];
   static player: Character = new Character(AppComponent.playerPosition);  
   static enemy: Character = new Character(AppComponent.enemyPosition);
-  static gridLineCount: number = 4;
+
 
   playerHp;
   enemyHp;
 
   context: CanvasRenderingContext2D;
+  gridInfo:GridInfo = new GridInfo;
   gridComponent:GridComponent = new GridComponent;
 
   attackrangeComponent: AttackrangeComponent = new AttackrangeComponent;
@@ -62,16 +64,16 @@ export class AppComponent implements AfterViewInit {
 
   rander() {
     if (AppComponent.playerState == playerState.wait) {
-      this.gridComponent.drawMap(AppComponent.gridLineCount, this.context);
+      this.gridComponent.drawMap(this.gridInfo.gridLineCount, this.context);
     }
     if (AppComponent.playerState == playerState.move) {
       this.moverangeComponent.drawMoveRage(this.context);
     }
     if (AppComponent.playerState == playerState.attack) {
-      this.attackrangeComponent.drawRange(this.context, AppComponent.gridLineCount,AppComponent.player.getWeapon());
+      this.attackrangeComponent.drawRange(this.context, this.gridInfo.gridLineCount,AppComponent.player.getWeapon());
     }
-    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.player, this.context);
-    this.characterComponent.drawCharacter(AppComponent.gridLineCount, AppComponent.enemy, this.context);
+    this.characterComponent.drawCharacter(this.gridInfo.gridLineCount, AppComponent.player, this.context);
+    this.characterComponent.drawCharacter(this.gridInfo.gridLineCount, AppComponent.enemy, this.context);
 
   }
 }

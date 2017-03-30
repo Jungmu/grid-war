@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GridInfo } from './grid.info';
 
 @Component({
   selector: 'app-grid',
@@ -6,36 +7,41 @@ import { Component } from '@angular/core';
   styleUrls: ['./grid.component.css']
 })
 export class GridComponent {
+
+  calcGridSize():GridInfo {
+        let gridInfo:GridInfo = new GridInfo
+        gridInfo.canvasWidth = document.getElementById("map").offsetWidth;
+        gridInfo.gridOffset = gridInfo.canvasWidth * gridInfo.offset;
+        gridInfo.gridFullWidth = gridInfo.canvasWidth * (1 - gridInfo.offset * 2);
+        gridInfo.gridWidth = gridInfo.gridFullWidth / gridInfo.gridLineCount;
+        return gridInfo;
+    }
   
   drawMap(line: number,context) {
     let ctx = context;
-    let offset:number = 0.1;
-    let canvasWidth = document.getElementById("map").offsetWidth;
-    let gridOffset:number = canvasWidth*offset;
-    let gridFullWidth:number = canvasWidth*(1-offset*2);
-    let gridWidth:number = gridFullWidth / line;
+    let gridInfo = this.calcGridSize();
 
     ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
 
     ctx.beginPath();
-    ctx.moveTo(gridOffset, gridOffset);
-    ctx.lineTo(gridOffset, canvasWidth-gridOffset);
-    ctx.lineTo(canvasWidth-gridOffset, canvasWidth-gridOffset);
-    ctx.lineTo(canvasWidth-gridOffset, gridOffset);
+    ctx.moveTo(gridInfo.gridOffset, gridInfo.gridOffset);
+    ctx.lineTo(gridInfo.gridOffset, gridInfo.canvasWidth-gridInfo.gridOffset);
+    ctx.lineTo(gridInfo.canvasWidth-gridInfo.gridOffset, gridInfo.canvasWidth-gridInfo.gridOffset);
+    ctx.lineTo(gridInfo.canvasWidth-gridInfo.gridOffset, gridInfo.gridOffset);
     ctx.closePath();
     ctx.stroke();
 
     for (let i: number = 1; i < line; ++i) {
       ctx.beginPath();
-      ctx.moveTo(gridOffset, gridWidth * i + gridOffset);
-      ctx.lineTo(canvasWidth-gridOffset, gridWidth * i + gridOffset);
+      ctx.moveTo(gridInfo.gridOffset, gridInfo.gridWidth * i + gridInfo.gridOffset);
+      ctx.lineTo(gridInfo.canvasWidth-gridInfo.gridOffset, gridInfo.gridWidth * i + gridInfo.gridOffset);
       ctx.closePath();
       ctx.stroke();
     }
     for (let i: number = 1; i < line; ++i) {
       ctx.beginPath();
-      ctx.moveTo(gridWidth * i + gridOffset, gridOffset);
-      ctx.lineTo(gridWidth * i + gridOffset, canvasWidth-gridOffset);
+      ctx.moveTo(gridInfo.gridWidth * i + gridInfo.gridOffset, gridInfo.gridOffset);
+      ctx.lineTo(gridInfo.gridWidth * i + gridInfo.gridOffset, gridInfo.canvasWidth-gridInfo.gridOffset);
       ctx.closePath();
       ctx.stroke();
     }
