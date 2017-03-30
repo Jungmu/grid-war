@@ -21,10 +21,10 @@ export class TouchscreenComponent implements OnInit {
   private clientY = 0;
 
   offset:number = 0.1;
-  canvasWidth = document.getElementById("map").offsetWidth;
-  gridOffset:number = this.canvasWidth*this.offset;
-  gridFullWidth:number = this.canvasWidth*(1-this.offset*2);
-  gridWidth:number = this.gridFullWidth / AppComponent.gridLineCount;
+  canvasWidth:number;
+  gridOffset:number;
+  gridFullWidth:number;
+  gridWidth:number;
 
   private onEvent(event: MouseEvent): void {
       this.event = event;
@@ -35,10 +35,15 @@ export class TouchscreenComponent implements OnInit {
       this.clientY = event.clientY;
   }
 
-  getPosition() {
+  private calcGridSize(){
+    this.canvasWidth = document.getElementById("map").offsetWidth;
+    this.gridOffset = this.canvasWidth*this.offset;
+    this.gridFullWidth = this.canvasWidth*(1-this.offset*2);
+    this.gridWidth = this.gridFullWidth / AppComponent.gridLineCount;
+  }
 
-    // AppComponent.showGrid = false;
-    
+  getPosition() {  
+    this.calcGridSize();
     let afterPosition:[number,number] = [parseInt(((this.event.offsetY-this.gridOffset)/this.gridWidth+1).toString()), parseInt(((this.event.offsetX-this.gridOffset)/this.gridWidth+1).toString())];    
     return afterPosition;
   }

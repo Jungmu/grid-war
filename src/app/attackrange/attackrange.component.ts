@@ -20,7 +20,7 @@ export class AttackrangeComponent implements OnInit {
   constructor() { }
   ngOnInit() { }
   
-  init() {
+  private init() {
     this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
     this.canvasWidth = document.getElementById("map").offsetWidth;
     this.gridOffset = this.canvasWidth * this.offset;
@@ -56,7 +56,7 @@ export class AttackrangeComponent implements OnInit {
     }
   }
   
-  getArrowRage() {    
+  private getArrowRage() {    
     let rangeArr = new Array<[number,number]>();
     for (let i = -2; i <= 2; i++) {
       for (let j = -2; j <= 2; j++) {
@@ -68,7 +68,7 @@ export class AttackrangeComponent implements OnInit {
     return rangeArr;
   }
 
-  getSwordRage() : Array<[number,number]> {
+  private getSwordRage() : Array<[number,number]> {
     let rangeArr = new Array<[number,number]>();
     for(let i = -1 ; i <= 1 ; ++i){
       for(let j = -1 ; j <= 1 ;++j){
@@ -80,7 +80,7 @@ export class AttackrangeComponent implements OnInit {
     return rangeArr;
   }
 
-  getSpearRage() {
+  private getSpearRage() {
     let rangeArr = new Array<[number,number]>();
     for (let i = -2; i <= 2; ++i) {
       for (let j = -2; j <= 2; ++j) {
@@ -92,7 +92,7 @@ export class AttackrangeComponent implements OnInit {
     return rangeArr;
   }
 
-  fillRectIfInGrid(context, rangeArr, gridWidth: number) {
+  private fillRectIfInGrid(context, rangeArr, gridWidth: number) {
     let ctx = context;
     ctx.fillStyle = this.fillColor;
     for(let i=0; i<rangeArr.length; i++) {
