@@ -32,10 +32,15 @@ export class TouchscreenComponent implements OnInit {
     this.clientY = event.clientY;
   }
 
+  private touchScreen() {
+    this.attackEnemy();
+    this.movePosition();
+  }
+
   getPosition() {
     this.gridInfo = this.gridComponent.calcGridSize();
-    let afterPosition: [number, number] = [parseInt(((this.event.offsetY - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1).toString()), parseInt(((this.event.offsetX -this.gridInfo.gridOffset) /this.gridInfo.gridWidth + 1).toString())];
-    return afterPosition;
+    let position: [number, number] = this.clickPositionToGridPosition();
+    return position;
   }
 
   movePosition() {
@@ -46,8 +51,6 @@ export class TouchscreenComponent implements OnInit {
       console.log("화면밖");
     } else if (Math.abs(clickPosition[0] - beforePosition[0]) + Math.abs(clickPosition[1] - beforePosition[1]) > 1) {
       console.log("플레이어주변아님");
-      console.log("clickPosition[0]:" + clickPosition[0] + "beforePosition[0]:" + beforePosition[0]);
-      console.log("clickPosition[0]:" + clickPosition[1] + "beforePosition[0]:" + beforePosition[1]);
     } else {
       AppComponent.player.setPosition(clickPosition);
       AppComponent.playerState = playerState.attack;
@@ -58,18 +61,36 @@ export class TouchscreenComponent implements OnInit {
     if (AppComponent.playerState != playerState.attack) return;
     let clickPosition = this.getPosition();
     let enemyPosition = AppComponent.enemy.getPosition();
-
     let attackarr = new Array<[number, number]>();
 
     attackarr = this.attackrangeComponent.getWeaponRange(AppComponent.player.getWeapon());
 
     attackarr.forEach(element => {
-      if ((clickPosition[0] == parseInt((element[1] / this.gridInfo.gridWidth + 1).toString())) && (clickPosition[1] == parseInt((element[0] / this.gridInfo.gridWidth + 1).toString()))) {
+      if (this.isClickOnAttacRange(clickPosition, element)) {
         if (enemyPosition[0] == clickPosition[0] && enemyPosition[1] == clickPosition[1]) {
           AppComponent.enemy.decrimentHP(1);
         }
         AppComponent.playerState = playerState.wait;
       }
     });
+  }
+
+  private clickPositionToGridPosition(): [number, number] {
+    this.gridInfo = this.gridComponent.calcGridSize();
+    let gridPosition: [number, number];
+    gridPosition = [Math.floor((this.event.offsetY - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)
+                  , Math.floor((this.event.offsetX - this.gridInfo.gridOffset) / this.gridInfo.gridWidth + 1)];
+    
+    return gridPosition;
+  }
+
+  private isClickOnAttacRange(clickPosition: [number, number], attackrange: [number, number]) {
+    if ((clickPosition[0] == Math.floor(attackrange[1] / this.gridInfo.gridWidth + 1))
+      && (clickPosition[1] == Math.floor(attackrange[0] / this.gridInfo.gridWidth + 1))) {
+        return true;
+    }else{
+      return false;
+    }
+
   }
 }
