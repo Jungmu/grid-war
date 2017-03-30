@@ -16,12 +16,7 @@ export class AttackrangeComponent implements OnInit {
   gridInfo;
 
   constructor() { }
-  ngOnInit() { }
-
-  private init() {
-    this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
-    this.gridInfo = this.gridComponent.calcGridSize();
-  }
+  ngOnInit() { }  
 
   drawRange(context, weapon: string) {
     this.init();
@@ -59,6 +54,11 @@ export class AttackrangeComponent implements OnInit {
         rangeArr.push([0, 0]);
         return rangeArr;
     }
+  }
+
+  private init() {
+    this.nowPosition = [AppComponent.player.getPosition()[0] - 1, AppComponent.player.getPosition()[1] - 1];
+    this.gridInfo = this.gridComponent.calcGridSize();
   }
 
   private getArrowRage() {

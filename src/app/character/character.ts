@@ -1,5 +1,3 @@
-import { AppComponent } from '../app.component';
-
 export class Character {
   private position: [number, number];
   private hp: number;
