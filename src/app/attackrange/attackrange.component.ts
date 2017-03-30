@@ -23,7 +23,7 @@ export class AttackrangeComponent implements OnInit {
     this.gridInfo = this.gridComponent.calcGridSize();
   }
 
-  drawRange(context, line: number, weapon: string) {
+  drawRange(context, weapon: string) {
     this.init();
 
     switch (weapon) {
@@ -86,18 +86,15 @@ export class AttackrangeComponent implements OnInit {
     }
     return rangeArr;
   }
-
   private fillRectIfInGrid(context, rangeArr, gridWidth: number) {
     let ctx = context;
     ctx.fillStyle = this.fillColor;
     for (let i = 0; i < rangeArr.length; i++) {
       let fillStartPoint = rangeArr[i];
-      if (fillStartPoint[0] < this.gridInfo.gridOffset || fillStartPoint[1] < this.gridInfo.gridOffset || fillStartPoint[0] > this.gridInfo.gridFullWidth || fillStartPoint[1] > this.gridInfo.gridFullWidth) {
-        // do nothing
-      } else {
+      if (this.gridComponent.isInGrid(fillStartPoint)) {
         ctx.fillRect(fillStartPoint[0], fillStartPoint[1], this.gridInfo.gridWidth, this.gridInfo.gridWidth);
       }
     }
   }
-
+  
 }

@@ -25,9 +25,7 @@ export class MoverangeComponent implements OnInit {
         if( (-i!=j && i!=j) || (i==0 && j==0) ){
           fillStartPoint = [(nowPosition[1] + i) * gridInfo.gridWidth + gridInfo.gridOffset, (nowPosition[0] + j) * gridInfo.gridWidth + gridInfo.gridOffset];
           context.fillStyle = "rgba(255, 255, 255, 0.5)";
-          if (fillStartPoint[0] < gridInfo.gridOffset || fillStartPoint[1] < gridInfo.gridOffset || fillStartPoint[0] > gridInfo.gridFullWidth || fillStartPoint[1] > gridInfo.gridFullWidth) {
-            // do nothing
-          } else {
+          if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
           }
         }           

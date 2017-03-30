@@ -10,7 +10,7 @@ import { GridComponent } from '../grid/grid.component';
 export class CharacterComponent {
   gridComponent:GridComponent = new GridComponent;
 
-  drawCharacter(line:number,character:Character,context) {
+  drawCharacter(character:Character,context) {
     let img = <HTMLImageElement>document.getElementById(character.getWeapon());
     let ctx = context;
     let gridInfo = this.gridComponent.calcGridSize();
