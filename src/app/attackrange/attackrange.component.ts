@@ -36,6 +36,12 @@ export class AttackrangeComponent implements OnInit {
       case "arrow":
         this.fillRectIfInGrid(context, this.getArrowRage(), this.gridInfo.gridWidth);
         break;
+      case "none":
+        let rangeArr: Array<[number, number]>;
+        rangeArr.push([0, 0]);
+        this.fillRectIfInGrid(context, rangeArr, this.gridInfo.gridWidth);
+        break;
+
     }
   }
 
@@ -48,6 +54,10 @@ export class AttackrangeComponent implements OnInit {
         return this.getSpearRage();
       case "arrow":
         return this.getArrowRage();
+      case "none":
+        let rangeArr: Array<[number, number]>;
+        rangeArr.push([0, 0]);
+        return rangeArr;
     }
   }
 
@@ -96,5 +106,5 @@ export class AttackrangeComponent implements OnInit {
       }
     }
   }
-  
+
 }
