@@ -1,11 +1,12 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CharacterComponent } from '../character/character.component';
-import { GridComponent } from '../grid/grid.component';
+import { ModeComponent } from '../mode/mode.component';
+import { BaseComponent } from '../base/base.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home',  component: CharacterComponent }
+  { path: '', redirectTo: '/mode', pathMatch: 'full' },
+  { path: 'mode',  component: ModeComponent },
+  { path: 'base/:mode',  component: BaseComponent }
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],
