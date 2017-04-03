@@ -2,6 +2,7 @@ import { Weapon } from './weapon';
 import { WEAPONS } from '../service/weapon-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
+import { TouchscreenComponent } from '../touchscreen/touchscreen.component';
 
 class ActionInfo {
     attackPosition: [number, number];
@@ -17,6 +18,8 @@ export class AI {
     private stage: number;
     private actionInfo: ActionInfo = new ActionInfo;
 
+    private checkRange: TouchscreenComponent = new TouchscreenComponent;
+
     getRandomArbitrary(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -28,6 +31,7 @@ export class AI {
 
     movePosition(position): void {
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
+
         this.actionInfo.afterPosition = canMovePosition[this.getRandomArbitrary(0, 5)];
     }
 
@@ -38,19 +42,29 @@ export class AI {
     getActionInfo(): ActionInfo {
         return this.actionInfo;
     }
-    setAfterPosition(position){
-        this.actionInfo.afterPosition = position;
-    }
+
     getAfterPosition() {
         return this.actionInfo.afterPosition;
     }
 
-    setHp(hp: number): void {
-        this.HP = hp;
+    setAfterPosition(position){
+        this.actionInfo.afterPosition = position;
+    }
+
+    getAttackPosition() {
+        return this.actionInfo.attackPosition;
+    }
+
+    setAttackPosition(position) {
+        this.actionInfo.attackPosition = position;
     }
 
     getHp(): number {
         return this.HP;
+    }
+
+    setHp(hp: number): void {
+        this.HP = hp;
     }
 
     decrimentHP(damage: number): void {
@@ -65,6 +79,10 @@ export class AI {
         return this.weapon;
     }
 
+    setWeapon(weapon:Weapon){
+        this.weapon = weapon;
+    }
+    
     getStatus(): PlayerState {
         return this.status;
     }
@@ -80,10 +98,6 @@ export class AI {
     setPosition(position:[number,number]){
         this.position = position;
         this.actionInfo.afterPosition = position;
-    }
-
-    setWeapon(weapon:Weapon){
-        this.weapon = weapon;
     }
 }
 

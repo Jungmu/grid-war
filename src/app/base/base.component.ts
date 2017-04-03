@@ -35,6 +35,9 @@ export class BaseComponent implements AfterViewInit {
 
   weapons: Weapon[];
 
+  playerHp: number;
+  enemyHp: number;
+
   constructor(private route: ActivatedRoute, private weaponService: WeaponService) { }
 
   getWeapons(): void {
@@ -82,6 +85,10 @@ export class BaseComponent implements AfterViewInit {
       this.playGame();
       this.resizeCanvas();
       this.rander();
+
+      this.playerHp = BaseComponent.player.getHp();
+      this.enemyHp = BaseComponent.enemy.getHp();
+
       this.tick();
     });
   }
@@ -90,20 +97,27 @@ export class BaseComponent implements AfterViewInit {
     switch (BaseComponent.gameState) {
       case GameState.playerTurn:
         this.setData(BaseComponent.player);
+
+        // BaseComponent.gameState = GameState.enemyTurn;
         break;
       case GameState.enemyTurn:
         this.setData(BaseComponent.enemy);
+
+        BaseComponent.gameState = GameState.wait
         break;
       case GameState.wait:
         // do render
 
         // 임시로 위치바꿔주기
         BaseComponent.player.setPosition(BaseComponent.player.getAfterPosition());
+        BaseComponent.enemy.setPosition(BaseComponent.enemy.getAfterPosition());
         BaseComponent.gameState = GameState.work;
-        
+
         break;
       case GameState.work:
-        this.calc();
+        this.calc(BaseComponent.player, BaseComponent.enemy);
+        // this.calc(BaseComponent.enemy, BaseComponent.player);
+
         BaseComponent.gameState = GameState.playerTurn;
         break;
       default:
@@ -153,23 +167,14 @@ export class BaseComponent implements AfterViewInit {
 
   }
 
-  calc() {
-    let player = BaseComponent.player;
-    let enemy = BaseComponent.enemy;
-
-    console.log(""+player.getAttackPosition() == enemy.getPosition())
-    if (player.getAttackPosition() == enemy.getPosition()) {
-      enemy.decrimentHP(this.getDamage(player.getWeapon()));
-      alert("적맞음");
+  calc(player, enemy) {
+    if (player.getAttackPosition()[0] == enemy.getPosition()[0]
+      && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
+      enemy.decrimentHP(player.getWeapon().damage);
     }
     // 임시방편 무기초기화 및 선택된무기 초기화
     player.setWeapon(WEAPONS[0]);
     BaseComponent.selectedWeapon = player.getWeapon();
-  }
-
-  getDamage(weapon) {
-    let damage;
-    return damage;
   }
 
   onSelect(weapon: Weapon): void {

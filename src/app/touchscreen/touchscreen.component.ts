@@ -65,7 +65,7 @@ export class TouchscreenComponent implements OnInit {
       if (this.isClickOnAttacRange(clickPositionOnGrid, myAttackRange)) {
         BaseComponent.player.setAttackPosition(clickPositionOnGrid);
         BaseComponent.player.setStatus(PlayerState.chooseWeapon);
-        BaseComponent.gameState = GameState.wait;
+        BaseComponent.gameState = GameState.enemyTurn;
       }
     });
   }
