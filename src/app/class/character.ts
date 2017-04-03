@@ -9,7 +9,7 @@ export class Character {
     private weapon: Weapon = WEAPONS[0];
     private position: [number, number];
     private stage: number;
-    private actionInfo: ActionInfo;
+    private actionInfo: ActionInfo = new ActionInfo;
 
     chooseWeapon(): void {
         this.weapon = BaseComponent.selectedWeapon;
@@ -28,6 +28,12 @@ export class Character {
 
     getActionInfo(): ActionInfo {
         return this.actionInfo;
+    }
+    setAfterPosition(position){
+        this.actionInfo.afterPosition = position;
+    }
+    getAfterPosition() {
+        return this.actionInfo.afterPosition;
     }
 
     setHp(hp: number): void {
@@ -64,6 +70,7 @@ export class Character {
 
     setPosition(position:[number,number]){
         this.position = position;
+        this.actionInfo.afterPosition = position;
     }
 
     setWeapon(weapon:Weapon){

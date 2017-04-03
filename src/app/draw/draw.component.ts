@@ -72,6 +72,10 @@ export class DrawComponent implements OnInit {
     let x: number = (character.getPosition()[0] - 1) * gridInfo.gridWidth;
     let y: number = (character.getPosition()[1] - 1) * gridInfo.gridWidth;
     ctx.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
+
+    let afterX: number = (character.getAfterPosition()[0] - 1) * gridInfo.gridWidth;
+    let afterY: number = (character.getAfterPosition()[1] - 1) * gridInfo.gridWidth;
+    ctx.drawImage(img, afterX + gridInfo.gridOffset, afterY + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
   }
 
 }

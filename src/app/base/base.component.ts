@@ -73,7 +73,7 @@ export class BaseComponent implements AfterViewInit {
     
     BaseComponent.player.setPosition([3, 4]);
     BaseComponent.enemy.setPosition([2, 1]);
-
+    
     this.tick();
   }
 
