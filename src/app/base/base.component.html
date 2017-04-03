@@ -6,6 +6,9 @@
   <div class="status col-lg-3">
     <div>
       웨폰선택
+      <li *ngFor="let weapon of weapons">
+         {{weapon.name}} <span class="badge">{{weapon.damage}}</span>
+      </li>
       <!--<app-weapon></app-weapon>-->
     </div>
     <hr>
@@ -13,6 +16,7 @@
       적체력: {{enemyHp}}
       <hr>
       내체력: {{playerHp}}
+
     </div>
     <hr>
   </div>

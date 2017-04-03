@@ -5,11 +5,16 @@ import { ViewChild } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
 import { GameState } from '../const';
 import { Character } from '../class/character';
+import { AI } from '../class/AI';
+
+import { Weapon } from '../class/weapon';
+import { WeaponService } from '../service/weapon.service';
 
 @Component({
   selector: 'app-base',
   templateUrl: './base.component.html',
-  styleUrls: ['./base.component.css']
+  styleUrls: ['./base.component.css'],
+  providers: [WeaponService]
 })
 
 export class BaseComponent  implements AfterViewInit {
@@ -21,8 +26,13 @@ export class BaseComponent  implements AfterViewInit {
   static player;
   static enemy;
 
-  constructor(private route: ActivatedRoute) {}
+  weapons: Weapon[]; 
 
+  constructor(private route: ActivatedRoute, private weaponService: WeaponService) {}
+
+  getWeapons(): void {
+    this.weaponService.getWeapons().then(weapons => this.weapons = weapons);
+  }
 
   ngAfterViewInit(): void {
     let canvas = this.myCanvas.nativeElement;
@@ -33,18 +43,20 @@ export class BaseComponent  implements AfterViewInit {
        mode = params['mode'];
     });
 
+    this.getWeapons();
+
     switch(mode) {
       case 'singlePlay':
         BaseComponent.player = new Character;
-        // BaseComponent.enemy = new AI;
+        BaseComponent.enemy = new AI;
         break;
       case 'multiPlay':
         BaseComponent.player = new Character;
         BaseComponent.enemy = new Character;
         break;
       case 'AIvsAI':
-        // BaseComponent.player = new AI;
-        // BaseComponent.enemy = new AI;
+        BaseComponent.player = new AI;
+        BaseComponent.enemy = new AI;
         break;
       default:
         //error
