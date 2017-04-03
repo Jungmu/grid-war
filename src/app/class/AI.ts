@@ -29,10 +29,11 @@ export class AI {
         this.weapon = weaponList[this.getRandomArbitrary(0, weaponList.length)];
     }
 
-    movePosition(position): void {
+    movePosition(): void {
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
-
-        this.actionInfo.afterPosition = canMovePosition[this.getRandomArbitrary(0, 5)];
+        let tempPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
+        let afterPosition: [number, number] = [ this.position[0] + tempPosition[0], this.position[1] + tempPosition[1] ];
+        this.actionInfo.afterPosition = afterPosition;
     }
 
     attackEnemy(position): void {
