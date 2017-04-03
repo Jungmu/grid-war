@@ -26,7 +26,7 @@ export class AI {
 
     chooseWeapon(weapon): void {
         let weaponList: Array<Weapon> = WEAPONS;
-        this.weapon = weaponList[this.getRandomArbitrary(0, weaponList.length)];
+        this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
     }
 
     movePosition(): void {
