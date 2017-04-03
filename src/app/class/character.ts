@@ -26,22 +26,33 @@ export class Character {
         //this.actionInfo.attackPosition = position;
     }
 
+
     getActionInfo(): ActionInfo {
         return this.actionInfo;
     }
-    setAfterPosition(position){
-        this.actionInfo.afterPosition = position;
-    }
+
     getAfterPosition() {
         return this.actionInfo.afterPosition;
     }
 
-    setHp(hp: number): void {
-        this.HP = hp;
+    setAfterPosition(position){
+        this.actionInfo.afterPosition = position;
+    }
+
+    getAttackPosition() {
+        return this.actionInfo.attackPosition;
+    }
+
+    setAttackPosition(position) {
+        this.actionInfo.attackPosition = position;
     }
 
     getHp(): number {
         return this.HP;
+    }
+
+    setHp(hp: number): void {
+        this.HP = hp;
     }
 
     decrimentHP(damage: number): void {
@@ -56,6 +67,10 @@ export class Character {
         return this.weapon;
     }
 
+    setWeapon(weapon:Weapon){
+        this.weapon = weapon;
+    }
+    
     getStatus(): PlayerState {
         return this.status;
     }
@@ -73,9 +88,6 @@ export class Character {
         this.actionInfo.afterPosition = position;
     }
 
-    setWeapon(weapon:Weapon){
-        this.weapon = weapon;
-    }
 }
 
 class ActionInfo {

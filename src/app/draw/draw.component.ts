@@ -16,7 +16,22 @@ export class DrawComponent implements OnInit {
 
   ngOnInit() { }
 
-  drawMoveRage(context): void {
+  drawAttackRange(context): void {
+    let nowPosition: [number, number] = [BaseComponent.player.getAfterPosition()[0] - 1, BaseComponent.player.getAfterPosition()[1] - 1];
+    let gridInfo = this.gridComponent.calcGridSize();
+    let fillStartPoint: [number, number];
+
+    BaseComponent.player.getWeapon().range.forEach(element => {
+      fillStartPoint = [(nowPosition[0] + element[0]) * gridInfo.gridWidth + gridInfo.gridOffset,
+       (nowPosition[1] + element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
+      context.fillStyle = "rgba(255, 0, 0, 0.25)";
+      if (this.gridComponent.isInGrid(fillStartPoint)) {
+        context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
+      }
+    });
+  }
+
+  drawMoveRange(context): void {
     let nowPosition: [number, number] = [BaseComponent.player.getPosition()[0] - 1, BaseComponent.player.getPosition()[1] - 1];
     let gridInfo = this.gridComponent.calcGridSize();
     let fillStartPoint: [number, number];
