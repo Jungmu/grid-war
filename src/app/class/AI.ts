@@ -32,6 +32,15 @@ export class AI {
     movePosition(): void {
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
         let tempPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
+        let flag: boolean = true;
+        while(flag) {
+            tempPosition = canMovePosition[this.getRandomArbitrary(0, 5)];
+            console.log('좌표: '+tempPosition)
+            console.log("봇: "+this.checkRange.isPlayerCanMove(tempPosition, this.position));
+            if( this.checkRange.isPlayerCanMove(tempPosition, this.position) ) {
+            }
+            flag = false;
+        }
         let afterPosition: [number, number] = [ this.position[0] + tempPosition[0], this.position[1] + tempPosition[1] ];
         this.actionInfo.afterPosition = afterPosition;
     }

@@ -31,10 +31,10 @@ export class TouchscreenComponent implements OnInit {
   }
 
   private touchScreen(): void {
-    if(BaseComponent.player.getStatus() == PlayerState.movePosition) {
+    if (BaseComponent.player.getStatus() == PlayerState.movePosition) {
       this.movePosition();
     }
-    if(BaseComponent.player.getStatus() == PlayerState.attackEnemy) {
+    if (BaseComponent.player.getStatus() == PlayerState.attackEnemy) {
       this.attackEnemy();
     }
   }
@@ -61,21 +61,13 @@ export class TouchscreenComponent implements OnInit {
     let characterWeapon = BaseComponent.player.getWeapon();
 
     characterWeapon.range.forEach(element => {
-      let myAttackRange: [number, number] = [ nowPlayerPosition[0]+element[0], nowPlayerPosition[1]+element[1] ];
+      let myAttackRange: [number, number] = [nowPlayerPosition[0] + element[0], nowPlayerPosition[1] + element[1]];
       if (this.isClickOnAttacRange(clickPositionOnGrid, myAttackRange)) {
         BaseComponent.player.setAttackPosition(clickPositionOnGrid);
         BaseComponent.player.setStatus(PlayerState.chooseWeapon);
         BaseComponent.gameState = GameState.enemyTurn;
       }
     });
-  }
-
-  private isPlayerCanMove(clickPositionOnGrid, nowPosition): boolean {
-    if (Math.abs(clickPositionOnGrid[0] - nowPosition[0]) + Math.abs(clickPositionOnGrid[1] - nowPosition[1]) > 1) {
-      return false
-    } else {
-      return true;
-    }
   }
 
   private clickPositionToGridPosition(position: [number, number]): [number, number] {
@@ -86,7 +78,15 @@ export class TouchscreenComponent implements OnInit {
     return gridPosition;
   }
 
-  private isClickOnAttacRange(clickPosition: [number, number], attackrange: [number, number]): boolean {
+  isPlayerCanMove(clickPositionOnGrid, nowPosition): boolean {
+    if (Math.abs(clickPositionOnGrid[0] - nowPosition[0]) + Math.abs(clickPositionOnGrid[1] - nowPosition[1]) > 1) {
+      return false
+    } else {
+      return true;
+    }
+  }
+
+  isClickOnAttacRange(clickPosition: [number, number], attackrange: [number, number]): boolean {
     if (clickPosition[0] == attackrange[0] && clickPosition[1] == attackrange[1]) {
       return true;
     } else {
