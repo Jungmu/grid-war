@@ -13,7 +13,7 @@ export class Character {
 
     chooseWeapon(): void {
         this.weapon = BaseComponent.selectedWeapon;
-        if (this.status == PlayerState.chooseWeapon && this.weapon != null) {
+        if (this.status == PlayerState.chooseWeapon && this.weapon != WEAPONS[0]) {
             this.status = PlayerState.movePosition;
         }
     }

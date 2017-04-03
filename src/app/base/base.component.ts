@@ -29,7 +29,7 @@ export class BaseComponent implements AfterViewInit {
   private draw: DrawComponent = new DrawComponent;
 
   static gameState: number = GameState.playerTurn;
-  static selectedWeapon: Weapon;
+  static selectedWeapon: Weapon = WEAPONS[0];
   static player;
   static enemy;
 
@@ -70,7 +70,7 @@ export class BaseComponent implements AfterViewInit {
         //error
         break;
     }
-    BaseComponent.player.setWeapon(WEAPONS[0]);
+    
     BaseComponent.player.setPosition([3, 4]);
     BaseComponent.enemy.setPosition([2, 1]);
 
@@ -115,9 +115,7 @@ export class BaseComponent implements AfterViewInit {
   rander(): void {
     let player = BaseComponent.player;
     let enemy = BaseComponent.enemy;
-    console.log(player);
-    this.draw.drawCharacter(player, this.context);
-    this.draw.drawCharacter(enemy, this.context);
+    
     switch (player.getStatus()) {
       case PlayerState.chooseWeapon:
         break;
@@ -132,13 +130,15 @@ export class BaseComponent implements AfterViewInit {
         console.log("상태 없음");
         break;
     }
+    this.draw.drawCharacter(player, this.context);
+    this.draw.drawCharacter(enemy, this.context);    
   }
 
   randerRange() {
 
   }
 
-  setData(myCharacter) {
+  setData(myCharacter:Character) {
     myCharacter.chooseWeapon();
     myCharacter.movePosition();
     myCharacter.attackEnemy();
