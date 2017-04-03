@@ -39,36 +39,6 @@ export class GridComponent {
     else {
       return true;
     }
-  }
-
-  drawMap(context): void {
-    let ctx = context;
-    this.gridInfo = this.calcGridSize();
-
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-
-    ctx.beginPath();
-    ctx.moveTo(this.gridInfo.gridOffset, this.gridInfo.gridOffset);
-    ctx.lineTo(this.gridInfo.gridOffset, this.gridInfo.canvasWidth - this.gridInfo.gridOffset);
-    ctx.lineTo(this.gridInfo.canvasWidth - this.gridInfo.gridOffset, this.gridInfo.canvasWidth - this.gridInfo.gridOffset);
-    ctx.lineTo(this.gridInfo.canvasWidth - this.gridInfo.gridOffset, this.gridInfo.gridOffset);
-    ctx.closePath();
-    ctx.stroke();
-
-    for (let i: number = 1; i < this.gridInfo.gridLineCount; ++i) {
-      ctx.beginPath();
-      ctx.moveTo(this.gridInfo.gridOffset, this.gridInfo.gridWidth * i + this.gridInfo.gridOffset);
-      ctx.lineTo(this.gridInfo.canvasWidth - this.gridInfo.gridOffset, this.gridInfo.gridWidth * i + this.gridInfo.gridOffset);
-      ctx.closePath();
-      ctx.stroke();
-    }
-    for (let i: number = 1; i < this.gridInfo.gridLineCount; ++i) {
-      ctx.beginPath();
-      ctx.moveTo(this.gridInfo.gridWidth * i + this.gridInfo.gridOffset, this.gridInfo.gridOffset);
-      ctx.lineTo(this.gridInfo.gridWidth * i + this.gridInfo.gridOffset, this.gridInfo.canvasWidth - this.gridInfo.gridOffset);
-      ctx.closePath();
-      ctx.stroke();
-    }
-  }
+  } 
 
 }

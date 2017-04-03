@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AttackrangeComponent } from './attackrange.component';
+import { DrawComponent } from './draw.component';
 
-describe('AttackrangeComponent', () => {
-  let component: AttackrangeComponent;
-  let fixture: ComponentFixture<AttackrangeComponent>;
+describe('DrawComponent', () => {
+  let component: DrawComponent;
+  let fixture: ComponentFixture<DrawComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AttackrangeComponent ]
+      declarations: [ DrawComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AttackrangeComponent);
+    fixture = TestBed.createComponent(DrawComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

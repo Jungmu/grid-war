@@ -9,12 +9,14 @@ import { RoutingModule } from './routing/routing.module';
 
 import { BaseComponent } from './base/base.component';
 import { ModeComponent } from './mode/mode.component';
+import { DrawComponent } from './draw/draw.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BaseComponent,
-    ModeComponent
+    ModeComponent,
+    DrawComponent
   ],
   imports: [
     BrowserModule,

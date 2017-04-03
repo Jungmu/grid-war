@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { ViewChild } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
-import { GameState } from '../const';
+
+import { GridComponent } from '../grid/grid.component';
+import { DrawComponent } from '../draw/draw.component';
+
+import { GameState, PlayerState } from '../const';
 import { Character } from '../class/character';
 import { AI } from '../class/AI';
 
 import { Weapon } from '../class/weapon';
+import { WEAPONS } from '../service/weapon-data';
 import { WeaponService } from '../service/weapon.service';
 
 @Component({
@@ -17,18 +21,21 @@ import { WeaponService } from '../service/weapon.service';
   providers: [WeaponService]
 })
 
-export class BaseComponent  implements AfterViewInit {
+export class BaseComponent implements AfterViewInit {
   @ViewChild("myCanvas") myCanvas;
 
   private context: CanvasRenderingContext2D;
+  private grid: GridComponent = new GridComponent;
+  private draw: DrawComponent = new DrawComponent;
 
   static gameState: number = GameState.playerTurn;
+  static selectedWeapon: Weapon;
   static player;
   static enemy;
 
-  weapons: Weapon[]; 
+  weapons: Weapon[];
 
-  constructor(private route: ActivatedRoute, private weaponService: WeaponService) {}
+  constructor(private route: ActivatedRoute, private weaponService: WeaponService) { }
 
   getWeapons(): void {
     this.weaponService.getWeapons().then(weapons => this.weapons = weapons);
@@ -40,14 +47,15 @@ export class BaseComponent  implements AfterViewInit {
 
     let mode: string;
     this.route.params.subscribe(params => {
-       mode = params['mode'];
+      mode = params['mode'];
     });
 
     this.getWeapons();
 
-    switch(mode) {
+    switch (mode) {
       case 'singlePlay':
         BaseComponent.player = new Character;
+        BaseComponent.player.setStatus(PlayerState.chooseWeapon);
         BaseComponent.enemy = new AI;
         break;
       case 'multiPlay':
@@ -62,6 +70,9 @@ export class BaseComponent  implements AfterViewInit {
         //error
         break;
     }
+    BaseComponent.player.setWeapon(WEAPONS[0]);
+    BaseComponent.player.setPosition([3, 4]);
+    BaseComponent.enemy.setPosition([2, 1]);
 
     this.tick();
   }
@@ -76,12 +87,12 @@ export class BaseComponent  implements AfterViewInit {
   }
 
   playGame(): void {
-    switch(BaseComponent.gameState) {
+    switch (BaseComponent.gameState) {
       case GameState.playerTurn:
-        this.setDate(BaseComponent.player);
+        this.setData(BaseComponent.player);
         break;
       case GameState.enemyTurn:
-        this.setDate(BaseComponent.enemy);
+        this.setData(BaseComponent.enemy);
         break;
       case GameState.wait:
         // do render
@@ -102,30 +113,41 @@ export class BaseComponent  implements AfterViewInit {
   }
 
   rander(): void {
-
+    let player = BaseComponent.player;
+    let enemy = BaseComponent.enemy;
+    console.log(player);
+    this.draw.drawCharacter(player, this.context);
+    this.draw.drawCharacter(enemy, this.context);
+    switch (player.getStatus()) {
+      case PlayerState.chooseWeapon:
+        break;
+      case PlayerState.movePosition:
+        this.draw.drawMap(this.context);
+        this.draw.drawMoveRage(this.context);
+        break;
+      case PlayerState.attackEnemy:
+        this.draw.drawMap(this.context);
+        break;
+      default:
+        console.log("상태 없음");
+        break;
+    }
   }
 
   randerRange() {
 
   }
 
-  setDate(myCharacter) {
-
-    // myCharacter.chooseWeapon(
-    //   //weapon 객체
-    // );
-    // myCharacter.movePosition(
-    //   //position
-    // );
-    // myCharacter.attackEnemy(
-    //   //position
-    // );
+  setData(myCharacter) {
+    myCharacter.chooseWeapon();
+    myCharacter.movePosition();
+    myCharacter.attackEnemy();
   }
 
   calc() {
     let player = BaseComponent.player;
     let enemy = BaseComponent.enemy;
-    if(player.getActionInfo().attackPosition == enemy.getActionInfo().afterPosition) {
+    if (player.getActionInfo().attackPosition == enemy.getActionInfo().afterPosition) {
       enemy.decrimentHP(this.getDamage(player.getWeapon()));
     }
   }
@@ -134,9 +156,8 @@ export class BaseComponent  implements AfterViewInit {
     let damage;
     return damage;
   }
-
-  getRandomArbitrary(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+  onSelect(weapon: Weapon): void {
+    BaseComponent.selectedWeapon = weapon;
   }
 
 }
