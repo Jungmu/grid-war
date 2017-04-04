@@ -23,12 +23,12 @@ export class DrawComponent implements OnInit {
 
   ngOnInit() { }
 
-  drawAttackRange(context): void {
-    let nowPosition: [number, number] = [BaseComponent.player.getAfterPosition()[0] - 1, BaseComponent.player.getAfterPosition()[1] - 1];
+  drawAttackRange(player, context): void {
+    let nowPosition: [number, number] = [player.getAfterPosition()[0] - 1, player.getAfterPosition()[1] - 1];
     let gridInfo = this.gridComponent.calcGridSize();
     let fillStartPoint: [number, number];
 
-    BaseComponent.player.getWeapon().range.forEach(element => {
+    player.getWeapon().range.forEach(element => {
       fillStartPoint = [(nowPosition[0] + element[0]) * gridInfo.gridWidth + gridInfo.gridOffset,
       (nowPosition[1] + element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
       context.fillStyle = "rgba(255, 0, 0, 0.25)";
@@ -104,9 +104,14 @@ export class DrawComponent implements OnInit {
     ctx.globalAlpha = 1;
   }
 
-  liveMoveDraw(player, enemy) {
-    if (player.getPosition() == player.getAfterPosition()) {
-      BaseComponent.drawState = LiveDrawState.moveEnemy;
+  drawLiveMove(player) {
+    if (player.getPosition()[0] == player.getAfterPosition()[0]
+      && player.getPosition()[1] == player.getAfterPosition()[1]) {
+      if (BaseComponent.drawState == LiveDrawState.movePlayer) {
+        BaseComponent.drawState = LiveDrawState.moveEnemy;
+      } else if (BaseComponent.drawState == LiveDrawState.moveEnemy) {
+        BaseComponent.drawState = LiveDrawState.attackPlayer;
+      }
       this.moveVector = [0, 0];
     } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
       this.moveVector = [(player.getAfterPosition()[0] - player.getPosition()[0]) / this.splitNum, (player.getAfterPosition()[1] - player.getPosition()[1]) / this.splitNum];
@@ -115,10 +120,10 @@ export class DrawComponent implements OnInit {
     } else {
       if (this.drawCount > this.splitNum) {
         this.drawCount = 0;
-        if (LiveDrawState.movePlayer) {
+        if (BaseComponent.drawState == LiveDrawState.movePlayer) {
           BaseComponent.drawState = LiveDrawState.moveEnemy;
-        } else if (LiveDrawState.moveEnemy) {
-          BaseComponent.drawState = LiveDrawState.showPlayerAttacRange;
+        } else if (BaseComponent.drawState == LiveDrawState.moveEnemy) {
+          BaseComponent.drawState = LiveDrawState.attackPlayer;
         }
         this.moveVector = [0, 0];
         player.setPosition(player.getAfterPosition());
@@ -128,4 +133,17 @@ export class DrawComponent implements OnInit {
     }
   }
 
+  drawLiveAttack(player, context) {
+    let attackPosition: [number, number] = [player.getAttackPosition()[0] - 1, player.getAttackPosition()[1] - 1];
+    let gridInfo = this.gridComponent.calcGridSize();
+    let fillStartPoint: [number, number];
+
+    fillStartPoint = [attackPosition[0] * gridInfo.gridWidth + gridInfo.gridOffset,
+    attackPosition[1] * gridInfo.gridWidth + gridInfo.gridOffset];
+    context.fillStyle = "rgba(255, 0, 0, 0.75)";
+    if (this.gridComponent.isInGrid(fillStartPoint)) {
+      context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
+    }
+    //여기다 때리는 모션을 넣는거지
+  }
 }

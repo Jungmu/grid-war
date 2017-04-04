@@ -28,6 +28,8 @@ export class BaseComponent implements AfterViewInit {
   private grid: GridComponent = new GridComponent;
   private draw: DrawComponent = new DrawComponent;
 
+  static mode: string;
+
   static drawState: number = LiveDrawState.wait;
 
   static gameState: number = GameState.playerTurn;
@@ -50,14 +52,13 @@ export class BaseComponent implements AfterViewInit {
     let canvas = this.myCanvas.nativeElement;
     this.context = canvas.getContext("2d");
 
-    let mode: string;
     this.route.params.subscribe(params => {
-      mode = params['mode'];
+      BaseComponent.mode = params['mode'];
     });
 
     this.getWeapons();
 
-    switch (mode) {
+    switch (BaseComponent.mode) {
       case 'singlePlay':
         BaseComponent.player = new Character;
         BaseComponent.player.setStatus(PlayerState.chooseWeapon);
@@ -86,12 +87,16 @@ export class BaseComponent implements AfterViewInit {
 
   tick(): void {
     requestAnimationFrame(() => {
-      this.playGame();
       this.resizeCanvas();
       this.rander();
+      this.playGame();
 
       this.playerHp = BaseComponent.player.getHp();
       this.enemyHp = BaseComponent.enemy.getHp();
+      if (this.playerHp == 0 || this.enemyHp == 0) {
+        alert("누군가 승리!!!!! 내HP="+this.playerHp+" : 적HP="+this.enemyHp);
+        location.href='http://localhost:8080/';
+      }
 
       this.tick();
     });
@@ -101,29 +106,19 @@ export class BaseComponent implements AfterViewInit {
     switch (BaseComponent.gameState) {
       case GameState.playerTurn:
         this.setData(BaseComponent.player);
-        // BaseComponent.gameState = GameState.enemyTurn;
+        if (BaseComponent.mode == 'AIvsAI') {
+          BaseComponent.gameState = GameState.enemyTurn;
+        }
         break;
       case GameState.enemyTurn:
         this.setData(BaseComponent.enemy);
         BaseComponent.drawState = LiveDrawState.movePlayer;
-        BaseComponent.gameState = GameState.wait
+        BaseComponent.gameState = GameState.wait;
         break;
       case GameState.wait:
         // do render
         BaseComponent.player.setStatus(PlayerState.wait);
         this.randerForWaiting();
-        // this.draw.liveDraw(BaseComponent.enemy, BaseComponent.player);
-        // 임시로 위치바꿔주기
-        // setTimeout(() => {
-        //   BaseComponent.player.setPosition(BaseComponent.player.getAfterPosition());
-        // }, 500);
-        // setTimeout(() => {
-        //   BaseComponent.enemy.setPosition(BaseComponent.enemy.getAfterPosition());
-        // }, 1000);
-        // setTimeout(() => {
-        //   BaseComponent.gameState = GameState.work;
-        // }, 1500);
-
         break;
       case GameState.work:
         this.calc(BaseComponent.player, BaseComponent.enemy);
@@ -157,7 +152,7 @@ export class BaseComponent implements AfterViewInit {
         break;
       case PlayerState.attackEnemy:
         this.draw.drawMap(this.context);
-        this.draw.drawAttackRange(this.context);
+        this.draw.drawAttackRange(player, this.context);
         break;
       case PlayerState.wait:
         break;
@@ -165,6 +160,7 @@ export class BaseComponent implements AfterViewInit {
         console.log("상태 없음");
         break;
     }
+
     this.draw.drawCharacter(player, this.context);
     this.draw.drawCharacter(enemy, this.context);
   }
@@ -172,19 +168,24 @@ export class BaseComponent implements AfterViewInit {
   randerForWaiting() {
     switch (BaseComponent.drawState) {
       case LiveDrawState.movePlayer:
-        this.draw.liveMoveDraw(BaseComponent.player, BaseComponent.enemy);
+        this.draw.drawLiveMove(BaseComponent.player);
         break;
       case LiveDrawState.moveEnemy:
-        this.draw.liveMoveDraw(BaseComponent.enemy, BaseComponent.player);
+        this.draw.drawLiveMove(BaseComponent.enemy);
         break;
-      case LiveDrawState.showPlayerAttacRange:
-        // BaseComponent.gameState = GameState.work;
+      case LiveDrawState.attackPlayer:
+        this.draw.drawAttackRange(BaseComponent.player, this.context);
+        this.draw.drawLiveAttack(BaseComponent.player, this.context);
+        BaseComponent.drawState = LiveDrawState.attackEnemy;
         break;
-      case LiveDrawState.showEnemyAttacRange:
+      case LiveDrawState.attackEnemy:
+        this.draw.drawAttackRange(BaseComponent.enemy, this.context);
+        this.draw.drawLiveAttack(BaseComponent.enemy, this.context);
+        BaseComponent.drawState = LiveDrawState.wait;
+        BaseComponent.gameState = GameState.work;
         break;
-      case LiveDrawState.showPlayerAttacSpot:
-        break;
-      case LiveDrawState.showEnemyAttacSpot:
+      default:
+        //error
         break;
     }
 
@@ -209,9 +210,7 @@ export class BaseComponent implements AfterViewInit {
   }
 
   onSelect(weapon: Weapon): void {
-    console.log(BaseComponent.player.getStatus());
-    console.log(BaseComponent.gameState);
-    if (BaseComponent.player.getStatus() == PlayerState.chooseWeapon && BaseComponent.gameState == GameState.playerTurn) {
+    if (BaseComponent.gameState == GameState.playerTurn) {
       BaseComponent.selectedWeapon = weapon;
     }
 

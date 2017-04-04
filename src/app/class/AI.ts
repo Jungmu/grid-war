@@ -8,7 +8,7 @@ import { CharacterImpl } from './characterImpl';
 
 export class AI implements CharacterImpl{
     private status: number = PlayerState.chooseWeapon;
-    private HP: number = 10;
+    private HP: number = 5;
     private weapon: Weapon = WEAPONS[0];
     private position: [number, number];
     private stage: number;
@@ -26,7 +26,6 @@ export class AI implements CharacterImpl{
         this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
         this.status = PlayerState.movePosition;
         console.log("chooseWeapon()");
-        console.log(this);
     }
 
     movePosition(): void {
@@ -42,7 +41,6 @@ export class AI implements CharacterImpl{
 
         }
         console.log("movePosition()");
-        console.log(this);
     }
 
     attackEnemy(): void {
@@ -56,7 +54,6 @@ export class AI implements CharacterImpl{
             this.attackEnemy();            
         }
         console.log("attackEnemy()");
-        console.log(this);
     }
 
     getActionInfo(): ActionInfo {

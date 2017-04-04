@@ -18,8 +18,6 @@ export enum LiveDrawState {
     wait,
     movePlayer,
     moveEnemy,
-    showPlayerAttacRange,
-    showEnemyAttacRange,
-    showPlayerAttacSpot,
-    showEnemyAttacSpot
+    attackPlayer,
+    attackEnemy
 }

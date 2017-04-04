@@ -7,7 +7,7 @@ import { CharacterImpl } from './characterImpl';
 
 export class Character implements CharacterImpl{
     private status: PlayerState = PlayerState.chooseWeapon;
-    private HP: number = 10;
+    private HP: number = 5;
     private weapon: Weapon = WEAPONS[0];
     private position: [number, number];
     private stage: number;
