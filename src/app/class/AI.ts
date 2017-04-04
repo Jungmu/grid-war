@@ -3,6 +3,7 @@ import { WEAPONS } from '../service/weapon-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
 import { TouchscreenComponent } from '../touchscreen/touchscreen.component';
+import { GridComponent } from '../grid/grid.component';
 
 class ActionInfo {
     attackPosition: [number, number];
@@ -19,34 +20,42 @@ export class AI {
     private actionInfo: ActionInfo = new ActionInfo;
 
     private checkRange: TouchscreenComponent = new TouchscreenComponent;
+    private grid: GridComponent = new GridComponent;
 
     getRandomArbitrary(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    chooseWeapon(weapon): void {
+    chooseWeapon(): void {
+        if(this.status != PlayerState.chooseWeapon) return;
         let weaponList: Array<Weapon> = WEAPONS;
         this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
+        this.status = PlayerState.movePosition;
     }
 
     movePosition(): void {
+        if(this.status != PlayerState.movePosition) return;
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
-        let tempPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
+        let randomPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
         let flag: boolean = true;
-        while(flag) {
-            tempPosition = canMovePosition[this.getRandomArbitrary(0, 5)];
-            console.log('좌표: '+tempPosition)
-            console.log("봇: "+this.checkRange.isPlayerCanMove(tempPosition, this.position));
-            if( this.checkRange.isPlayerCanMove(tempPosition, this.position) ) {
-            }
-            flag = false;
-        }
-        let afterPosition: [number, number] = [ this.position[0] + tempPosition[0], this.position[1] + tempPosition[1] ];
-        this.actionInfo.afterPosition = afterPosition;
+        let afterPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
+        if (this.checkRange.isPlayerCanMove(afterPosition, this.position) && this.grid.isInGrid(afterPosition)) {
+            this.actionInfo.afterPosition = afterPosition;
+            this.status = PlayerState.attackEnemy;
+        }else{
+             this.movePosition();
+        }    
     }
 
-    attackEnemy(position): void {
-        this.actionInfo.attackPosition = this.weapon.range[this.getRandomArbitrary(0, this.weapon.range.length - 1)];
+    attackEnemy(): void {        
+        let randomPosition: [number, number] = this.weapon.range[this.getRandomArbitrary(0, this.weapon.range.length - 1)];
+        let attackPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
+        if(this.grid.isInGrid(attackPosition)){
+            this.actionInfo.attackPosition = attackPosition;      
+            this.status = PlayerState.chooseWeapon;
+        }else{
+            this.attackEnemy();
+        }
     }
 
     getActionInfo(): ActionInfo {
@@ -57,7 +66,7 @@ export class AI {
         return this.actionInfo.afterPosition;
     }
 
-    setAfterPosition(position){
+    setAfterPosition(position) {
         this.actionInfo.afterPosition = position;
     }
 
@@ -89,10 +98,10 @@ export class AI {
         return this.weapon;
     }
 
-    setWeapon(weapon:Weapon){
+    setWeapon(weapon: Weapon) {
         this.weapon = weapon;
     }
-    
+
     getStatus(): PlayerState {
         return this.status;
     }
@@ -101,11 +110,11 @@ export class AI {
         this.status = status;
     }
 
-    getPosition():[number,number]{
+    getPosition(): [number, number] {
         return this.position;
     }
 
-    setPosition(position:[number,number]){
+    setPosition(position: [number, number]) {
         this.position = position;
         this.actionInfo.afterPosition = position;
     }
