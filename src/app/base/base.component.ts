@@ -107,11 +107,17 @@ export class BaseComponent implements AfterViewInit {
         break;
       case GameState.wait:
         // do render
-
+        BaseComponent.player.setStatus(PlayerState.wait);
         // 임시로 위치바꿔주기
-        BaseComponent.player.setPosition(BaseComponent.player.getAfterPosition());
-        BaseComponent.enemy.setPosition(BaseComponent.enemy.getAfterPosition());
-        BaseComponent.gameState = GameState.work;
+        setTimeout(() => {
+          BaseComponent.player.setPosition(BaseComponent.player.getAfterPosition());
+        }, 500);
+        setTimeout(() => {
+          BaseComponent.enemy.setPosition(BaseComponent.enemy.getAfterPosition());
+        }, 1000);
+        setTimeout(() => {
+          BaseComponent.gameState = GameState.work;
+        }, 1500);
 
         break;
       case GameState.work:
@@ -175,10 +181,21 @@ export class BaseComponent implements AfterViewInit {
     // 임시방편 무기초기화 및 선택된무기 초기화
     player.setWeapon(WEAPONS[0]);
     BaseComponent.selectedWeapon = player.getWeapon();
+    BaseComponent.player.setStatus(PlayerState.chooseWeapon);
   }
 
   onSelect(weapon: Weapon): void {
-    BaseComponent.selectedWeapon = weapon;
-  }
+    if (BaseComponent.player.getStatus() == PlayerState.chooseWeapon && BaseComponent.gameState == GameState.playerTurn) {
+      BaseComponent.selectedWeapon = weapon;
+    }
 
+  }
+  sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds) {
+        break;
+      }
+    }
+  }
 }

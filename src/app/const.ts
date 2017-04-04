@@ -7,7 +7,8 @@ export enum GameState {
 export enum PlayerState {
     movePosition,
     chooseWeapon,
-    attackEnemy
+    attackEnemy,
+    wait
 }
 export enum Skill {
     normal,
