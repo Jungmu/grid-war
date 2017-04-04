@@ -5,7 +5,7 @@ import { BaseComponent } from '../base/base.component';
 import { GridComponent } from '../grid/grid.component';
 import { ActionInfo } from './actionInfo';
 
-export class AI{
+export class AI {
     private status: number = PlayerState.chooseWeapon;
     private HP: number = 10;
     private weapon: Weapon = WEAPONS[0];
@@ -20,36 +20,42 @@ export class AI{
     }
 
     chooseWeapon(): void {
-        if(this.status != PlayerState.chooseWeapon) return;
+        if (this.status != PlayerState.chooseWeapon) return;
         let weaponList: Array<Weapon> = WEAPONS;
         this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
         this.status = PlayerState.movePosition;
+        console.log("chooseWeapon()");
+        console.log(this);
     }
 
     movePosition(): void {
-        if(this.status != PlayerState.movePosition) return;
+        if (this.status != PlayerState.movePosition) return;
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
         let randomPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
         let afterPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
-        if (this.grid.isInGrid(afterPosition)) {
+        if (this.grid.isInGridByGridPosition(afterPosition)) {
             this.actionInfo.afterPosition = afterPosition;
             this.status = PlayerState.attackEnemy;
-        }else{
-             //this.movePosition();
-        }    
+        } else {
+            this.movePosition();
+
+        }
+        console.log("movePosition()");
+        console.log(this);
     }
 
     attackEnemy(): void {
-
+        if (this.status != PlayerState.attackEnemy) return;
         let randomPosition: [number, number] = this.weapon.range[this.getRandomArbitrary(0, this.weapon.range.length - 1)];
-        console.log(this.weapon);
         let attackPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
-        if(this.grid.isInGrid(attackPosition)){
-            this.actionInfo.attackPosition = attackPosition;      
-            this.status = PlayerState.chooseWeapon;
-        }else{
-            //this.attackEnemy();
+        if (this.grid.isInGridByGridPosition(attackPosition)) {
+            this.actionInfo.attackPosition = attackPosition;
+            this.status = PlayerState.chooseWeapon;            
+        } else {
+            this.attackEnemy();            
         }
+        console.log("attackEnemy()");
+        console.log(this);
     }
 
     getActionInfo(): ActionInfo {
