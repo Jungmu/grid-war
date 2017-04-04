@@ -117,7 +117,6 @@ export class AI implements CharacterImpl{
 
     setPosition(position: [number, number]) {
         this.position = position;
-        this.actionInfo.afterPosition = position;
     }
 }
 

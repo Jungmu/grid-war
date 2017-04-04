@@ -6,7 +6,7 @@ import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
 export class Character implements CharacterImpl{
-    private status: PlayerState;
+    private status: PlayerState = PlayerState.chooseWeapon;
     private HP: number = 10;
     private weapon: Weapon = WEAPONS[0];
     private position: [number, number];
@@ -87,7 +87,6 @@ export class Character implements CharacterImpl{
 
     setPosition(position:[number,number]){
         this.position = position;
-        this.actionInfo.afterPosition = position;
     }
 
 }

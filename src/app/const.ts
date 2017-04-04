@@ -14,3 +14,12 @@ export enum Skill {
     normal,
     first
 }
+export enum LiveDrawState {
+    wait,
+    movePlayer,
+    moveEnemy,
+    showPlayerAttacRange,
+    showEnemyAttacRange,
+    showPlayerAttacSpot,
+    showEnemyAttacSpot
+}
