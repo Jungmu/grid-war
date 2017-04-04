@@ -1,11 +1,23 @@
-export enum gameState {
-    begine = 0,
+export enum GameState {
+    playerTurn,
     enemyTurn,
-    playerTurn
+    wait,
+    work
 }
-export enum playerState {
-    wait = 0,
-    move,
+export enum PlayerState {
+    movePosition,
     chooseWeapon,
-    attack
+    attackEnemy,
+    wait
+}
+export enum Skill {
+    normal,
+    first
+}
+export enum LiveDrawState {
+    wait,
+    movePlayer,
+    moveEnemy,
+    attackPlayer,
+    attackEnemy
 }
