@@ -3,8 +3,9 @@ import { WEAPONS } from '../service/weapon-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
 import { ActionInfo } from './actionInfo';
+import { CharacterImpl } from './characterImpl';
 
-export class Character{
+export class Character implements CharacterImpl{
     private status: PlayerState;
     private HP: number = 10;
     private weapon: Weapon = WEAPONS[0];
@@ -20,11 +21,11 @@ export class Character{
     }
 
     movePosition(): void {
-        
+        // touch    
     }
 
     attackEnemy(): void {
-        //this.actionInfo.attackPosition = position;
+        // touch
     }
 
 
