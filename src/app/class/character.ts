@@ -2,8 +2,9 @@ import { Weapon } from './weapon';
 import { WEAPONS } from '../service/weapon-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
+import { ActionInfo } from './actionInfo';
 
-export class Character {
+export class Character{
     private status: PlayerState;
     private HP: number = 10;
     private weapon: Weapon = WEAPONS[0];
@@ -88,10 +89,4 @@ export class Character {
         this.actionInfo.afterPosition = position;
     }
 
-}
-
-class ActionInfo {
-    attackPosition: [number, number];
-    afterPosition: [number, number];
-    skill: number;
 }
