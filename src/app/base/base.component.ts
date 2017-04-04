@@ -28,17 +28,15 @@ export class BaseComponent implements AfterViewInit {
   private grid: GridComponent = new GridComponent;
   private draw: DrawComponent = new DrawComponent;
 
+  static drawState: number = LiveDrawState.wait;
+
   static gameState: number = GameState.playerTurn;
   static selectedWeapon: Weapon = WEAPONS[0];
   static player;
   static enemy;
 
-  drawState: number = LiveDrawState.wait;
   weapons: Weapon[];
 
-  splitNum: number = 100;
-  drawCount: number = 0;
-  moveVector: [number, number] = [0, 0];
   playerHp: number;
   enemyHp: number;
 
@@ -103,19 +101,18 @@ export class BaseComponent implements AfterViewInit {
     switch (BaseComponent.gameState) {
       case GameState.playerTurn:
         this.setData(BaseComponent.player);
-
         // BaseComponent.gameState = GameState.enemyTurn;
         break;
       case GameState.enemyTurn:
         this.setData(BaseComponent.enemy);
-
+        BaseComponent.drawState = LiveDrawState.movePlayer;
         BaseComponent.gameState = GameState.wait
-        this.drawState = LiveDrawState.movePlayer;
         break;
       case GameState.wait:
         // do render
         BaseComponent.player.setStatus(PlayerState.wait);
-        this.liveDraw();
+        this.randerForWaiting();
+        // this.draw.liveDraw(BaseComponent.enemy, BaseComponent.player);
         // 임시로 위치바꿔주기
         // setTimeout(() => {
         //   BaseComponent.player.setPosition(BaseComponent.player.getAfterPosition());
@@ -172,62 +169,16 @@ export class BaseComponent implements AfterViewInit {
     this.draw.drawCharacter(enemy, this.context);
   }
 
-  randerRange() {
-
-  }
-
-  setData(myCharacter: Character) {
-    myCharacter.chooseWeapon();
-    myCharacter.movePosition();
-    myCharacter.attackEnemy();
-
-  }
-
-  liveDraw() {
-    let player = BaseComponent.player;
-    let enemy = BaseComponent.enemy;
-    switch (this.drawState) {
+  randerForWaiting() {
+    switch (BaseComponent.drawState) {
       case LiveDrawState.movePlayer:
-        if (player.getPosition() == player.getAfterPosition()) {
-          this.drawState = LiveDrawState.moveEnemy;
-          this.moveVector = [0, 0];
-        } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
-          this.moveVector = [(player.getAfterPosition()[0] - player.getPosition()[0]) / this.splitNum, (player.getAfterPosition()[1] - player.getPosition()[1]) / this.splitNum];
-          player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
-          this.drawCount++;
-        } else {
-          if (this.drawCount > this.splitNum) {
-            this.drawCount = 0;
-            this.drawState = LiveDrawState.moveEnemy;
-            this.moveVector = [0, 0];
-            player.setPosition(player.getAfterPosition());
-          }
-          player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
-          this.drawCount++;
-        }
+        this.draw.liveMoveDraw(BaseComponent.player, BaseComponent.enemy);
         break;
       case LiveDrawState.moveEnemy:
-        if (enemy.getPosition() == enemy.getAfterPosition()) {
-          this.drawState = LiveDrawState.showPlayerAttacRange;
-          this.moveVector = [0, 0];
-        } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
-          this.moveVector = [(enemy.getAfterPosition()[0] - enemy.getPosition()[0]) / this.splitNum, (enemy.getAfterPosition()[1] - enemy.getPosition()[1]) / this.splitNum];
-          enemy.setPosition([this.moveVector[0] + enemy.getPosition()[0], this.moveVector[1] + enemy.getPosition()[1]]);
-          this.drawCount++;
-        } else {
-          if (this.drawCount > this.splitNum) {
-            this.drawCount = 0;
-            this.drawState = LiveDrawState.showPlayerAttacRange;
-            this.moveVector = [0, 0];
-            enemy.setPosition(enemy.getAfterPosition());
-          }
-          enemy.setPosition([this.moveVector[0] + enemy.getPosition()[0], this.moveVector[1] + enemy.getPosition()[1]]);
-          this.drawCount++;
-        }
+        this.draw.liveMoveDraw(BaseComponent.enemy, BaseComponent.player);
         break;
       case LiveDrawState.showPlayerAttacRange:
-        //일단 빠져나가자 힘들다.
-        BaseComponent.gameState = GameState.work;
+        // BaseComponent.gameState = GameState.work;
         break;
       case LiveDrawState.showEnemyAttacRange:
         break;
@@ -236,6 +187,14 @@ export class BaseComponent implements AfterViewInit {
       case LiveDrawState.showEnemyAttacSpot:
         break;
     }
+
+  }
+
+  setData(myCharacter: Character) {
+    myCharacter.chooseWeapon();
+    myCharacter.movePosition();
+    myCharacter.attackEnemy();
+
   }
 
   calc(player, enemy) {
@@ -256,13 +215,5 @@ export class BaseComponent implements AfterViewInit {
       BaseComponent.selectedWeapon = weapon;
     }
 
-  }
-  sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds) {
-        break;
-      }
-    }
   }
 }

@@ -4,6 +4,8 @@ import { BaseComponent } from '../base/base.component';
 import { GridInfo } from '../grid/grid.info';
 import { GridComponent } from '../grid/grid.component';
 
+import { GameState, LiveDrawState } from '../const';
+
 @Component({
   selector: 'app-draw',
   templateUrl: './draw.component.html',
@@ -12,6 +14,11 @@ import { GridComponent } from '../grid/grid.component';
 export class DrawComponent implements OnInit {
 
   gridComponent: GridComponent = new GridComponent;
+
+  private splitNum: number = 30;
+  private drawCount: number = 0;
+  private moveVector: [number, number] = [0, 0];
+
   constructor() { }
 
   ngOnInit() { }
@@ -23,7 +30,7 @@ export class DrawComponent implements OnInit {
 
     BaseComponent.player.getWeapon().range.forEach(element => {
       fillStartPoint = [(nowPosition[0] + element[0]) * gridInfo.gridWidth + gridInfo.gridOffset,
-       (nowPosition[1] + element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
+      (nowPosition[1] + element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
       context.fillStyle = "rgba(255, 0, 0, 0.25)";
       if (this.gridComponent.isInGrid(fillStartPoint)) {
         context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
@@ -87,7 +94,7 @@ export class DrawComponent implements OnInit {
     let x: number = (character.getPosition()[0] - 1) * gridInfo.gridWidth;
     let y: number = (character.getPosition()[1] - 1) * gridInfo.gridWidth;
     ctx.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
-    
+
     ctx.globalAlpha = 0.5;
 
     let afterX: number = (character.getAfterPosition()[0] - 1) * gridInfo.gridWidth;
@@ -95,6 +102,30 @@ export class DrawComponent implements OnInit {
     ctx.drawImage(img, afterX + gridInfo.gridOffset, afterY + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
 
     ctx.globalAlpha = 1;
+  }
+
+  liveMoveDraw(player, enemy) {
+    if (player.getPosition() == player.getAfterPosition()) {
+      BaseComponent.drawState = LiveDrawState.moveEnemy;
+      this.moveVector = [0, 0];
+    } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
+      this.moveVector = [(player.getAfterPosition()[0] - player.getPosition()[0]) / this.splitNum, (player.getAfterPosition()[1] - player.getPosition()[1]) / this.splitNum];
+      player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
+      this.drawCount++;
+    } else {
+      if (this.drawCount > this.splitNum) {
+        this.drawCount = 0;
+        if (LiveDrawState.movePlayer) {
+          BaseComponent.drawState = LiveDrawState.moveEnemy;
+        } else if (LiveDrawState.moveEnemy) {
+          BaseComponent.drawState = LiveDrawState.showPlayerAttacRange;
+        }
+        this.moveVector = [0, 0];
+        player.setPosition(player.getAfterPosition());
+      }
+      player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
+      this.drawCount++;
+    }
   }
 
 }
