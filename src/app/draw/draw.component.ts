@@ -92,39 +92,37 @@ export class DrawComponent implements OnInit {
   drawCharacter(character, context, imgType: string): void {
     let weaponName = character.getWeapon().name + imgType
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById(weaponName);
-    let ctx = context;
     let gridInfo: GridInfo = this.gridComponent.calcGridSize();
 
-    let x: number = (character.getPosition()[0] - 1) * gridInfo.gridWidth;
-    let y: number = (character.getPosition()[1] - 1) * gridInfo.gridWidth;
-    ctx.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
+    this.drawImgOnGrid(img, character.getPosition(), gridInfo, context, 1);
+    this.drawImgOnGrid(img, character.getAfterPosition(), gridInfo, context, 0.5);
 
-    ctx.globalAlpha = 0.5;
-
-    let afterX: number = (character.getAfterPosition()[0] - 1) * gridInfo.gridWidth;
-    let afterY: number = (character.getAfterPosition()[1] - 1) * gridInfo.gridWidth;
-    ctx.drawImage(img, afterX + gridInfo.gridOffset, afterY + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
-
-    ctx.globalAlpha = 1;
+  }
+  private drawImgOnGrid(img, position: [number, number], gridInfo: GridInfo, context, alpha: number):void {
+    let keepingAplha = context.globalAlpha;
+    let x: number = (position[0] - 1) * gridInfo.gridWidth;
+    let y: number = (position[1] - 1) * gridInfo.gridWidth;
+    context.globalAlpha = alpha;
+    context.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
+    context.globalAlpha = keepingAplha;
   }
 
-  drawLiveMove(player) {
+  drawLiveMove(player): void {
     if (player.getPosition()[0] == player.getAfterPosition()[0] && player.getPosition()[1] == player.getAfterPosition()[1]) {
-      this.endDrawLiveMove();      
+      this.endDrawLiveMove(player);
     } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
       this.moveVector = [(player.getAfterPosition()[0] - player.getPosition()[0]) / this.moveSplitNum, (player.getAfterPosition()[1] - player.getPosition()[1]) / this.moveSplitNum];
       player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
       this.drawCount++;
     } else {
-      if (this.drawCount > this.moveSplitNum) {        
-        this.endDrawLiveMove();        
-        player.setPosition(player.getAfterPosition());
+      if (this.drawCount > this.moveSplitNum) {
+        this.endDrawLiveMove(player);
       }
       player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
       this.drawCount++;
     }
   }
-  private endDrawLiveMove() {
+  private endDrawLiveMove(player):void {
     this.drawCount = 0;
     if (BaseComponent.drawState == LiveDrawState.movePlayer) {
       BaseComponent.drawState = LiveDrawState.moveEnemy;
@@ -132,9 +130,10 @@ export class DrawComponent implements OnInit {
       BaseComponent.drawState = LiveDrawState.attackPlayer;
     }
     this.moveVector = [0, 0];
+    player.setPosition(player.getAfterPosition());
   }
 
-  drawLiveAttack(player, context) {
+  drawLiveAttack(player, context):void {
     let attackPosition: [number, number] = [player.getAttackPosition()[0] - 1, player.getAttackPosition()[1] - 1];
     let gridInfo = this.gridComponent.calcGridSize();
     let fillStartPoint: [number, number];
@@ -149,7 +148,7 @@ export class DrawComponent implements OnInit {
     this.drawEffect(player, attackPosition, gridInfo, context);
   }
 
-  private drawEffect(player, attackPosition, gridInfo, context) {
+  private drawEffect(player, attackPosition:[number,number], gridInfo:GridInfo, context):void {
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('effect');
 
     if (this.attackVector[0] == 0 && this.attackVector[1] == 0) {
@@ -161,17 +160,20 @@ export class DrawComponent implements OnInit {
       this.effectPosition = [this.effectPosition[0] + this.attackVector[0], this.effectPosition[1] + this.attackVector[1]];
       context.drawImage(img, (this.effectPosition[0] * gridInfo.gridWidth) + gridInfo.gridOffset, (this.effectPosition[1] * gridInfo.gridWidth) + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
       if (this.drawCount > this.attackSplitNum) {
-        this.drawCount = 0;
-        if (BaseComponent.drawState == LiveDrawState.attackPlayer) {
-          BaseComponent.drawState = LiveDrawState.attackEnemy;
-        } else if (BaseComponent.drawState == LiveDrawState.attackEnemy) {
-          BaseComponent.drawState = LiveDrawState.wait;
-          BaseComponent.gameState = GameState.work;
-        }
-        this.attackVector = [0, 0];
-        this.effectPosition = [0, 0];
+        this.endDrawEffect();
       }
       this.drawCount++;
     }
+  }
+  private endDrawEffect():void {
+    this.drawCount = 0;
+    if (BaseComponent.drawState == LiveDrawState.attackPlayer) {
+      BaseComponent.drawState = LiveDrawState.attackEnemy;
+    } else if (BaseComponent.drawState == LiveDrawState.attackEnemy) {
+      BaseComponent.drawState = LiveDrawState.wait;
+      BaseComponent.gameState = GameState.work;
+    }
+    this.attackVector = [0, 0];
+    this.effectPosition = [0, 0];
   }
 }
