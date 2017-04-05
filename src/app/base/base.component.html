@@ -21,5 +21,10 @@
 
     </div>
     <hr>
+    <div>
+      <button (click)="isAutoPlay()" *ngIf="autoPlay">자동</button>
+      <button (click)="isAutoPlay()"*ngIf="!autoPlay">수동</button>
+      <button (click)="DoPlay()" *ngIf="!autoPlay && !autoPlay">진행</button>
+    </div>
   </div>
 </div>

@@ -42,6 +42,8 @@ export class BaseComponent implements AfterViewInit {
   playerHp: number;
   enemyHp: number;
 
+  autoPlay: boolean = false;
+
   constructor(private route: ActivatedRoute, private weaponService: WeaponService) { }
 
   getWeapons(): void {
@@ -124,7 +126,9 @@ export class BaseComponent implements AfterViewInit {
         this.calc(BaseComponent.player, BaseComponent.enemy);
         this.calc(BaseComponent.enemy, BaseComponent.player);
 
-        BaseComponent.gameState = GameState.playerTurn;
+        if(this.autoPlay) {
+          BaseComponent.gameState = GameState.playerTurn;
+        }
         break;
       default:
         // error
@@ -174,15 +178,15 @@ export class BaseComponent implements AfterViewInit {
         this.draw.drawLiveMove(BaseComponent.enemy);
         break;
       case LiveDrawState.attackPlayer:
-        this.draw.drawAttackRange(BaseComponent.player, this.context);
+        // this.draw.drawAttackRange(BaseComponent.player, this.context);
         this.draw.drawLiveAttack(BaseComponent.player, this.context);
-        BaseComponent.drawState = LiveDrawState.attackEnemy;
+        // BaseComponent.drawState = LiveDrawState.attackEnemy;
         break;
       case LiveDrawState.attackEnemy:
-        this.draw.drawAttackRange(BaseComponent.enemy, this.context);
+        // this.draw.drawAttackRange(BaseComponent.enemy, this.context);
         this.draw.drawLiveAttack(BaseComponent.enemy, this.context);
-        BaseComponent.drawState = LiveDrawState.wait;
-        BaseComponent.gameState = GameState.work;
+        // BaseComponent.drawState = LiveDrawState.wait;
+        // BaseComponent.gameState = GameState.work;
         break;
       default:
         //error
@@ -214,5 +218,13 @@ export class BaseComponent implements AfterViewInit {
       BaseComponent.selectedWeapon = weapon;
     }
 
+  }
+
+  isAutoPlay() {
+    this.autoPlay = !this.autoPlay;
+  }
+
+  DoPlay() {
+    BaseComponent.gameState = GameState.playerTurn;
   }
 }
