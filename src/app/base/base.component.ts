@@ -42,7 +42,7 @@ export class BaseComponent implements AfterViewInit {
   playerHp: number;
   enemyHp: number;
 
-  autoPlay: boolean = false;
+  autoPlay: boolean = true;
 
   constructor(private route: ActivatedRoute, private weaponService: WeaponService) { }
 
