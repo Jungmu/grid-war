@@ -44,7 +44,7 @@ export class AI implements CharacterImpl{
     attackEnemy(): void {
         if (this.status != PlayerState.attackEnemy) return;
         let randomPosition: [number, number] = this.weapon.range[this.getRandomArbitrary(0, this.weapon.range.length - 1)];
-        let attackPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
+        let attackPosition: [number, number] = [this.actionInfo.afterPosition[0] + randomPosition[0], this.actionInfo.afterPosition[1] + randomPosition[1]];
         if (this.grid.isInGridByGridPosition(attackPosition)) {
             this.actionInfo.attackPosition = attackPosition;
             this.status = PlayerState.chooseWeapon;            
