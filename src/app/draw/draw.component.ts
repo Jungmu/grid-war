@@ -88,7 +88,6 @@ export class DrawComponent implements OnInit {
 
   drawCharacter(character, context,imgType:string): void {
     let weaponName = character.getWeapon().name+imgType
-    console.log(weaponName);
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById(weaponName);
     let ctx = context;
     let gridInfo: GridInfo = this.gridComponent.calcGridSize();
