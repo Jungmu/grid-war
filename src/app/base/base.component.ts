@@ -225,6 +225,8 @@ export class BaseComponent implements AfterViewInit {
   }
 
   DoPlay() {
-    BaseComponent.gameState = GameState.playerTurn;
+    if(BaseComponent.gameState == GameState.work) {
+      BaseComponent.gameState = GameState.playerTurn;
+    }
   }
 }

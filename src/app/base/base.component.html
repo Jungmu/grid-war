@@ -9,9 +9,10 @@
       <p *ngFor="let weapon of weapons ">
         <span *ngIf="weapon.key != 0">
           <span class="btn btn-primary" (click)="onSelect(weapon)"> {{weapon.name}}</span> <span class="badge">{{weapon.damage}}</span>
+          <br>
+          <span>{{weapon.skill[0].name}}</span>
         </span>
       </p>
-      <!--<app-weapon></app-weapon>-->
     </div>
     <hr>
     <div>
@@ -24,7 +25,7 @@
     <div>
       <button (click)="isAutoPlay()" *ngIf="autoPlay">자동</button>
       <button (click)="isAutoPlay()"*ngIf="!autoPlay">수동</button>
-      <button (click)="DoPlay()" *ngIf="!autoPlay && !autoPlay">진행</button>
+      <button (click)="DoPlay()" *ngIf="!autoPlay">진행</button>
     </div>
   </div>
 </div>
