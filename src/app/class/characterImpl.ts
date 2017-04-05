@@ -1,5 +1,5 @@
 export interface CharacterImpl {
-    
+
     chooseWeapon(): void;
     movePosition(): void;
     attackEnemy(): void;
@@ -23,4 +23,6 @@ export interface CharacterImpl {
     setStatus(status);
     getPosition(): [number, number];
     setPosition(position: [number, number]);
+    getSkill(): number;
+
 }

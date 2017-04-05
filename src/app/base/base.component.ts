@@ -97,8 +97,8 @@ export class BaseComponent implements AfterViewInit {
       this.playerHp = BaseComponent.player.getHp();
       this.enemyHp = BaseComponent.enemy.getHp();
       if (this.playerHp == 0 || this.enemyHp == 0) {
-        alert("누군가 승리!!!!! 내HP="+this.playerHp+" : 적HP="+this.enemyHp);
-        location.href='http://localhost:8080/';
+        alert("누군가 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+        location.href = 'http://localhost:8080/';
       }
 
       this.tick();
@@ -127,7 +127,7 @@ export class BaseComponent implements AfterViewInit {
         this.calc(BaseComponent.player, BaseComponent.enemy);
         this.calc(BaseComponent.enemy, BaseComponent.player);
 
-        if(this.autoPlay) {
+        if (this.autoPlay) {
           BaseComponent.gameState = GameState.playerTurn;
         }
         break;
@@ -166,8 +166,8 @@ export class BaseComponent implements AfterViewInit {
         break;
     }
 
-    this.draw.drawCharacter(player, this.context,"");
-    this.draw.drawCharacter(enemy, this.context,"2");
+    this.draw.drawCharacter(player, this.context, "");
+    this.draw.drawCharacter(enemy, this.context, "2");
   }
 
   randerForWaiting() {
@@ -204,10 +204,20 @@ export class BaseComponent implements AfterViewInit {
   }
 
   calc(player, enemy) {
-    if (player.getAttackPosition()[0] == enemy.getPosition()[0]
-      && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
-      enemy.decrimentHP(player.getWeapon().damage);
+    if (player.getSkill() == 0) {
+      if (player.getAttackPosition()[0] == enemy.getPosition()[0] && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
+        enemy.decrimentHP(player.getWeapon().damage);
+      }
+    } else {
+      let skillRange: Array<[number, number]> = player.getWeapon().skill[player.getSkill() - 1].range;
+      skillRange.forEach(range => {
+        if (player.getAttackPosition()[0]+range[0] == enemy.getPosition()[0] && player.getAttackPosition()[1]+range[1] == enemy.getPosition()[1]) {
+          let damage = player.getWeapon().skill[player.getSkill() - 1].damage;
+          enemy.decrimentHP(damage);
+        }
+      });
     }
+
     // 임시방편 무기초기화 및 선택된무기 초기화
     player.setWeapon(WEAPONS[0]);
     BaseComponent.selectedWeapon = player.getWeapon();
@@ -217,7 +227,11 @@ export class BaseComponent implements AfterViewInit {
   onSelect(weapon: Weapon): void {
     if (BaseComponent.gameState == GameState.playerTurn) {
       BaseComponent.selectedWeapon = weapon;
-      BaseComponent.selectedSkill = weapon.key;
+    }
+  }
+  onSelectSkill(skill) {
+    if (BaseComponent.gameState == GameState.playerTurn) {
+      BaseComponent.selectedSkill = skill.key;
     }
   }
 
@@ -226,7 +240,7 @@ export class BaseComponent implements AfterViewInit {
   }
 
   DoPlay() {
-    if(BaseComponent.gameState == GameState.work) {
+    if (BaseComponent.gameState == GameState.work) {
       BaseComponent.gameState = GameState.playerTurn;
     }
   }

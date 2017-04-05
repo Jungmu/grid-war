@@ -25,6 +25,7 @@ export class AI implements CharacterImpl{
         let weaponList: Array<Weapon> = WEAPONS;
         this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
         this.status = PlayerState.movePosition;
+        this.actionInfo.skill = this.getRandomArbitrary(0,1.5);
     }
 
     movePosition(): void {
@@ -37,7 +38,6 @@ export class AI implements CharacterImpl{
             this.status = PlayerState.attackEnemy;
         } else {
             this.movePosition();
-
         }
     }
 
@@ -112,6 +112,11 @@ export class AI implements CharacterImpl{
     setPosition(position: [number, number]) {
         this.position = position;
     }
+
+        getSkill():number{
+        return this.actionInfo.skill;
+    }
+
 }
 
 
