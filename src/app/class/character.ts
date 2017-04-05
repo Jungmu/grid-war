@@ -15,6 +15,7 @@ export class Character implements CharacterImpl{
 
     chooseWeapon(): void {
         this.weapon = BaseComponent.selectedWeapon;
+        this.actionInfo.skill = BaseComponent.selectedSkill;
         if (this.status == PlayerState.chooseWeapon && this.weapon != WEAPONS[0]) {
             this.status = PlayerState.movePosition;
         }
@@ -27,7 +28,6 @@ export class Character implements CharacterImpl{
     attackEnemy(): void {
         // touch
     }
-
 
     getActionInfo(): ActionInfo {
         return this.actionInfo;
@@ -87,6 +87,10 @@ export class Character implements CharacterImpl{
 
     setPosition(position:[number,number]){
         this.position = position;
+    }
+
+    getSkill():number{
+        return this.actionInfo.skill;
     }
 
 }

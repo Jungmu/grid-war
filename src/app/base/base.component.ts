@@ -34,6 +34,7 @@ export class BaseComponent implements AfterViewInit {
 
   static gameState: number = GameState.playerTurn;
   static selectedWeapon: Weapon = WEAPONS[0];
+  static selectedSkill: number = 0;
   static player;
   static enemy;
 
@@ -216,8 +217,8 @@ export class BaseComponent implements AfterViewInit {
   onSelect(weapon: Weapon): void {
     if (BaseComponent.gameState == GameState.playerTurn) {
       BaseComponent.selectedWeapon = weapon;
+      BaseComponent.selectedSkill = weapon.key;
     }
-
   }
 
   isAutoPlay() {

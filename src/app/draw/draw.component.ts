@@ -109,32 +109,29 @@ export class DrawComponent implements OnInit {
   }
 
   drawLiveMove(player) {
-    if (player.getPosition()[0] == player.getAfterPosition()[0]
-      && player.getPosition()[1] == player.getAfterPosition()[1]) {
-      if (BaseComponent.drawState == LiveDrawState.movePlayer) {
-        BaseComponent.drawState = LiveDrawState.moveEnemy;
-      } else if (BaseComponent.drawState == LiveDrawState.moveEnemy) {
-        BaseComponent.drawState = LiveDrawState.attackPlayer;
-      }
-      this.moveVector = [0, 0];
+    if (player.getPosition()[0] == player.getAfterPosition()[0] && player.getPosition()[1] == player.getAfterPosition()[1]) {
+      this.endDrawLiveMove();      
     } else if (this.moveVector[0] == 0 && this.moveVector[1] == 0) {
       this.moveVector = [(player.getAfterPosition()[0] - player.getPosition()[0]) / this.moveSplitNum, (player.getAfterPosition()[1] - player.getPosition()[1]) / this.moveSplitNum];
       player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
       this.drawCount++;
     } else {
-      if (this.drawCount > this.moveSplitNum) {
-        this.drawCount = 0;
-        if (BaseComponent.drawState == LiveDrawState.movePlayer) {
-          BaseComponent.drawState = LiveDrawState.moveEnemy;
-        } else if (BaseComponent.drawState == LiveDrawState.moveEnemy) {
-          BaseComponent.drawState = LiveDrawState.attackPlayer;
-        }
-        this.moveVector = [0, 0];
+      if (this.drawCount > this.moveSplitNum) {        
+        this.endDrawLiveMove();        
         player.setPosition(player.getAfterPosition());
       }
       player.setPosition([this.moveVector[0] + player.getPosition()[0], this.moveVector[1] + player.getPosition()[1]]);
       this.drawCount++;
     }
+  }
+  private endDrawLiveMove() {
+    this.drawCount = 0;
+    if (BaseComponent.drawState == LiveDrawState.movePlayer) {
+      BaseComponent.drawState = LiveDrawState.moveEnemy;
+    } else if (BaseComponent.drawState == LiveDrawState.moveEnemy) {
+      BaseComponent.drawState = LiveDrawState.attackPlayer;
+    }
+    this.moveVector = [0, 0];
   }
 
   drawLiveAttack(player, context) {
@@ -149,12 +146,15 @@ export class DrawComponent implements OnInit {
       context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
     }
     //여기다 때리는 모션을 넣는거지
+    this.drawEffect(player, attackPosition, gridInfo, context);
+  }
 
+  private drawEffect(player, attackPosition, gridInfo, context) {
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('effect');
 
     if (this.attackVector[0] == 0 && this.attackVector[1] == 0) {
       this.attackVector = [(player.getAttackPosition()[0] - player.getAfterPosition()[0]) / this.attackSplitNum, (player.getAttackPosition()[1] - player.getAfterPosition()[1]) / this.attackSplitNum];
-      this.effectPosition = [player.getAfterPosition()[0] + this.attackVector[0] -1, player.getAfterPosition()[1] + this.attackVector[1] -1];
+      this.effectPosition = [player.getAfterPosition()[0] + this.attackVector[0] - 1, player.getAfterPosition()[1] + this.attackVector[1] - 1];
       context.drawImage(img, (this.effectPosition[0] * gridInfo.gridWidth) + gridInfo.gridOffset, (this.effectPosition[1] * gridInfo.gridWidth) + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
       this.drawCount++;
     } else {
@@ -173,6 +173,5 @@ export class DrawComponent implements OnInit {
       }
       this.drawCount++;
     }
-
   }
 }
