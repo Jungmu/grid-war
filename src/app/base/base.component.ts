@@ -161,8 +161,8 @@ export class BaseComponent implements AfterViewInit {
         break;
     }
 
-    this.draw.drawCharacter(player, this.context);
-    this.draw.drawCharacter(enemy, this.context);
+    this.draw.drawCharacter(player, this.context,"");
+    this.draw.drawCharacter(enemy, this.context,"2");
   }
 
   randerForWaiting() {
