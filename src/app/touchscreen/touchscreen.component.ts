@@ -60,7 +60,7 @@ export class TouchscreenComponent implements OnInit {
     // let enemyPosition: [number, number] = BaseComponent.enemy.getPosition();
     let characterSkill = BaseComponent.player.getSkill();
 
-    characterSkill.range.forEach(element => {
+    characterSkill.attackRange.forEach(element => {
       let myAttackRange: [number, number] = [nowPlayerPosition[0] + element[0], nowPlayerPosition[1] + element[1]];
       if (this.isClickOnAttacRange(clickPositionOnGrid, myAttackRange)) {
         BaseComponent.player.setAttackPosition(clickPositionOnGrid);

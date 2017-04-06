@@ -211,19 +211,19 @@ export class BaseComponent implements AfterViewInit {
   }
 
   calc(player, enemy) {
-    if (player.getSkill() == 0) {
+    // if (player.getSkill() == 0) {
       if (player.getAttackPosition()[0] == enemy.getPosition()[0] && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
         enemy.decrimentHP(player.getSkill().damage);
       }
-    } else {
-      let skillRange: Array<[number, number]> = player.getSkill().skill[player.getSkill() - 1].range;
-      skillRange.forEach(range => {
-        if (player.getAttackPosition()[0]+range[0] == enemy.getPosition()[0] && player.getAttackPosition()[1]+range[1] == enemy.getPosition()[1]) {
-          let damage = player.getSkill().skill[player.getSkill() - 1].damage;
-          enemy.decrimentHP(damage);
-        }
-      });
-    }
+    // } else {
+    //   let skillRange: Array<[number, number]> = player.getSkill().skill[player.getSkill() - 1].range;
+    //   skillRange.forEach(range => {
+    //     if (player.getAttackPosition()[0]+range[0] == enemy.getPosition()[0] && player.getAttackPosition()[1]+range[1] == enemy.getPosition()[1]) {
+    //       let damage = player.getSkill().skill[player.getSkill() - 1].damage;
+    //       enemy.decrimentHP(damage);
+    //     }
+    //   });
+    // }
 
     // 임시방편 무기초기화 및 선택된무기 초기화
     player.setSkill(SKILLS[0]);
@@ -236,11 +236,11 @@ export class BaseComponent implements AfterViewInit {
       BaseComponent.selectedSkill = skill;
     }
   }
-  onSelectSkill(skill) {
-    if (BaseComponent.gameState == GameState.playerTurn) {
-      BaseComponent.selectedSkill = skill.key;
-    }
-  }
+  // onSelectSkill(skill) {
+  //   if (BaseComponent.gameState == GameState.playerTurn) {
+  //     BaseComponent.selectedSkill = skill.key;
+  //   }
+  // }
 
   isAutoPlay() {
     this.autoPlay = !this.autoPlay;

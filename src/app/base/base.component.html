@@ -7,12 +7,12 @@
     <div>
       웨폰선택
       <p *ngFor="let skill of skills ">
-        <span *ngIf="skill.key != 0">
+        <span *ngIf="skill.name != 'None'">
           <span class="btn btn-primary" (click)="onSelect(skill)"> {{skill.name}}</span> <span class="badge">{{skill.damage}}</span>
           <br>
-          <p *ngFor="let skill of skill.skill ">
+          <!--<p *ngFor="let skill of skill.skill ">
           <span class="btn btn-primary" (click)="onSelect(skill)" (click)="onSelectSkill(skill)">{{skill.name}}</span> <span class="badge">{{skill.damage}}</span>
-          </p>
+          </p>-->
         </span>
       </p>
     </div>

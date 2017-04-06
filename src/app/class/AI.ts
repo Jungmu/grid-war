@@ -8,7 +8,7 @@ import { CharacterImpl } from './characterImpl';
 
 export class AI implements CharacterImpl{
     private status: number = PlayerState.chooseSkill;
-    private HP: number = 5;
+    private HP: number = 120;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
@@ -42,7 +42,7 @@ export class AI implements CharacterImpl{
 
     attackEnemy(): void {
         if (this.status != PlayerState.attackEnemy) return;
-        let randomPosition: [number, number] = this.skill.range[this.getRandomArbitrary(0, this.skill.range.length - 1)];
+        let randomPosition: [number, number] = this.skill.attackRange[this.getRandomArbitrary(0, this.skill.attackRange.length - 1)];
         let attackPosition: [number, number] = [this.actionInfo.afterPosition[0] + randomPosition[0], this.actionInfo.afterPosition[1] + randomPosition[1]];
         if (this.grid.isInGridByGridPosition(attackPosition)) {
             this.actionInfo.attackPosition = attackPosition;
