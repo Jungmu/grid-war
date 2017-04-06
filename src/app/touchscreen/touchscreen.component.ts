@@ -58,13 +58,13 @@ export class TouchscreenComponent implements OnInit {
     let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(this.getPosition());
     let nowPlayerPosition: [number, number] = BaseComponent.player.getAfterPosition();
     // let enemyPosition: [number, number] = BaseComponent.enemy.getPosition();
-    let characterWeapon = BaseComponent.player.getWeapon();
+    let characterSkill = BaseComponent.player.getSkill();
 
-    characterWeapon.range.forEach(element => {
+    characterSkill.range.forEach(element => {
       let myAttackRange: [number, number] = [nowPlayerPosition[0] + element[0], nowPlayerPosition[1] + element[1]];
       if (this.isClickOnAttacRange(clickPositionOnGrid, myAttackRange)) {
         BaseComponent.player.setAttackPosition(clickPositionOnGrid);
-        BaseComponent.player.setStatus(PlayerState.chooseWeapon);
+        BaseComponent.player.setStatus(PlayerState.chooseSkill);
         BaseComponent.gameState = GameState.enemyTurn;
       }
     });

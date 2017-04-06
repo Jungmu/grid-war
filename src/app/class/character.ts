@@ -1,22 +1,22 @@
-import { Weapon } from './weapon';
-import { WEAPONS } from '../service/weapon-data';
+import { Skill } from './skill';
+import { SKILLS } from '../service/skill-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
 import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
 export class Character implements CharacterImpl{
-    private status: PlayerState = PlayerState.chooseWeapon;
+    private name: string;
+    private status: PlayerState = PlayerState.chooseSkill;
     private HP: number = 5;
-    private weapon: Weapon = WEAPONS[0];
+    private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
     private actionInfo: ActionInfo = new ActionInfo;
 
-    chooseWeapon(): void {
-        this.weapon = BaseComponent.selectedWeapon;
-        this.actionInfo.skill = BaseComponent.selectedSkill;
-        if (this.status == PlayerState.chooseWeapon && this.weapon != WEAPONS[0]) {
+    chooseSkill(): void {
+        this.skill = BaseComponent.selectedSkill;
+        if (this.status == PlayerState.chooseSkill && this.skill != SKILLS[0]) {
             this.status = PlayerState.movePosition;
         }
     }
@@ -65,12 +65,12 @@ export class Character implements CharacterImpl{
         this.HP += damage;
     }
 
-    getWeapon(): Weapon {
-        return this.weapon;
+    getSkill(): Skill {
+        return this.skill;
     }
 
-    setWeapon(weapon:Weapon){
-        this.weapon = weapon;
+    setSkill(skill:Skill){
+        this.skill = skill;
     }
     
     getStatus(): PlayerState {
@@ -87,10 +87,6 @@ export class Character implements CharacterImpl{
 
     setPosition(position:[number,number]){
         this.position = position;
-    }
-
-    getSkill():number{
-        return this.actionInfo.skill;
     }
 
 }

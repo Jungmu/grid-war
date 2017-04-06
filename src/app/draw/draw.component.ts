@@ -28,34 +28,34 @@ export class DrawComponent implements OnInit {
 
     drawAttackRange(player, context): void {
         let nowPosition: [number, number] = [player.getAfterPosition()[0] - 1, player.getAfterPosition()[1] - 1];
-        let gridInfo = this.gridComponent.calcGridSize();
-        let fillStartPoint: [number, number];
-
-        player.getWeapon().range.forEach(element => {
-            fillStartPoint = [(nowPosition[0] + element[0]) * gridInfo.gridWidth + gridInfo.gridOffset,
-            (nowPosition[1] + element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
-            context.fillStyle = "rgba(255, 0, 0, 0.25)";
-            if (this.gridComponent.isInGrid(fillStartPoint)) {
-                context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
-            }
+        
+        player.getSkill().range.forEach(element => {
+            let pPosition = [(nowPosition[0] + element[0]), (nowPosition[1] + element[1])];
+            this.drawRange(pPosition, "rgba(255, 0, 0, 0.25)", context);
         });
     }
 
     drawMoveRange(context): void {
         let nowPosition: [number, number] = [BaseComponent.player.getPosition()[0] - 1, BaseComponent.player.getPosition()[1] - 1];
-        let gridInfo = this.gridComponent.calcGridSize();
-        let fillStartPoint: [number, number];
 
         for (let i = -1; i <= 1; ++i) {
             for (let j = -1; j <= 1; ++j) {
                 if ((-i != j && i != j) || (i == 0 && j == 0)) {
-                    fillStartPoint = [(nowPosition[0] + i) * gridInfo.gridWidth + gridInfo.gridOffset, (nowPosition[1] + j) * gridInfo.gridWidth + gridInfo.gridOffset];
-                    context.fillStyle = "rgba(255, 255, 255, 0.5)";
-                    if (this.gridComponent.isInGrid(fillStartPoint)) {
-                        context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
-                    }
+                    let pPosition = [nowPosition[0]+i, nowPosition[1]+j];
+                    this.drawRange(pPosition, "rgba(255, 255, 255, 0.5)", context);
                 }
             }
+        }
+    }
+
+    drawRange(nowPosition, fillStyle, context): void {
+        let gridInfo = this.gridComponent.calcGridSize();
+        let fillStartPoint: [number, number];
+        
+        fillStartPoint = [(nowPosition[0]) * gridInfo.gridWidth + gridInfo.gridOffset, (nowPosition[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
+        if (this.gridComponent.isInGrid(fillStartPoint)) {
+            context.fillStyle = fillStyle;
+            context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
         }
     }
 
@@ -90,14 +90,15 @@ export class DrawComponent implements OnInit {
     }
 
     drawCharacter(character, context, imgType: string): void {
-        let weaponName = character.getWeapon().name + imgType
-        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(weaponName);
+        let skillName = character.getSkill().name + imgType
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(skillName);
         let gridInfo: GridInfo = this.gridComponent.calcGridSize();
 
         this.drawImgOnGrid(img, character.getPosition(), gridInfo, context, 1);
         this.drawImgOnGrid(img, character.getAfterPosition(), gridInfo, context, 0.5);
 
     }
+
     private drawImgOnGrid(img, position: [number, number], gridInfo: GridInfo, context, alpha: number): void {
         let keepingAplha = context.globalAlpha;
         let x: number = (position[0] - 1) * gridInfo.gridWidth;
@@ -122,6 +123,7 @@ export class DrawComponent implements OnInit {
             this.drawCount++;
         }
     }
+
     private endDrawLiveMove(player): void {
         this.drawCount = 0;
         if (BaseComponent.drawState == LiveDrawState.movePlayer) {
@@ -145,27 +147,21 @@ export class DrawComponent implements OnInit {
             if (this.gridComponent.isInGrid(fillStartPoint)) {
                 context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
             }
-            //여기다 때리는 모션을 넣는거지
             this.drawEffect(player, attackPosition, gridInfo, context);
         } else {
-            let skillRange: Array<[number, number]> = player.getWeapon().skill[player.getSkill() - 1].range;
-            let skillAttackPosition:[number,number];
+            let skillRange: Array<[number, number]> = player.getSkill().skill[player.getSkill() - 1].range;
+            let skillAttackPosition: [number, number];
             skillRange.forEach(range => {
-                skillAttackPosition = [attackPosition[0]+range[0],attackPosition[1]+range[1]];
+                skillAttackPosition = [attackPosition[0] + range[0], attackPosition[1] + range[1]];
                 fillStartPoint = [skillAttackPosition[0] * gridInfo.gridWidth + gridInfo.gridOffset,
                 skillAttackPosition[1] * gridInfo.gridWidth + gridInfo.gridOffset];
                 context.fillStyle = "rgba(255, 0, 0, 0.5)";
                 if (this.gridComponent.isInGrid(fillStartPoint)) {
                     context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
                 }
-                
-            });   
-            //여기다 때리는 모션을 넣는거지
-                this.drawEffect(player, attackPosition, gridInfo, context);        
+            });
+            this.drawEffect(player, attackPosition, gridInfo, context);
         }
-
-
-
     }
 
     private drawEffect(player, attackPosition: [number, number], gridInfo: GridInfo, context): void {
@@ -185,6 +181,7 @@ export class DrawComponent implements OnInit {
             this.drawCount++;
         }
     }
+    
     private endDrawEffect(): void {
         this.drawCount = 0;
         if (BaseComponent.drawState == LiveDrawState.attackPlayer) {

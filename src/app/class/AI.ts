@@ -1,5 +1,5 @@
-import { Weapon } from './weapon';
-import { WEAPONS } from '../service/weapon-data';
+import { Skill } from './skill';
+import { SKILLS } from '../service/skill-data';
 import { PlayerState } from '../const';
 import { BaseComponent } from '../base/base.component';
 import { GridComponent } from '../grid/grid.component';
@@ -7,9 +7,9 @@ import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
 export class AI implements CharacterImpl{
-    private status: number = PlayerState.chooseWeapon;
+    private status: number = PlayerState.chooseSkill;
     private HP: number = 5;
-    private weapon: Weapon = WEAPONS[0];
+    private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
     private actionInfo: ActionInfo = new ActionInfo;
@@ -20,12 +20,11 @@ export class AI implements CharacterImpl{
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    chooseWeapon(): void {
-        if (this.status != PlayerState.chooseWeapon) return;
-        let weaponList: Array<Weapon> = WEAPONS;
-        this.weapon = weaponList[this.getRandomArbitrary(1, weaponList.length)];
+    chooseSkill(): void {
+        if (this.status != PlayerState.chooseSkill) return;
+        let skillList: Array<Skill> = SKILLS;
+        this.skill = skillList[this.getRandomArbitrary(1, skillList.length)];
         this.status = PlayerState.movePosition;
-        this.actionInfo.skill = this.getRandomArbitrary(0,1.5);
     }
 
     movePosition(): void {
@@ -43,11 +42,11 @@ export class AI implements CharacterImpl{
 
     attackEnemy(): void {
         if (this.status != PlayerState.attackEnemy) return;
-        let randomPosition: [number, number] = this.weapon.range[this.getRandomArbitrary(0, this.weapon.range.length - 1)];
+        let randomPosition: [number, number] = this.skill.range[this.getRandomArbitrary(0, this.skill.range.length - 1)];
         let attackPosition: [number, number] = [this.actionInfo.afterPosition[0] + randomPosition[0], this.actionInfo.afterPosition[1] + randomPosition[1]];
         if (this.grid.isInGridByGridPosition(attackPosition)) {
             this.actionInfo.attackPosition = attackPosition;
-            this.status = PlayerState.chooseWeapon;            
+            this.status = PlayerState.chooseSkill;            
         } else {
             this.attackEnemy();            
         }
@@ -89,12 +88,12 @@ export class AI implements CharacterImpl{
         this.HP += damage;
     }
 
-    getWeapon(): Weapon {
-        return this.weapon;
+    getSkill(): Skill {
+        return this.skill;
     }
 
-    setWeapon(weapon: Weapon) {
-        this.weapon = weapon;
+    setSkill(skill: Skill) {
+        this.skill = skill;
     }
 
     getStatus(): PlayerState {
@@ -111,10 +110,6 @@ export class AI implements CharacterImpl{
 
     setPosition(position: [number, number]) {
         this.position = position;
-    }
-
-        getSkill():number{
-        return this.actionInfo.skill;
     }
 
 }

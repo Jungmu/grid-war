@@ -10,15 +10,15 @@ import { GameState, PlayerState, LiveDrawState } from '../const';
 import { Character } from '../class/character';
 import { AI } from '../class/AI';
 
-import { Weapon } from '../class/weapon';
-import { WEAPONS } from '../service/weapon-data';
-import { WeaponService } from '../service/weapon.service';
+import { Skill } from '../class/skill';
+import { SKILLS } from '../service/skill-data';
+import { SkillService } from '../service/skill.service';
 
 @Component({
   selector: 'app-base',
   templateUrl: './base.component.html',
   styleUrls: ['./base.component.css'],
-  providers: [WeaponService]
+  providers: [SkillService]
 })
 
 export class BaseComponent implements AfterViewInit {
@@ -33,22 +33,25 @@ export class BaseComponent implements AfterViewInit {
   static drawState: number = LiveDrawState.wait;
 
   static gameState: number = GameState.playerTurn;
-  static selectedWeapon: Weapon = WEAPONS[0];
-  static selectedSkill: number = 0;
+  static selectedSkill: Skill = SKILLS[0];
+  // static selectedSkill: number = 0;
   static player;
   static enemy;
 
-  weapons: Weapon[];
+  skills: Skill[];
 
   playerHp: number;
   enemyHp: number;
 
   autoPlay: boolean = true;
 
-  constructor(private route: ActivatedRoute, private weaponService: WeaponService) { }
+  startTime = Date.now();
+  loopCount = 0;
 
-  getWeapons(): void {
-    this.weaponService.getWeapons().then(weapons => this.weapons = weapons);
+  constructor(private route: ActivatedRoute, private skillService: SkillService) { }
+
+  getSkills(): void {
+    this.skillService.getSkills().then(skills => this.skills = skills);
   }
 
   ngAfterViewInit(): void {
@@ -59,12 +62,12 @@ export class BaseComponent implements AfterViewInit {
       BaseComponent.mode = params['mode'];
     });
 
-    this.getWeapons();
+    this.getSkills();
 
     switch (BaseComponent.mode) {
       case 'singlePlay':
         BaseComponent.player = new Character;
-        BaseComponent.player.setStatus(PlayerState.chooseWeapon);
+        BaseComponent.player.setStatus(PlayerState.chooseSkill);
         BaseComponent.enemy = new AI;
         break;
       case 'multiPlay':
@@ -90,13 +93,17 @@ export class BaseComponent implements AfterViewInit {
 
   tick(): void {
     requestAnimationFrame(() => {
+      this.loopCount ++;
+      let FPS = this.loopCount * 1000 / (Date.now() - this.startTime);
+      // console.log(FPS);
+
       this.resizeCanvas();
       this.rander();
       this.playGame();
 
       this.playerHp = BaseComponent.player.getHp();
       this.enemyHp = BaseComponent.enemy.getHp();
-      if (this.playerHp == 0 || this.enemyHp == 0) {
+      if (this.playerHp <= 0 || this.enemyHp <= 0) {
         alert("누군가 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
         location.href = 'http://localhost:8080/';
       }
@@ -148,7 +155,7 @@ export class BaseComponent implements AfterViewInit {
     let enemy = BaseComponent.enemy;
 
     switch (player.getStatus()) {
-      case PlayerState.chooseWeapon:
+      case PlayerState.chooseSkill:
 
         break;
       case PlayerState.movePosition:
@@ -197,7 +204,7 @@ export class BaseComponent implements AfterViewInit {
   }
 
   setData(myCharacter: Character) {
-    myCharacter.chooseWeapon();
+    myCharacter.chooseSkill();
     myCharacter.movePosition();
     myCharacter.attackEnemy();
 
@@ -206,27 +213,27 @@ export class BaseComponent implements AfterViewInit {
   calc(player, enemy) {
     if (player.getSkill() == 0) {
       if (player.getAttackPosition()[0] == enemy.getPosition()[0] && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
-        enemy.decrimentHP(player.getWeapon().damage);
+        enemy.decrimentHP(player.getSkill().damage);
       }
     } else {
-      let skillRange: Array<[number, number]> = player.getWeapon().skill[player.getSkill() - 1].range;
+      let skillRange: Array<[number, number]> = player.getSkill().skill[player.getSkill() - 1].range;
       skillRange.forEach(range => {
         if (player.getAttackPosition()[0]+range[0] == enemy.getPosition()[0] && player.getAttackPosition()[1]+range[1] == enemy.getPosition()[1]) {
-          let damage = player.getWeapon().skill[player.getSkill() - 1].damage;
+          let damage = player.getSkill().skill[player.getSkill() - 1].damage;
           enemy.decrimentHP(damage);
         }
       });
     }
 
     // 임시방편 무기초기화 및 선택된무기 초기화
-    player.setWeapon(WEAPONS[0]);
-    BaseComponent.selectedWeapon = player.getWeapon();
-    BaseComponent.player.setStatus(PlayerState.chooseWeapon);
+    player.setSkill(SKILLS[0]);
+    BaseComponent.selectedSkill = player.getSkill();
+    BaseComponent.player.setStatus(PlayerState.chooseSkill);
   }
 
-  onSelect(weapon: Weapon): void {
+  onSelect(skill: Skill): void {
     if (BaseComponent.gameState == GameState.playerTurn) {
-      BaseComponent.selectedWeapon = weapon;
+      BaseComponent.selectedSkill = skill;
     }
   }
   onSelectSkill(skill) {
