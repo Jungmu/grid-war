@@ -138,13 +138,16 @@ export class DrawComponent implements OnInit {
         let attackPosition: [number, number] = [player.getAttackPosition()[0] - 1, player.getAttackPosition()[1] - 1];
         let gridInfo = this.gridComponent.calcGridSize();
         let fillStartPoint: [number, number];
+        let skillRange = player.getSkill().skillRange;
 
-        fillStartPoint = [attackPosition[0] * gridInfo.gridWidth + gridInfo.gridOffset,
-        attackPosition[1] * gridInfo.gridWidth + gridInfo.gridOffset];
         context.fillStyle = "rgba(255, 0, 0, 0.5)";
-        if (this.gridComponent.isInGrid(fillStartPoint)) {
+        skillRange.forEach(element => {
+            fillStartPoint = [(attackPosition[0]+element[0]) * gridInfo.gridWidth + gridInfo.gridOffset,
+            (attackPosition[1]+element[1]) * gridInfo.gridWidth + gridInfo.gridOffset];
+            if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.fillRect(fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
         }
+        });        
         this.drawEffect(player, attackPosition, gridInfo, context);
     }
 

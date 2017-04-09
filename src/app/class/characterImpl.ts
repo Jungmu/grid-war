@@ -12,7 +12,7 @@ export interface CharacterImpl {
 
     getHp(): number;
     setHp(hp: number): void;
-    decrimentHP(damage: number): void;
+    decrementHP(damage: number): void;
     incrementHP(damage: number): void;
 
     getSkill();

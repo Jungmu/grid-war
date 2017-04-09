@@ -21,3 +21,6 @@ export enum LiveDrawState {
     attackPlayer,
     attackEnemy
 }
+
+export const AdvantagePercent : number = 1.3;
+export const DisadvantagePercent : number = 0.7;

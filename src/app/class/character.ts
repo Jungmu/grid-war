@@ -12,6 +12,7 @@ export class Character implements CharacterImpl{
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
+    private dotDamage: [[number,number]] = [[0,0]]; // [damage , turn]
     private actionInfo: ActionInfo = new ActionInfo;
 
     chooseSkill(): void {
@@ -28,6 +29,7 @@ export class Character implements CharacterImpl{
     attackEnemy(): void {
         // touch
     }
+    
 
     getActionInfo(): ActionInfo {
         return this.actionInfo;
@@ -48,6 +50,14 @@ export class Character implements CharacterImpl{
     setAttackPosition(position) {
         this.actionInfo.attackPosition = position;
     }
+    getAttackRange() {
+        return this.actionInfo.attackRange;
+    }
+
+    setAttackRange(attackRange) {
+        this.actionInfo.attackRange = attackRange;
+    }
+
 
     getHp(): number {
         return this.HP;
@@ -57,7 +67,7 @@ export class Character implements CharacterImpl{
         this.HP = hp;
     }
 
-    decrimentHP(damage: number): void {
+    decrementHP(damage: number): void {
         this.HP -= damage;
     }
 
@@ -87,6 +97,13 @@ export class Character implements CharacterImpl{
 
     setPosition(position:[number,number]){
         this.position = position;
+    }
+
+    getDotDamage(){
+        return this.dotDamage;
+    }
+    pushDotDamage(dotDamage:[number,number]){
+        this.dotDamage.push(dotDamage);
     }
 
 }

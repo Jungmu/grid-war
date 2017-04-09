@@ -17,7 +17,7 @@ export const SKILLS: Skill[] = [
     },
     {
         name: 'Fire wall',
-        damage: 17,
+        damage: 13,
         dotDamage: 5,
         dotTurn: 3,
         attackRange: [
@@ -28,7 +28,7 @@ export const SKILLS: Skill[] = [
             [-2, 2], [-1, 2], [0, 2], [1, 2], [2, 2]
         ],
         skillRange: [
-            [0, -1], [0, 0], [0, 1]
+            [0, 0], [1, 0], [-1, 0]
         ],
         randomCount: 0,
         attribute: 'fire'
@@ -82,7 +82,7 @@ export const SKILLS: Skill[] = [
             [-2, 2], [-1, 2], [0, 2], [1, 2], [2, 2]
         ],
         skillRange: [
-            [0, 0], [1, 0], [-1, 0], [2, 0], [-2, 0]
+            [0, -1], [0, 0], [0, 1], [0, 2], [0, -2]
         ],
         randomCount: 0,
         attribute: 'water'
@@ -90,7 +90,7 @@ export const SKILLS: Skill[] = [
     {
         name: 'Heel',
         damage: 0,
-        dotDamage: 5,
+        dotDamage: 3,
         dotTurn: 3,
         attackRange: [
             [0, 0]

@@ -6,18 +6,20 @@ import { GridComponent } from '../grid/grid.component';
 import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
-export class AI implements CharacterImpl{
+export class AI implements CharacterImpl {
+    private name: string;
     private status: number = PlayerState.chooseSkill;
     private HP: number = 120;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
+    private dotDamage: [[number, number]] = [[0,0]];// [damage , turn]
     private actionInfo: ActionInfo = new ActionInfo;
 
     private grid: GridComponent = new GridComponent;
 
     getRandomArbitrary(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     chooseSkill(): void {
@@ -30,7 +32,7 @@ export class AI implements CharacterImpl{
     movePosition(): void {
         if (this.status != PlayerState.movePosition) return;
         let canMovePosition: Array<[number, number]> = [[-1, 0], [1, 0], [0, 0], [0, 1], [0, -1]];
-        let randomPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 5)];
+        let randomPosition: [number, number] = canMovePosition[this.getRandomArbitrary(0, 4)];
         let afterPosition: [number, number] = [this.position[0] + randomPosition[0], this.position[1] + randomPosition[1]];
         if (this.grid.isInGridByGridPosition(afterPosition)) {
             this.actionInfo.afterPosition = afterPosition;
@@ -46,9 +48,9 @@ export class AI implements CharacterImpl{
         let attackPosition: [number, number] = [this.actionInfo.afterPosition[0] + randomPosition[0], this.actionInfo.afterPosition[1] + randomPosition[1]];
         if (this.grid.isInGridByGridPosition(attackPosition)) {
             this.actionInfo.attackPosition = attackPosition;
-            this.status = PlayerState.chooseSkill;            
+            this.status = PlayerState.chooseSkill;
         } else {
-            this.attackEnemy();            
+            this.attackEnemy();
         }
     }
 
@@ -71,6 +73,14 @@ export class AI implements CharacterImpl{
     setAttackPosition(position) {
         this.actionInfo.attackPosition = position;
     }
+    
+    getAttackRange() {
+        return this.actionInfo.attackRange;
+    }
+
+    setAttackRange(attackRange) {
+        this.actionInfo.attackRange = attackRange;
+    }
 
     getHp(): number {
         return this.HP;
@@ -80,7 +90,7 @@ export class AI implements CharacterImpl{
         this.HP = hp;
     }
 
-    decrimentHP(damage: number): void {
+    decrementHP(damage: number): void {
         this.HP -= damage;
     }
 
@@ -111,6 +121,13 @@ export class AI implements CharacterImpl{
     setPosition(position: [number, number]) {
         this.position = position;
     }
+    getDotDamage() {
+        return this.dotDamage;
+    }
+    pushDotDamage(dotDamage: [number, number]) {
+        this.dotDamage.push(dotDamage);
+    }
+
 
 }
 
