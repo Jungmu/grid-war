@@ -34,7 +34,6 @@ export class BaseComponent implements AfterViewInit {
 
   static gameState: number = GameState.playerTurn;
   static selectedSkill: Skill = SKILLS[0];
-  // static selectedSkill: number = 0;
   static player;
   static enemy;
 
@@ -95,7 +94,6 @@ export class BaseComponent implements AfterViewInit {
     requestAnimationFrame(() => {
       this.loopCount ++;
       let FPS = this.loopCount * 1000 / (Date.now() - this.startTime);
-      // console.log(FPS);
 
       this.resizeCanvas();
       this.rander();
@@ -199,7 +197,6 @@ export class BaseComponent implements AfterViewInit {
       default:
         //error
 
-        // 공격은 동시에 진행해서 상쇄를 넣을건지 말건지는 다시결정해야할듯.
         // 오른쪽이나 왼쪽에 현재 플레이어들의 상태에 대한 로그를 찍어주면 좋을듯
         // ex) 누구누구가 누구누구를 어떤공격으로 어떻게 공격해서 체력이 얼마 달았다 등등
 
@@ -241,11 +238,6 @@ export class BaseComponent implements AfterViewInit {
       BaseComponent.selectedSkill = skill;
     }
   }
-  // onSelectSkill(skill) {
-  //   if (BaseComponent.gameState == GameState.playerTurn) {
-  //     BaseComponent.selectedSkill = skill.key;
-  //   }
-  // }
 
   isAutoPlay() {
     this.autoPlay = !this.autoPlay;

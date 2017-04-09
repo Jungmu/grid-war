@@ -33,8 +33,7 @@ export class TouchscreenComponent implements OnInit {
   private touchScreen(): void {
     if (BaseComponent.player.getStatus() == PlayerState.movePosition) {
       this.movePosition();
-    }
-    if (BaseComponent.player.getStatus() == PlayerState.attackEnemy) {
+    } else if (BaseComponent.player.getStatus() == PlayerState.attackEnemy) {
       this.attackEnemy();
     }
   }
@@ -57,7 +56,6 @@ export class TouchscreenComponent implements OnInit {
   attackEnemy(): void {
     let clickPositionOnGrid: [number, number] = this.clickPositionToGridPosition(this.getPosition());
     let nowPlayerPosition: [number, number] = BaseComponent.player.getAfterPosition();
-    // let enemyPosition: [number, number] = BaseComponent.enemy.getPosition();
     let characterSkill = BaseComponent.player.getSkill();
 
     characterSkill.attackRange.forEach(element => {
