@@ -129,6 +129,9 @@ export class BaseComponent implements AfterViewInit {
                 this.randerForWaiting();
                 break;
             case GameState.work:
+                this.calcAttackRange(BaseComponent.player);
+                this.calcAttackRange(BaseComponent.enemy);
+
                 this.calc(BaseComponent.player, BaseComponent.enemy);
                 this.calc(BaseComponent.enemy, BaseComponent.player);
 
@@ -215,17 +218,22 @@ export class BaseComponent implements AfterViewInit {
     calc(player, enemy) {
         let skill: Skill = player.getSkill();
         let rate = this.calcAttribute(skill.attribute, enemy.getSkill().attribute);
-        if (player.getAttackPosition()[0] == enemy.getPosition()[0] && player.getAttackPosition()[1] == enemy.getPosition()[1]) {
-            enemy.decrementHP(Math.floor(skill.damage * rate));
-            if (skill.dotDamage != 0) {
-                enemy.pushDotDamage([skill.dotDamage, skill.dotTurn]);
+
+        player.getAttackRange().forEach(element => {
+            if (element[0] == enemy.getPosition()[0] && element[1] == enemy.getPosition()[1]) {
+                enemy.decrementHP(Math.floor(skill.damage * rate));
+                if (skill.dotDamage != 0) {
+                    enemy.pushDotDamage([skill.dotDamage, skill.dotTurn]);
+                }
+            } else if (skill.attackRange.length == 1
+                && skill.attackRange[0][0] == 0 && skill.attackRange[0][1] == 0) {
+                player.incrementHP(skill.damage);
+                if (skill.dotDamage != 0) {
+                    player.pushDotDamage([skill.dotDamage * -1, skill.dotTurn]);
+                }
+
             }
-        } else if (player.getAttackPosition()[0] == player.getPosition()[0] && player.getAttackPosition()[1] == player.getPosition()[1]) {
-            player.incrementHP(skill.damage);
-            if (skill.dotDamage != 0) {
-                player.pushDotDamage([skill.dotDamage * -1, skill.dotTurn]);
-            }
-        }
+        });
         for (let i = 0; i < enemy.getDotDamage().length; ++i) {
             if (enemy.getDotDamage()[i][1] == 0) {
                 enemy.getDotDamage().splice(i, 1);
@@ -275,16 +283,16 @@ export class BaseComponent implements AfterViewInit {
     calcAttackRange(character): void {
         let skill = character.getSkill();
         let tempRange: Array<[number, number]> = new Array<[number, number]>();
-        let tempRandomArr = this.shuffleRandom(0, skill.skillRange.length-1).splice(1, skill.randomCount);
-        
+        let tempRandomArr = this.shuffleRandom(0, skill.skillRange.length - 1).splice(1, skill.randomCount);
+
         if (skill.randomCount != 0) {
             for (let i = 0; i < skill.randomCount; ++i) {
                 let randomPosition = skill.skillRange[tempRandomArr[i]];
                 tempRange.push([randomPosition[0] + character.getAttackPosition()[0], randomPosition[1] + character.getAttackPosition()[1]]);
             }
         } else {
-            for (let i=0; i < skill.skillRange; ++i) {
-                tempRange.push([ character.getAttackPosition()[0] + skill.skillRange[i][0], character.getAttackPosition()[1] + skill.skillRange[i][1] ]);
+            for (let i = 0; i < skill.skillRange.length; ++i) {
+                tempRange.push([character.getAttackPosition()[0] + skill.skillRange[i][0], character.getAttackPosition()[1] + skill.skillRange[i][1]]);
             }
         }
         character.setAttackRange(tempRange);
@@ -306,23 +314,22 @@ export class BaseComponent implements AfterViewInit {
         }
     }
 
-    shuffleRandom(min, max){
+    shuffleRandom(min, max) {
         let ar = new Array();
         let temp;
         let rnum;
-       
-        for(let i=min; i<=max; i++){
+
+        for (let i = min; i <= max; i++) {
             ar.push(i);
         }
- 
-        for(let i=0; i< ar.length ; i++)
-        {
-            rnum = Math.floor(Math.random() *max); //난수발생
+
+        for (let i = 0; i < ar.length; i++) {
+            rnum = Math.floor(Math.random() * max); //난수발생
             temp = ar[i];
             ar[i] = ar[rnum];
             ar[rnum] = temp;
         }
- 
+
         return ar;
     }
 
