@@ -275,10 +275,12 @@ export class BaseComponent implements AfterViewInit {
     calcAttackRange(character): void {
         let skill = character.getSkill();
         let tempRange: Array<[number, number]> = new Array<[number, number]>();
+        let tempRandomArr = this.shuffleRandom(0, skill.skillRange.length-1).splice(1, skill.randomCount);
+        
         if (skill.randomCount != 0) {
             for (let i = 0; i < skill.randomCount; ++i) {
-                let randomPosition = skill.skillRange[this.getRandomArbitrary(0, skill.skillRange.length - 1)];
-                tempRange.push([randomPosition[0] + character.getPosition()[0], randomPosition[1] + character.getPosition()[1]]);
+                let randomPosition = skill.skillRange[tempRandomArr[i]];
+                tempRange.push([randomPosition[0] + character.getAttackPosition()[0], randomPosition[1] + character.getAttackPosition()[1]]);
             }
         } else {
             for (let i=0; i < skill.skillRange; ++i) {
@@ -302,6 +304,26 @@ export class BaseComponent implements AfterViewInit {
         if (BaseComponent.gameState == GameState.work) {
             BaseComponent.gameState = GameState.playerTurn;
         }
+    }
+
+    shuffleRandom(min, max){
+        let ar = new Array();
+        let temp;
+        let rnum;
+       
+        for(let i=min; i<=max; i++){
+            ar.push(i);
+        }
+ 
+        for(let i=0; i< ar.length ; i++)
+        {
+            rnum = Math.floor(Math.random() *max); //난수발생
+            temp = ar[i];
+            ar[i] = ar[rnum];
+            ar[rnum] = temp;
+        }
+ 
+        return ar;
     }
 
     getRandomArbitrary(min, max) {
