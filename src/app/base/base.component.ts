@@ -206,7 +206,7 @@ export class BaseComponent implements AfterViewInit {
     }
 
     setData(myCharacter) {
-        myCharacter.chooseSkill();        
+        myCharacter.chooseSkill();
         myCharacter.movePosition();
         myCharacter.attackEnemy();
         this.calcAttackRange(myCharacter);
@@ -272,20 +272,20 @@ export class BaseComponent implements AfterViewInit {
         }
         return rate;
     }
-    calcAttackRange(character) :void{
+    calcAttackRange(character): void {
         let skill = character.getSkill();
-        let tempRange:Array<[number,number]> = new Array<[number,number]>();
-        if(skill.randomCount != 0){
-            for(let i = 0 ; i < skill.randomCount ; ++i){
-                tempRange.push(skill.skillRange[this.getRandomArbitrary(0,skill.skillRange.length-1)]); 
-                               
+        let tempRange: Array<[number, number]> = new Array<[number, number]>();
+        if (skill.randomCount != 0) {
+            for (let i = 0; i < skill.randomCount; ++i) {
+                let randomPosition = skill.skillRange[this.getRandomArbitrary(0, skill.skillRange.length - 1)];
+                tempRange.push([randomPosition[0] + character.getPosition()[0], randomPosition[1] + character.getPosition()[1]]);
             }
-            console.log(character.getAttackRange());
-        }else{
-            tempRange.push(character.getAttackPosition()); 
+        } else {
+            for (let i=0; i < skill.skillRange; ++i) {
+                tempRange.push([ character.getAttackPosition()[0] + skill.skillRange[i][0], character.getAttackPosition()[1] + skill.skillRange[i][1] ]);
+            }
         }
         character.setAttackRange(tempRange);
-        
     }
 
     onSelect(skill: Skill): void {
