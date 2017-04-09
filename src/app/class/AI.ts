@@ -27,7 +27,7 @@ export class AI implements CharacterImpl {
         let skillList: Array<Skill> = SKILLS;
         this.skill = skillList[this.getRandomArbitrary(1, skillList.length-1)];
         this.status = PlayerState.movePosition;
-        console.log(this.skill);
+        // console.log(this.skill);
     }
 
     movePosition(): void {
