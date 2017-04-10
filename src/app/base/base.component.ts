@@ -212,7 +212,6 @@ export class BaseComponent implements AfterViewInit {
         myCharacter.chooseSkill();
         myCharacter.movePosition();
         myCharacter.attackEnemy();
-        this.calcAttackRange(myCharacter);
     }
 
     calc(player, enemy) {
