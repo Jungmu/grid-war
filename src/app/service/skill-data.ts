@@ -13,7 +13,7 @@ export const SKILLS: Skill[] = [
             [0, 0]
         ],
         randomCount: 0,
-        attribute: ''
+        attribute: 'None'
     },
     {
         name: 'Fire wall',

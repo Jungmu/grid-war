@@ -126,12 +126,11 @@ export class BaseComponent implements AfterViewInit {
             case GameState.wait:
                 // do render
                 BaseComponent.player.setStatus(PlayerState.wait);
+                this.calcAttackRange(BaseComponent.player);
+                this.calcAttackRange(BaseComponent.enemy);
                 this.randerForWaiting();
                 break;
             case GameState.work:
-                this.calcAttackRange(BaseComponent.player);
-                this.calcAttackRange(BaseComponent.enemy);
-
                 this.calc(BaseComponent.player, BaseComponent.enemy);
                 this.calc(BaseComponent.enemy, BaseComponent.player);
 

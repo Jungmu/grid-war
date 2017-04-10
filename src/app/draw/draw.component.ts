@@ -89,8 +89,8 @@ export class DrawComponent implements OnInit {
     }
 
     drawCharacter(character, context, imgType: string): void {
-        // let skillName = character.getSkill().name + imgType
-        let skillName = "none"
+        let skillName = character.getSkill().attribute;
+
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(skillName);
         let gridInfo: GridInfo = this.gridComponent.calcGridSize();
 
@@ -139,6 +139,7 @@ export class DrawComponent implements OnInit {
         let gridInfo = this.gridComponent.calcGridSize();
         let fillStartPoint: [number, number];
         let attackRange = player.getAttackRange();
+        console.log(attackRange);
 
         context.fillStyle = "rgba(255, 0, 0, 0.5)";
         attackRange.forEach(element => {
@@ -153,7 +154,7 @@ export class DrawComponent implements OnInit {
     }
 
     private drawEffect(player, fillStartPoint, gridInfo: GridInfo, context): void {
-        let img: HTMLImageElement = <HTMLImageElement>document.getElementById('effect');
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
 
         let randomFillstartPoint = [fillStartPoint[0] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth, fillStartPoint[1] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth]
         if (this.gridComponent.isInGrid(fillStartPoint)) {
