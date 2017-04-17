@@ -43,6 +43,7 @@ export class BaseComponent implements AfterViewInit {
     enemyHp: number;
 
     autoPlay: boolean = true;
+    hasAttackPosition: boolean = false;
 
     startTime = Date.now();
     loopCount = 0;
@@ -126,11 +127,15 @@ export class BaseComponent implements AfterViewInit {
             case GameState.wait:
                 // do render
                 BaseComponent.player.setStatus(PlayerState.wait);
-                this.calcAttackRange(BaseComponent.player);
-                this.calcAttackRange(BaseComponent.enemy);
+                if (!this.hasAttackPosition) {
+                    this.calcAttackRange(BaseComponent.player);
+                    this.calcAttackRange(BaseComponent.enemy);
+                    this.hasAttackPosition = true;
+                }
                 this.randerForWaiting();
                 break;
             case GameState.work:
+                this.hasAttackPosition = false;
                 this.calc(BaseComponent.player, BaseComponent.enemy);
                 this.calc(BaseComponent.enemy, BaseComponent.player);
 

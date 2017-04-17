@@ -149,6 +149,7 @@ export class DrawComponent implements OnInit {
             }
             this.drawEffect(player, fillStartPoint, gridInfo, context);
         });
+        this.effectCount++;
 
 
     }
@@ -160,7 +161,6 @@ export class DrawComponent implements OnInit {
         if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.drawImage(img, randomFillstartPoint[0], randomFillstartPoint[1], gridInfo.gridWidth * Math.random(), gridInfo.gridWidth * Math.random());
         }
-        this.effectCount++;
         if (this.effectCount > this.attackEffectNum) {
             this.endDrawEffect();
         }
