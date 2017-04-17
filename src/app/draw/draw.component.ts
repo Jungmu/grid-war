@@ -96,7 +96,7 @@ export class DrawComponent implements OnInit {
 
         this.drawImgOnGrid(img, character.getPosition(), gridInfo, context, 1);
         this.drawImgOnGrid(img, character.getAfterPosition(), gridInfo, context, 0.5);
-
+        this.drawName(character.getSkill().name, character.getPosition(), gridInfo, context);
     }
 
     private drawImgOnGrid(img, position: [number, number], gridInfo: GridInfo, context, alpha: number): void {
@@ -106,6 +106,17 @@ export class DrawComponent implements OnInit {
         context.globalAlpha = alpha;
         context.drawImage(img, x + gridInfo.gridOffset, y + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
         context.globalAlpha = keepingAplha;
+    }
+
+    private drawName(name, position: [number, number], gridInfo: GridInfo, context) {
+        let x: number = (position[0] - 1) * gridInfo.gridWidth;
+        let y: number = (position[1]) * gridInfo.gridWidth;
+        context.shadowColor = "white";
+        context.shadowBlur = 4;
+        context.font="15px Georgia";
+        context.fillText(name, x + gridInfo.gridOffset, y + gridInfo.gridOffset);
+        context.shadowBlur = 0;
+        
     }
 
     drawLiveMove(player): void {
