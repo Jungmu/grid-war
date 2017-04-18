@@ -24,6 +24,8 @@ export class DrawComponent implements OnInit {
     private effectPosition: [number, number] = [0, 0];
 
     private meteoEffectArray: [[number, number]] = [
+        [1.0, -1.0], [0.95, -0.95],
+        [0.9, -0.9], [0.85, -0.85],
         [0.8, -0.8], [0.75, -0.75],
         [0.7, -0.7], [0.65, -0.65],
         [0.6, -0.6], [0.55, -0.55],
@@ -209,19 +211,13 @@ export class DrawComponent implements OnInit {
         }
         else if (this.gridComponent.isInGrid(fillStartPoint)) {
             if (this.meteoEffectArray.length > this.effectCount) {
-                context.drawImage(
-                    img, fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][0]
+                context.drawImage(img
+                    , fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][0]
                     , fillStartPoint[1] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][1]
-                    , gridInfo.gridWidth
-                    , gridInfo.gridWidth
+                    , gridInfo.gridWidth, gridInfo.gridWidth
                 );
             } else {
-                context.drawImage(
-                    img, fillStartPoint[0]
-                    , fillStartPoint[1]
-                    , gridInfo.gridWidth
-                    , gridInfo.gridWidth
-                );
+                context.drawImage(img, fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
             }
         }
     }
