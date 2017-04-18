@@ -16,7 +16,7 @@ export class DrawComponent implements OnInit {
     gridComponent: GridComponent = new GridComponent;
 
     private moveSplitNum: number = 40;
-    private attackEffectNum: number = 36;
+    private attackEffectNum: number = 30;
     private effectCount: number = 0;
     private drawCount: number = 0;
     private moveVector: [number, number] = [0, 0];
@@ -29,7 +29,8 @@ export class DrawComponent implements OnInit {
         [1.3, 0.7],[1.3, 0.7],[1.3, 0.7],[1.3, 0.7],[1.3, 0.7],
         [1.2, 0.8],[1.2, 0.8],[1.2, 0.8],[1.2, 0.8],[1.2, 0.8],
         [1.1, 0.9],[1.1, 0.9],[1.1, 0.9],[1.1, 0.9],[1.1, 0.9],
-        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0]
+        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
+        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
     ];
 
     constructor() { }
@@ -203,8 +204,8 @@ export class DrawComponent implements OnInit {
         
         if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.drawImage(
-                img, fillStartPoint[0] * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][0]
-                , fillStartPoint[1] * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][1]
+                img, fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][0] - gridInfo.gridWidth
+                , fillStartPoint[1] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][1] - gridInfo.gridWidth
                 , gridInfo.gridWidth
                 , gridInfo.gridWidth
             );
