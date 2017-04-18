@@ -204,6 +204,9 @@ export class DrawComponent implements OnInit {
     private meteoEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
         
+        if (this.effectCount >= this.attackEffectNum) {
+            this.endDrawEffect();
+        }
         if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.drawImage(
                 img, fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][0] - gridInfo.gridWidth
@@ -212,9 +215,7 @@ export class DrawComponent implements OnInit {
                 , gridInfo.gridWidth
             );
         }
-        if (this.effectCount >= this.attackEffectNum) {
-            this.endDrawEffect();
-        }
+        
     }
 
     private randomPosAndSizeEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
