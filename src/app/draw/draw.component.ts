@@ -88,7 +88,7 @@ export class DrawComponent implements OnInit {
         }
     }
 
-    drawCharacter(character, context, imgType: string): void {
+    drawCharacter(character, context): void {
         let skillName = character.getSkill().attribute;
 
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(skillName);
@@ -176,24 +176,6 @@ export class DrawComponent implements OnInit {
             this.endDrawEffect();
         }
 
-        // if (this.attackVector[0] == 0 && this.attackVector[1] == 0) {
-        //     // 힐스킬 쓰면 진행안되는거 임시방편
-        //     if (player.getAttackPosition()[1] - player.getAfterPosition()[1] == 0) {
-        //         this.endDrawEffect();
-        //     }
-
-        //     this.attackVector = [(player.getAttackPosition()[0] - player.getAfterPosition()[0]) / this.attackSplitNum, (player.getAttackPosition()[1] - player.getAfterPosition()[1]) / this.attackSplitNum];
-        //     this.effectPosition = [player.getAfterPosition()[0] + this.attackVector[0] - 1, player.getAfterPosition()[1] + this.attackVector[1] - 1];
-        //     context.drawImage(img, (this.effectPosition[0] * gridInfo.gridWidth) + gridInfo.gridOffset, (this.effectPosition[1] * gridInfo.gridWidth) + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
-        //     this.drawCount++;
-        // } else {
-        //     this.effectPosition = [this.effectPosition[0] + this.attackVector[0], this.effectPosition[1] + this.attackVector[1]];
-        //     context.drawImage(img, (this.effectPosition[0] * gridInfo.gridWidth) + gridInfo.gridOffset, (this.effectPosition[1] * gridInfo.gridWidth) + gridInfo.gridOffset, gridInfo.gridWidth, gridInfo.gridWidth);
-        //     if (this.drawCount > this.attackSplitNum) {
-        //         this.endDrawEffect();
-        //     }
-        //     this.drawCount++;
-        // }
     }
 
     private endDrawEffect(): void {

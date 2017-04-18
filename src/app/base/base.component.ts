@@ -186,8 +186,8 @@ export class BaseComponent implements AfterViewInit {
                 break;
         }
 
-        this.draw.drawCharacter(player, this.context, "");
-        this.draw.drawCharacter(enemy, this.context, "2");
+        this.draw.drawCharacter(player, this.context);
+        this.draw.drawCharacter(enemy, this.context);
     }
 
     randerForWaiting() {
@@ -199,15 +199,10 @@ export class BaseComponent implements AfterViewInit {
                 this.draw.drawLiveMove(BaseComponent.enemy);
                 break;
             case LiveDrawState.attackPlayer:
-                // this.draw.drawAttackRange(BaseComponent.player, this.context);
                 this.draw.drawLiveAttack(BaseComponent.player, this.context);
-                // BaseComponent.drawState = LiveDrawState.attackEnemy;
                 break;
             case LiveDrawState.attackEnemy:
-                // this.draw.drawAttackRange(BaseComponent.enemy, this.context);
                 this.draw.drawLiveAttack(BaseComponent.enemy, this.context);
-                // BaseComponent.drawState = LiveDrawState.wait;
-                // BaseComponent.gameState = GameState.work;
                 break;
             default:
                 //error
