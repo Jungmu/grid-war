@@ -16,7 +16,7 @@ export class DrawComponent implements OnInit {
     gridComponent: GridComponent = new GridComponent;
 
     private moveSplitNum: number = 40;
-    private attackEffectNum: number = 30;
+    private attackEffectNum: number = 36;
     private effectCount: number = 0;
     private drawCount: number = 0;
     private moveVector: [number, number] = [0, 0];
@@ -24,10 +24,12 @@ export class DrawComponent implements OnInit {
     private effectPosition: [number, number] = [0, 0];
 
     private meteoEffectArray: [[number, number]] = [
-        [1.5, 0.5],[1.5, 0.5],[1.5, 0.5],[1.5, 0.5],
-        [0.7, 0.8], [0.7, 0.8], [0.7, 0.8], [0.7, 0.8],
-        [1.1, 0.7], [1.1, 0.7], [1.1, 0.7], [1.1, 0.7],
-        [1, 1], [1, 1], [1, 1], [1, 1]
+        [1.5, 0.5],[1.5, 0.5],[1.5, 0.5],[1.5, 0.5],[1.5, 0.5],
+        [1.4, 0.6],[1.4, 0.6],[1.4, 0.6],[1.4, 0.6],[1.4, 0.6],
+        [1.3, 0.7],[1.3, 0.7],[1.3, 0.7],[1.3, 0.7],[1.3, 0.7],
+        [1.2, 0.8],[1.2, 0.8],[1.2, 0.8],[1.2, 0.8],[1.2, 0.8],
+        [1.1, 0.9],[1.1, 0.9],[1.1, 0.9],[1.1, 0.9],[1.1, 0.9],
+        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0]
     ];
 
     constructor() { }
