@@ -105,13 +105,13 @@ export class BaseComponent implements AfterViewInit {
             this.playerHp = BaseComponent.player.getHp();
             this.enemyHp = BaseComponent.enemy.getHp();
             if (this.playerHp <= 0 && this.enemyHp <= 0) {
-                alert("무승부!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                alert("무승부!!!!!" + BaseComponent.player.getName() + " HP=" + this.playerHp + " : " +BaseComponent.enemy.getName() + "HP=" + this.enemyHp);
                 window.history.back();
             } else if (this.playerHp <= 0) {
-                alert(BaseComponent.player.getName() + " 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                alert(BaseComponent.enemy.getName() + " 승리!!!!!" + BaseComponent.player.getName() + " HP=" + this.playerHp + " : " +BaseComponent.enemy.getName() + "HP=" + this.enemyHp);
                 window.history.back();
             } else if (this.enemyHp <= 0) {
-                alert(BaseComponent.enemy.getName() + " 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                alert(BaseComponent.player.getName() + " 승리!!!!!" + BaseComponent.player.getName() + " HP=" + this.playerHp + " : " +BaseComponent.enemy.getName() + "HP=" + this.enemyHp);
                 window.history.back();
             }
 
