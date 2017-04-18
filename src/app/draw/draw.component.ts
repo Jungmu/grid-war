@@ -23,6 +23,13 @@ export class DrawComponent implements OnInit {
     private attackVector: [number, number] = [0, 0];
     private effectPosition: [number, number] = [0, 0];
 
+    private meteoEffectArray: [[number, number]] = [
+        [1.5, 0.5],[1.5, 0.5],[1.5, 0.5],[1.5, 0.5],
+        [0.7, 0.8], [0.7, 0.8], [0.7, 0.8], [0.7, 0.8],
+        [1.1, 0.7], [1.1, 0.7], [1.1, 0.7], [1.1, 0.7],
+        [1, 1], [1, 1], [1, 1], [1, 1]
+    ];
+
     constructor() { }
 
     ngOnInit() { }
@@ -170,6 +177,8 @@ export class DrawComponent implements OnInit {
 
         switch (skillName) {
             case "Meteo":
+                this.meteoEffect(player, fillStartPoint, gridInfo, context);
+                break;
             case "Water cannon":
             case "Poison seeds":
                 this.randomPosAndSizeEffect(player, fillStartPoint, gridInfo, context);
@@ -185,6 +194,22 @@ export class DrawComponent implements OnInit {
                 break;
         }
 
+    }
+
+    private meteoEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
+        
+        if (this.gridComponent.isInGrid(fillStartPoint)) {
+            context.drawImage(
+                img, fillStartPoint[0] * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][0]
+                , fillStartPoint[1] * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][1]
+                , gridInfo.gridWidth
+                , gridInfo.gridWidth
+            );
+        }
+        if (this.effectCount >= this.attackEffectNum) {
+            this.endDrawEffect();
+        }
     }
 
     private randomPosAndSizeEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
