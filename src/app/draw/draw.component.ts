@@ -96,7 +96,7 @@ export class DrawComponent implements OnInit {
 
         this.drawImgOnGrid(img, character.getPosition(), gridInfo, context, 1);
         this.drawImgOnGrid(img, character.getAfterPosition(), gridInfo, context, 0.5);
-        this.drawName(character.getSkill().name, character.getPosition(), gridInfo, context);
+        this.drawName(character.getName(), character.getPosition(), gridInfo, context);
     }
 
     private drawImgOnGrid(img, position: [number, number], gridInfo: GridInfo, context, alpha: number): void {

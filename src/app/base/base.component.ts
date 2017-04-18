@@ -76,7 +76,9 @@ export class BaseComponent implements AfterViewInit {
                 break;
             case 'AIvsAI':
                 BaseComponent.player = new AI;
+                BaseComponent.player.setName("AI_1");
                 BaseComponent.enemy = new AI;
+                BaseComponent.enemy.setName("AI_2");
                 break;
             default:
                 //error
@@ -102,9 +104,15 @@ export class BaseComponent implements AfterViewInit {
 
             this.playerHp = BaseComponent.player.getHp();
             this.enemyHp = BaseComponent.enemy.getHp();
-            if (this.playerHp <= 0 || this.enemyHp <= 0) {
-                alert("누군가 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
-                location.href = 'http://localhost:8080/';
+            if (this.playerHp <= 0 && this.enemyHp <= 0) {
+                alert("무승부!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                window.history.back();
+            } else if (this.playerHp <= 0) {
+                alert(BaseComponent.player.getName() + " 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                window.history.back();
+            } else if (this.enemyHp <= 0) {
+                alert(BaseComponent.enemy.getName() + " 승리!!!!! 내HP=" + this.playerHp + " : 적HP=" + this.enemyHp);
+                window.history.back();
             }
 
             this.tick();

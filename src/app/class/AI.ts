@@ -7,13 +7,13 @@ import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
 export class AI implements CharacterImpl {
-    private name: string;
+    private name: string = "AI";
     private status: number = PlayerState.chooseSkill;
     private HP: number = 120;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
-    private dotDamage: [[number, number]] = [[0,0]];// [damage , turn]
+    private dotDamage: [[number, number]] = [[0, 0]];// [damage , turn]
     private actionInfo: ActionInfo = new ActionInfo;
 
     private grid: GridComponent = new GridComponent;
@@ -25,7 +25,7 @@ export class AI implements CharacterImpl {
     chooseSkill(): void {
         if (this.status != PlayerState.chooseSkill) return;
         let skillList: Array<Skill> = SKILLS;
-        this.skill = skillList[this.getRandomArbitrary(1, skillList.length-1)];
+        this.skill = skillList[this.getRandomArbitrary(1, skillList.length - 1)];
         this.status = PlayerState.movePosition;
         // console.log(this.skill);
     }
@@ -74,7 +74,7 @@ export class AI implements CharacterImpl {
     setAttackPosition(position) {
         this.actionInfo.attackPosition = position;
     }
-    
+
     getAttackRange() {
         return this.actionInfo.attackRange;
     }
@@ -128,7 +128,12 @@ export class AI implements CharacterImpl {
     pushDotDamage(dotDamage: [number, number]) {
         this.dotDamage.push(dotDamage);
     }
-
+    getName(): string {
+        return this.name;
+    }
+    setName(name: string) {
+        this.name = name;
+    }
 
 }
 

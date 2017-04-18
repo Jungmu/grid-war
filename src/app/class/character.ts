@@ -5,14 +5,14 @@ import { BaseComponent } from '../base/base.component';
 import { ActionInfo } from './actionInfo';
 import { CharacterImpl } from './characterImpl';
 
-export class Character implements CharacterImpl{
-    private name: string;
+export class Character implements CharacterImpl {
+    private name: string = "Player";
     private status: PlayerState = PlayerState.chooseSkill;
     private HP: number = 120;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;
-    private dotDamage: [[number,number]] = [[0,0]]; // [damage , turn]
+    private dotDamage: [[number, number]] = [[0, 0]]; // [damage , turn]
     private actionInfo: ActionInfo = new ActionInfo;
 
     chooseSkill(): void {
@@ -29,7 +29,7 @@ export class Character implements CharacterImpl{
     attackEnemy(): void {
         // touch
     }
-    
+
 
     getActionInfo(): ActionInfo {
         return this.actionInfo;
@@ -39,7 +39,7 @@ export class Character implements CharacterImpl{
         return this.actionInfo.afterPosition;
     }
 
-    setAfterPosition(position){
+    setAfterPosition(position) {
         this.actionInfo.afterPosition = position;
     }
 
@@ -79,10 +79,10 @@ export class Character implements CharacterImpl{
         return this.skill;
     }
 
-    setSkill(skill:Skill){
+    setSkill(skill: Skill) {
         this.skill = skill;
     }
-    
+
     getStatus(): PlayerState {
         return this.status;
     }
@@ -91,19 +91,25 @@ export class Character implements CharacterImpl{
         this.status = status;
     }
 
-    getPosition():[number,number]{
+    getPosition(): [number, number] {
         return this.position;
     }
 
-    setPosition(position:[number,number]){
+    setPosition(position: [number, number]) {
         this.position = position;
     }
 
-    getDotDamage(){
+    getDotDamage() {
         return this.dotDamage;
     }
-    pushDotDamage(dotDamage:[number,number]){
+    pushDotDamage(dotDamage: [number, number]) {
         this.dotDamage.push(dotDamage);
+    }
+    getName(): string {
+        return this.name;
+    }
+    setName(name: string) {
+        this.name = name;
     }
 
 }

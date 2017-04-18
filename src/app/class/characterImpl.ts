@@ -22,4 +22,7 @@ export interface CharacterImpl {
     setStatus(status);
     getPosition(): [number, number];
     setPosition(position: [number, number]);
+
+    getName(): string;
+    setName(name:string);
 }
