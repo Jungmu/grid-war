@@ -88,7 +88,7 @@ export const SKILLS: Skill[] = [
         attribute: 'water'
     },
     {
-        name: 'Heel',
+        name: 'Heal',
         damage: 0,
         dotDamage: 3,
         dotTurn: 3,

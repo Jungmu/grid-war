@@ -113,10 +113,10 @@ export class DrawComponent implements OnInit {
         let y: number = (position[1]) * gridInfo.gridWidth;
         context.shadowColor = "white";
         context.shadowBlur = 4;
-        context.font="15px Georgia";
+        context.font = "15px Georgia";
         context.fillText(name, x + gridInfo.gridOffset, y + gridInfo.gridOffset);
         context.shadowBlur = 0;
-        
+
     }
 
     drawLiveMove(player): void {
@@ -166,6 +166,28 @@ export class DrawComponent implements OnInit {
     }
 
     private drawEffect(player, fillStartPoint, gridInfo: GridInfo, context): void {
+        let skillName = player.getSkill().name;
+
+        switch (skillName) {
+            case "Meteo":
+            case "Water cannon":
+            case "Poison seeds":
+                this.randomPosAndSizeEffect(player, fillStartPoint, gridInfo, context);
+                break;
+
+            case "Fire wall":
+            case "Tsunami":
+            case "Heal":
+                this.bounceEffect(player, fillStartPoint, gridInfo, context);
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    private randomPosAndSizeEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
 
         let randomFillstartPoint = [fillStartPoint[0] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth, fillStartPoint[1] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth]
@@ -175,7 +197,20 @@ export class DrawComponent implements OnInit {
         if (this.effectCount > this.attackEffectNum) {
             this.endDrawEffect();
         }
+    }
 
+    private bounceEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
+
+        let rateOnTime = ((Date.now() % 5 - 2) / 10) + 1;
+        let bounceFillStartPoint = [fillStartPoint[0], fillStartPoint[1] * rateOnTime];
+        let bounceFillEndPoint = [fillStartPoint[0] + gridInfo.gridWidth, fillStartPoint[1] + gridInfo.gridWidth];
+        if (this.gridComponent.isInGrid(fillStartPoint)) {
+            context.drawImage(img, bounceFillStartPoint[0], bounceFillStartPoint[1], bounceFillEndPoint[0] - bounceFillStartPoint[0], bounceFillEndPoint[1] - bounceFillStartPoint[1]);
+        }
+        if (this.effectCount > this.attackEffectNum) {
+            this.endDrawEffect();
+        }
     }
 
     private endDrawEffect(): void {
