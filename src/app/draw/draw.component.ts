@@ -24,15 +24,15 @@ export class DrawComponent implements OnInit {
     private effectPosition: [number, number] = [0, 0];
 
     private meteoEffectArray: [[number, number]] = [
-        [1.5, 0.5],[1.48, 0.52],[1.46, 0.54],[1.44, 0.56],[1.42, 0.58],
-        [1.4, 0.6],[1.38, 0.62],[1.36, 0.64],[1.34, 0.66],[1.32, 0.68],
-        [1.3, 0.7],[1.28, 0.72],[1.26, 0.74],[1.24, 0.76],[1.22, 0.78],
-        [1.2, 0.8],[1.18, 0.82],[1.16, 0.84],[1.14, 0.86],[1.12, 0.88],
-        [1.1, 0.9],[1.08, 0.92],[1.06, 0.94],[1.04, 0.96],[1.02, 0.98],
-        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
-        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
-        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
-        [1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],[1.0, 1.0],
+        [0.8, -0.8], [0.75, -0.75],
+        [0.7, -0.7], [0.65, -0.65],
+        [0.6, -0.6], [0.55, -0.55],
+        [0.5, -0.5], [0.45, -0.45],
+        [0.4, -0.4], [0.35, -0.35],
+        [0.3, -0.3], [0.25, -0.25],
+        [0.2, -0.2], [0.15, -0.15],
+        [0.1, -0.1], [0.05, -0.05],
+        [0, 0]
     ];
 
     constructor() { }
@@ -203,19 +203,27 @@ export class DrawComponent implements OnInit {
 
     private meteoEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
-        
+
         if (this.effectCount >= this.attackEffectNum) {
             this.endDrawEffect();
         }
-        if (this.gridComponent.isInGrid(fillStartPoint)) {
-            context.drawImage(
-                img, fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][0] - gridInfo.gridWidth
-                , fillStartPoint[1] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount % this.meteoEffectArray.length][1] - gridInfo.gridWidth
-                , gridInfo.gridWidth
-                , gridInfo.gridWidth
-            );
+        else if (this.gridComponent.isInGrid(fillStartPoint)) {
+            if (this.meteoEffectArray.length > this.effectCount) {
+                context.drawImage(
+                    img, fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][0]
+                    , fillStartPoint[1] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][1]
+                    , gridInfo.gridWidth
+                    , gridInfo.gridWidth
+                );
+            } else {
+                context.drawImage(
+                    img, fillStartPoint[0]
+                    , fillStartPoint[1]
+                    , gridInfo.gridWidth
+                    , gridInfo.gridWidth
+                );
+            }
         }
-        
     }
 
     private randomPosAndSizeEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
