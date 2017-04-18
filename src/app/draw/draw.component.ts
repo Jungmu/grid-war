@@ -20,8 +20,6 @@ export class DrawComponent implements OnInit {
     private effectCount: number = 0;
     private drawCount: number = 0;
     private moveVector: [number, number] = [0, 0];
-    private attackVector: [number, number] = [0, 0];
-    private effectPosition: [number, number] = [0, 0];
 
     private meteoEffectArray: [[number, number]] = [
         [1.0, -1.0], [0.95, -0.95],
@@ -175,8 +173,9 @@ export class DrawComponent implements OnInit {
             this.drawEffect(player, fillStartPoint, gridInfo, context);
         });
         this.effectCount++;
-
-
+        if (this.effectCount >= this.attackEffectNum) {
+            this.endDrawEffect();
+        }
     }
 
     private drawEffect(player, fillStartPoint, gridInfo: GridInfo, context): void {
@@ -206,10 +205,7 @@ export class DrawComponent implements OnInit {
     private meteoEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
 
-        if (this.effectCount >= this.attackEffectNum) {
-            this.endDrawEffect();
-        }
-        else if (this.gridComponent.isInGrid(fillStartPoint)) {
+        if (this.gridComponent.isInGrid(fillStartPoint)) {
             if (this.meteoEffectArray.length > this.effectCount) {
                 context.drawImage(img
                     , fillStartPoint[0] + gridInfo.gridWidth * this.meteoEffectArray[this.effectCount][0]
@@ -229,9 +225,6 @@ export class DrawComponent implements OnInit {
         if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.drawImage(img, randomFillstartPoint[0], randomFillstartPoint[1], gridInfo.gridWidth * Math.random(), gridInfo.gridWidth * Math.random());
         }
-        if (this.effectCount > this.attackEffectNum) {
-            this.endDrawEffect();
-        }
     }
 
     private bounceEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
@@ -243,9 +236,6 @@ export class DrawComponent implements OnInit {
         if (this.gridComponent.isInGrid(fillStartPoint)) {
             context.drawImage(img, bounceFillStartPoint[0], bounceFillStartPoint[1], bounceFillEndPoint[0] - bounceFillStartPoint[0], bounceFillEndPoint[1] - bounceFillStartPoint[1]);
         }
-        if (this.effectCount > this.attackEffectNum) {
-            this.endDrawEffect();
-        }
     }
 
     private endDrawEffect(): void {
@@ -256,7 +246,5 @@ export class DrawComponent implements OnInit {
             BaseComponent.drawState = LiveDrawState.wait;
             BaseComponent.gameState = GameState.work;
         }
-        this.attackVector = [0, 0];
-        this.effectPosition = [0, 0];
     }
 }
