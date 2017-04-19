@@ -233,7 +233,9 @@ export class DrawComponent implements OnInit {
                     , gridInfo.gridWidth - gridInfo.gridWidth * (this.effectCount / 100 * 2)
                 );
             } else {
-                context.drawImage(img, fillStartPoint[0] * (1 - boomSize / 2), fillStartPoint[1] * (1 - boomSize / 2), gridInfo.gridWidth * (1 + 2 * boomSize), gridInfo.gridWidth * (1 + 2 * boomSize));
+                context.drawImage(img
+                    , fillStartPoint[0] + gridInfo.gridWidth * -1 * boomSize, fillStartPoint[1] + gridInfo.gridWidth * -1 * boomSize
+                    , gridInfo.gridWidth + gridInfo.gridWidth * boomSize * 2, gridInfo.gridWidth + gridInfo.gridWidth * boomSize * 2);
             }
         }
     }
