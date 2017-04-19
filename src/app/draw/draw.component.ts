@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Character } from '../class/character';
 import { BaseComponent } from '../base/base.component';
 import { GridInfo } from '../grid/grid.info';
@@ -16,7 +16,7 @@ export class DrawComponent implements OnInit {
     gridComponent: GridComponent = new GridComponent;
 
     private moveSplitNum: number = 40;
-    private attackEffectNum: number = 30;
+    private attackEffectNum: number = 60;
     private effectCount: number = 0;
     private drawCount: number = 0;
     private moveVector: [number, number] = [0, 0];
@@ -186,6 +186,8 @@ export class DrawComponent implements OnInit {
                 this.meteoEffect(player, fillStartPoint, gridInfo, context);
                 break;
             case "Water cannon":
+                this.waterCanonEffect(player, fillStartPoint, gridInfo, context);
+                break;
             case "Poison seeds":
                 this.randomPosAndSizeEffect(player, fillStartPoint, gridInfo, context);
                 break;
@@ -214,6 +216,24 @@ export class DrawComponent implements OnInit {
                 );
             } else {
                 context.drawImage(img, fillStartPoint[0], fillStartPoint[1], gridInfo.gridWidth, gridInfo.gridWidth);
+            }
+        }
+    }
+
+    private waterCanonEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
+        let boomSize: number = 0.2;
+
+        if (this.gridComponent.isInGrid(fillStartPoint)) {
+            if (25 > this.effectCount) {
+                context.drawImage(img
+                    , fillStartPoint[0] + gridInfo.gridWidth * (this.effectCount / 100)
+                    , fillStartPoint[1] + gridInfo.gridWidth * (this.effectCount / 100)
+                    , gridInfo.gridWidth - gridInfo.gridWidth * (this.effectCount / 100 * 2)
+                    , gridInfo.gridWidth - gridInfo.gridWidth * (this.effectCount / 100 * 2)
+                );
+            } else {
+                context.drawImage(img, fillStartPoint[0] * (1 - boomSize / 2), fillStartPoint[1] * (1 - boomSize / 2), gridInfo.gridWidth * (1 + 2 * boomSize), gridInfo.gridWidth * (1 + 2 * boomSize));
             }
         }
     }
