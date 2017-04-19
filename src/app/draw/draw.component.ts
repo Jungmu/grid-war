@@ -189,7 +189,7 @@ export class DrawComponent implements OnInit {
                 this.waterCanonEffect(player, fillStartPoint, gridInfo, context);
                 break;
             case "Poison seeds":
-                this.randomPosAndSizeEffect(player, fillStartPoint, gridInfo, context);
+                this.poisonSeedsEffect(player, fillStartPoint, gridInfo, context);
                 break;
 
             case "Fire wall":
@@ -240,19 +240,26 @@ export class DrawComponent implements OnInit {
         }
     }
 
-    private randomPosAndSizeEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
+    private poisonSeedsEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
+        let boomSize: number = 0.2;
 
-        let randomFillstartPoint = [fillStartPoint[0] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth, fillStartPoint[1] - gridInfo.gridWidth * Math.random() + gridInfo.gridWidth]
         if (this.gridComponent.isInGrid(fillStartPoint)) {
-            context.drawImage(img, randomFillstartPoint[0], randomFillstartPoint[1], gridInfo.gridWidth * Math.random(), gridInfo.gridWidth * Math.random());
+
+            context.drawImage(img
+                , fillStartPoint[0]
+                , fillStartPoint[1] - gridInfo.gridWidth * (this.effectCount / 100)
+                , gridInfo.gridWidth
+                , gridInfo.gridWidth + gridInfo.gridWidth * (this.effectCount / 100 * 2)
+            );
+
         }
     }
 
     private bounceEffect(player, fillStartPoint, gridInfo: GridInfo, context) {
         let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name);
 
-        let rateOnTime = ((Date.now() % 5 - 2) / 10) + 1;
+        let rateOnTime = ((Date.now() % 9 - 4) / 10) + 1;
         let bounceFillStartPoint = [fillStartPoint[0], fillStartPoint[1] * rateOnTime];
         let bounceFillEndPoint = [fillStartPoint[0] + gridInfo.gridWidth, fillStartPoint[1] + gridInfo.gridWidth];
         if (this.gridComponent.isInGrid(fillStartPoint)) {
