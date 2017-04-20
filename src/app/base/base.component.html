@@ -12,8 +12,12 @@
         Skill List
         <div class="btn-group" role="group" aria-label="...">
             <ng-container *ngFor="let skill of skills ">
-                <button *ngIf="skill.name != 'None'" class="btn-sm btn-primary" (click)="onSelect(skill)"> {{skill.name}} <span class="badge">{{skill.damage}}+{{skill.dotDamage}}*{{skill.dotTurn}}s</span> </button>
+                <button *ngIf="skill.name != 'None' && skill.attribute == 'fire'" class="btn-sm btn-danger" (click)="onSelect(skill)"> {{skill.name}} <span class="badge">{{skill.damage}}+{{skill.dotDamage}}*{{skill.dotTurn}}s</span> </button>
+                <button *ngIf="skill.name != 'None' && skill.attribute == 'water'" class="btn-sm btn-primary" (click)="onSelect(skill)"> {{skill.name}} <span class="badge">{{skill.damage}}+{{skill.dotDamage}}*{{skill.dotTurn}}s</span> </button>
+                <button *ngIf="skill.name != 'None' && skill.attribute == 'grass'" class="btn-sm btn-success" (click)="onSelect(skill)"> {{skill.name}} <span class="badge">{{skill.damage}}+{{skill.dotDamage}}*{{skill.dotTurn}}s</span> </button>
             </ng-container>
         </div>
+
+        1.3 >>> Fire>Grass>Water>Fire >>> 0.7
     </div>
 </div>
