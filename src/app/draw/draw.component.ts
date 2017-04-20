@@ -150,7 +150,7 @@ export class DrawComponent implements OnInit {
         let attackRange = player.getAttackRange();
         console.log(attackRange);
 
-        context.fillStyle = "rgba(255, 0, 0, 0.5)";
+        context.fillStyle = "rgba(255, 0, 0, 0.4)";
         attackRange.forEach(element => {
             fillStartPoint = [(element[0] - 1) * gridInfo.gridWidth + gridInfo.gridOffset, (element[1] - 1) * gridInfo.gridWidth + gridInfo.gridOffset];
             if (this.gridComponent.isInGrid(fillStartPoint)) {
