@@ -1,3 +1,6 @@
-.container{
+﻿.container{
     max-width:720px;
+}
+.logo{
+    padding:20px;
 }
