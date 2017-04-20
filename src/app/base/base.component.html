@@ -1,33 +1,22 @@
 <div class="row">
-  <div id="map" class="col-lg-9">
+  <div id="map" class="col-xs-offset-1 col-xs-8">
     <app-touchscreen></app-touchscreen>
     <canvas #myCanvas></canvas>
   </div>
-  <div class="status col-lg-3">
+  <div class="status col-md-3 col-sm-3 col-xs-3">
     <div>
-      웨폰선택
+      <button class="btn btn-default" (click)="isAutoPlay()" *ngIf="autoPlay">수동</button>
+      <button class="btn btn-success" (click)="isAutoPlay()"*ngIf="!autoPlay">자동</button>
+      <button class="btn btn-default" (click)="DoPlay()" *ngIf="!autoPlay">진행</button>
+    </div>
+    <hr>  
+    <div>
+      스킬선택
       <p *ngFor="let skill of skills ">
         <span *ngIf="skill.name != 'None'">
-          <span class="btn btn-primary" (click)="onSelect(skill)"> {{skill.name}}</span> <span class="badge">{{skill.damage}}</span>
-          <br>
-          <!--<p *ngFor="let skill of skill.skill ">
-          <span class="btn btn-primary" (click)="onSelect(skill)" (click)="onSelectSkill(skill)">{{skill.name}}</span> <span class="badge">{{skill.damage}}</span>
-          </p>-->
+          <span class="btn-xs btn-primary" (click)="onSelect(skill)"> {{skill.name}} <span class="badge">{{skill.damage}}</span> </span> 
         </span>
       </p>
-    </div>
-    <hr>
-    <div>
-      적체력: {{enemyHp}}
-      <hr>
-      내체력: {{playerHp}}
-
-    </div>
-    <hr>
-    <div>
-      <button (click)="isAutoPlay()" *ngIf="autoPlay">자동</button>
-      <button (click)="isAutoPlay()"*ngIf="!autoPlay">수동</button>
-      <button (click)="DoPlay()" *ngIf="!autoPlay">진행</button>
     </div>
   </div>
 </div>

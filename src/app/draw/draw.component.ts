@@ -95,6 +95,7 @@ export class DrawComponent implements OnInit {
         this.drawImgOnGrid(img, character.getPosition(), gridInfo, context, 1);
         this.drawImgOnGrid(img, character.getAfterPosition(), gridInfo, context, 0.5);
         this.drawName(character.getName(), character.getPosition(), gridInfo, context);
+        this.drawHP(character.getHp(), character.getPosition(), gridInfo, context);
     }
 
     private drawImgOnGrid(img, position: [number, number], gridInfo: GridInfo, context, alpha: number): void {
@@ -107,14 +108,27 @@ export class DrawComponent implements OnInit {
     }
 
     private drawName(name, position: [number, number], gridInfo: GridInfo, context) {
-        let x: number = (position[0] - 1) * gridInfo.gridWidth;
-        let y: number = (position[1]) * gridInfo.gridWidth;
-        context.shadowColor = "white";
-        context.shadowBlur = 4;
-        context.font = "15px Georgia";
+        let x: number = (position[0]-0.8) * gridInfo.gridWidth;
+        let y: number = (position[1]-0.2) * gridInfo.gridWidth;
+        context.shadowColor = "blue";
+        context.shadowBlur = 3;
+        context.font = "1.1em Georgia";
+        context.fillStyle = "white"
         context.fillText(name, x + gridInfo.gridOffset, y + gridInfo.gridOffset);
+        context.fillStyle = "black"
         context.shadowBlur = 0;
+    }
 
+    private drawHP(hp, position: [number, number], gridInfo: GridInfo, context) {
+        let x: number = (position[0]-0.8) * gridInfo.gridWidth;
+        let y: number = (position[1]) * gridInfo.gridWidth;
+        context.shadowColor = "red";
+        context.shadowBlur = 4;
+        context.font = "1em Georgia";
+        context.fillStyle = "white"
+        context.fillText("HP: "+hp, x + gridInfo.gridOffset, y + gridInfo.gridOffset);
+        context.fillStyle = "black"
+        context.shadowBlur = 0;
     }
 
     drawLiveMove(player): void {
