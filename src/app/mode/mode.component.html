@@ -1,8 +1,13 @@
-<div class="mode">
-  <!--<button>I vs AI</button>
-  <button>I vs You</button>
-  <button>myAI vs yourAI</button>-->
-  <a [routerLink]= "['/base', 'singlePlay']">I vs AI</a>
-  <a [routerLink]= "['/base', 'multiPlay']">I vs You</a>
-  <a [routerLink]= "['/base', 'AIvsAI']">myAI vs yourAI</a>
+﻿<div class="mode_container col-lg-9">
+  <div class="mode">
+    <div class="main-header">
+      <img class="main-logo" src="/src/images/logo.png" />
+    </div>
+    <div class="start-btn-div text-center">
+      <a class="btn btn-primary start-btn" [routerLink]="['/base', 'singlePlay']">Single Play</a>
+    </div>
+    <div class="start-btn-div text-center">
+      <a class="btn btn-primary start-btn" [routerLink]="['/base', 'AIvsAI']">AI Play</a>
+    </div>
+  </div>
 </div>

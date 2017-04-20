@@ -1,0 +1,24 @@
+﻿.mode_container {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  padding-bottom: 100%;
+}
+.mode {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(../../images/main.png);
+  background-size: 100% 100%;
+  padding: 0px;
+}
+.main-logo {
+  padding:15%;
+  width:100%;
+}
+.start-btn-div {
+  padding-bottom:10%
+}
+.start-btn{
+  width:50%;
+}
