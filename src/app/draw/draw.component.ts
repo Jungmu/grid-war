@@ -162,6 +162,10 @@ export class DrawComponent implements OnInit {
         let gridInfo = this.gridComponent.calcGridSize();
         let fillStartPoint: [number, number];
         let attackRange = player.getAttackRange();
+        let playerPosition = player.getPosition();
+        let balloonHeight = gridInfo.gridOffset;
+        let balloonWidth = balloonHeight * 2;
+        let balloonPosition: [number, number] = [playerPosition[0] * gridInfo.gridWidth, (playerPosition[1]-1) * gridInfo.gridWidth];
         console.log(attackRange);
 
         context.fillStyle = "rgba(255, 0, 0, 0.4)";
@@ -176,6 +180,9 @@ export class DrawComponent implements OnInit {
         if (this.effectCount >= this.attackEffectNum) {
             this.endDrawEffect();
         }
+
+        let img: HTMLImageElement = <HTMLImageElement>document.getElementById(player.getSkill().name +"_balloon");
+        context.drawImage(img, balloonPosition[0], balloonPosition[1], balloonWidth, balloonHeight);
     }
 
     private drawEffect(player, fillStartPoint, gridInfo: GridInfo, context): void {
