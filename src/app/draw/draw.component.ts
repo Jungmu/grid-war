@@ -166,7 +166,7 @@ export class DrawComponent implements OnInit {
         let balloonHeight = gridInfo.gridOffset;
         let balloonWidth = balloonHeight * 2;
         let balloonPosition: [number, number] = [playerPosition[0] * gridInfo.gridWidth, (playerPosition[1]-1) * gridInfo.gridWidth];
-        console.log(attackRange);
+        // console.log(attackRange);
 
         context.fillStyle = "rgba(255, 0, 0, 0.4)";
         attackRange.forEach(element => {

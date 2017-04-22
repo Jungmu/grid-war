@@ -8,7 +8,7 @@ import { CharacterImpl } from './characterImpl';
 export class Character implements CharacterImpl {
     private name: string = "Player";
     private status: PlayerState = PlayerState.chooseSkill;
-    private HP: number = 120;
+    private HP: number = 60;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;

@@ -9,7 +9,7 @@ import { CharacterImpl } from './characterImpl';
 export class AI implements CharacterImpl {
     private name: string = "AI";
     private status: number = PlayerState.chooseSkill;
-    private HP: number = 120;
+    private HP: number = 60;
     private skill: Skill = SKILLS[0];
     private position: [number, number];
     private stage: number;

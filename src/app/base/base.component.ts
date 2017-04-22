@@ -9,6 +9,7 @@ import { DrawComponent } from '../draw/draw.component';
 import { GameState, PlayerState, LiveDrawState, AdvantagePercent, DisadvantagePercent } from '../const';
 import { Character } from '../class/character';
 import { AI } from '../class/AI';
+// import { WICC } from '../class/WICC'
 
 import { Skill } from '../class/skill';
 import { SKILLS } from '../service/skill-data';
@@ -69,6 +70,7 @@ export class BaseComponent implements AfterViewInit {
                 BaseComponent.player = new Character;
                 BaseComponent.player.setStatus(PlayerState.chooseSkill);
                 BaseComponent.enemy = new AI;
+                // BaseComponent.enemy = new WICC;
                 break;
             case 'multiPlay':
                 BaseComponent.player = new Character;
@@ -76,6 +78,7 @@ export class BaseComponent implements AfterViewInit {
                 break;
             case 'AIvsAI':
                 BaseComponent.player = new AI;
+                // BaseComponent.player = new WICC;
                 BaseComponent.player.setName("AI_1");
                 BaseComponent.enemy = new AI;
                 BaseComponent.enemy.setName("AI_2");
